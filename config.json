@@ -1,0 +1,41 @@
+{
+    "https": {
+        "port":        3001,
+        "privateKey":  "/etc/letsencrypt/live/isitlegit.xyz/privkey.pem",
+        "certificate": "/etc/letsencrypt/live/isitlegit.xyz/cert.pem",
+        "ca":          "/etc/letsencrypt/live/isitlegit.xyz/fullchain.pem"
+    },
+
+    "http": {
+        "port": 3000
+    },
+
+    "database": {
+        "path": "/database.sqlite3",
+        "password": {
+            "saltRounds": 10
+        }
+    },
+
+    "telegram": {
+        "channel": "-740856569"
+    },
+
+    "log": {
+        "streams":[
+            {
+                "type": "rotating-file",
+                "path": "/log/server.log",
+                "period": "1d",
+                "count": 10
+            },
+            {
+                "type": "rotating-file",
+                "path": "/log/error.log",
+                "period": "1d",
+                "level": "error",
+                "count": 10
+            }
+        ]
+    }
+}

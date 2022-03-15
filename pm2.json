@@ -1,0 +1,10 @@
+{
+    "apps": [{
+        "name": "iil-website",
+        "script": "./src/index.js",
+        "cwd": "./",
+        "env":{
+            "NODE_ENV":"production"
+        }
+    }]
+}
