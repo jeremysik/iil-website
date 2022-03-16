@@ -28,8 +28,12 @@ body {
     background-color: #232323;
 }
 
-header {
-    background-color: #232323;
+.navbar {
+    border-radius: 0.5rem;
+}
+
+.navbar-brand {
+    margin-left: 1em;
 }
 
 .logo {
@@ -45,65 +49,11 @@ header {
     font-weight: bold;
 }
 
-.fs-5-5 {
-    font-size: 1.1rem;
-}
-
-.title {
-    text-align: center;
-    font-size:  calc(2rem + 1.4vw);
-}
-
-hr {
-    color:  #9D8F8F;
-    width:  80%;
-    margin: 4vw auto;
-}
-
-.header-icons {
-    justify-content: center;
-}
-
-.mobile-only {
-    display: block;
-}
-
-.desktop-only {
-    display: none;
-}
-
-.py-3-desktop {
-    padding-top:    0;
-    padding-bottom: 0;
-}
-
 @media(min-width: 767px) {
-    .header-icons {
-        justify-content: end;
-    }
 }
 
 @media(min-width: 992px) {
-    hr {
-        margin: 50px auto;
-    }
-
-    .title {
-        font-size: 3rem;
-    }
 }
 
 @media(min-width: 1200px) {
-    .desktop-only {
-        display: flex;
-    }
-
-    .mobile-only {
-        display: none;
-    }
-
-    .py-3-desktop {
-        padding-top:    1rem;
-        padding-bottom: 1rem;
-    }
 }

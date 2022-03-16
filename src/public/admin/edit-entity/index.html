@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en-us" class="h-100" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"           content="width=device-width, initial-scale=1">
+    
+    <link rel="shortcut icon" href="/asset/favicon.ico">
+    <link rel="stylesheet"    href="/lib/bootstrap.min.css">
+    <link rel="stylesheet"    href="/common.css">
+    <link rel="stylesheet"    href="style.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <div class="container py-5">
+        <nav class="navbar navbar-light bg-light">
+            <div class="container-fluid">
+              <a class="navbar-brand">Navbar</a>
+              <form class="d-flex">
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+              </form>
+            </div>
+        </nav>
+    </div>
+
+    <div class="container text-normal text-white form-container">
+        <div class="fs-1 text-bold py-3">Edit NFT Collection</div>
+        <form onsubmit="login(event)">
+            <div class="mb-3">
+                <label for="add-nft-collection-name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="add-nft-collection-name">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-collection-banner-image-url" class="form-label">Banner Image URL</label>
+                <input type="text" class="form-control" id="add-nft-collection-banner-image-url">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-collection-website-url" class="form-label">Website URL</label>
+                <input type="text" class="form-control" id="add-nft-collection-website-url">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-collection-opensea-url" class="form-label">OpenSea URL</label>
+                <input type="text" class="form-control" id="add-nft-collection-opensea-url">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-collection-twitter-url" class="form-label">Twitter URL</label>
+                <input type="text" class="form-control" id="add-nft-collection-twitter-url">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-collection-discord-url" class="form-label">Discord URL</label>
+                <input type="text" class="form-control" id="add-nft-collection-discord-url">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-collection-description" class="form-label">Description</label>
+                <textarea class="form-control" id="add-nft-collection-description" rows="5"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+    <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
+        <span>
+            <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
+        </span>
+    </footer>
+
+    <script src="/lib/axios.min.js"            type="application/javascript"></script>
+    <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
+    <script src="script.js"                    type="application/javascript"></script>
+</body>
+
+</html>

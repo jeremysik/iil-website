@@ -1,5 +1,6 @@
-const router     = require('express').Router();
-const bodyParser = require('body-parser');
+const router       = require('express').Router();
+const bodyParser   = require('body-parser');
+const { v4: uuid } = require('uuid');
 router.use('/', bodyParser.json());
 
 router.post('/transaction', (req, res) => {
@@ -35,6 +36,57 @@ router.get('/:tokenId', (req, res) => {
 
     res.locals.output.success().send();
 
+});
+
+
+router.post('/', (req, res) => {
+
+    let missingParams = [];
+    let fields        = ['email', 'password'];
+
+    for(let field of fields) {
+        if(!req.body.hasOwnProperty(field)) missingParams.push(field);
+    }
+
+    if(missingParams.length > 0) {
+        return res.locals.output.fail(
+            `The following required parameters are missing: ${missingParams.join(', ')}`,
+            400
+        ).send();
+    }
+
+    let uid = uuid();
+    fields.push('uid');
+
+    return bcrypt.hash(
+        req.body.password, 
+        global.config.database.password.saltRounds
+    ).then((hash) => {
+
+        global.db.run(
+            `INSERT INTO ${res.locals.table}(${fields.join(', ')}) VALUES(?, ?, ?)`,
+            [
+                req.body.email,
+                hash,
+                uid
+            ],
+            function(err) {
+                if(err) {
+                    global.log.error(`Failed to save user`, err);
+    
+                    res.locals.output.fail(
+                        err,
+                        500
+                    ).send();
+                    return;
+                }
+    
+                res.locals.output.success({
+                    uid: uid
+                }).send();
+            }
+        );
+    });
 });
 
 module.exports = router;
