@@ -13,13 +13,7 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-    <div class="container">
-        <header class="d-flex py-5 header-icons w-75 container">
-            <span>
-                <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
-            </span>
-        </header>
-    </div>
+    <div template="login-header"></div>
 
     <div class="container login-form-container text-normal text-white">
         <form onsubmit="login(event)">
@@ -37,14 +31,13 @@
         </form>
     </div>
 
-    <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
-        <span>
-            <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
-        </span>
-    </footer>
+    <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
+    <script src="/lib/mustache.min.js"         type="application/javascript"></script>
+    <script src="/lib/jwt-decode.min.js"       type="application/javascript"></script>
+    <script src="/template/loader.js"          type="application/javascript"></script>
     <script src="script.js"                    type="application/javascript"></script>
 </body>
 

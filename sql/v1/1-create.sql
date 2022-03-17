@@ -1,12 +1,12 @@
 CREATE TABLE IF NOT EXISTS entity_v1(
-    uid TEXT NOT NULL,
-    name TEXT NOT NULL,
+    uid TEXT NOT NULL PRIMARY KEY,
+    name TEXT NOT NULL UNIQUE,
     type TEXT NOT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
 CREATE TABLE IF NOT EXISTS nft_collection_v1(
-    uid TEXT NOT NULL,
+    uid TEXT NOT NULL PRIMARY KEY,
     entityUid TEXT NOT NULL,
     bannerImageUrl TEXT NOT NULL,
     websiteUrl TEXT,
@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS nft_collection_v1(
 );
 
 CREATE TABLE IF NOT EXISTS review_v1(
-    uid TEXT NOT NULL,
+    uid TEXT NOT NULL PRIMARY KEY,
     entityUid TEXT NOT NULL,
     name TEXT NOT NULL,
     rating INT NOT NULL,

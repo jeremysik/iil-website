@@ -1,21 +1,18 @@
-const router       = require('express').Router();
-const bodyParser   = require('body-parser');
-const { v4: uuid } = require('uuid');
+const router                     = require('express').Router();
+const bodyParser                 = require('body-parser');
+const { validate: validateUuid } = require('uuid');
 router.use('/', bodyParser.json());
 
-router.post('/transaction', (req, res) => {
+router.get('/:uid', (req, res, next) => {
 
-    res.locals.output.success().send();
+    if(!validateUuid(req.params.uid)) {
+        next();
+        return;
+    }
 
-});
-
-router.get('/mint-count', (req, res) => {
-
-    global.db.get(`SELECT count(*) AS count FROM ${res.locals.table} WHERE minted = 1`, function(err, row) {
+    global.db.get(`SELECT * FROM ${res.locals.table} WHERE uid = ?`, [req.params.uid], function(err, row) {
         if(err) {
-            if(global.telegramBot) global.telegramBot.sendMessage(global.config.telegram.channel, `\u{1F6A8} (${req.socket.remoteAddress}) Mint count API request for Rosie the Red Panda #${req.params.tokenId} failed due to database ${err}`);
-
-            global.log.error(`Failed to get mint count for rosietheredpanda`, err);
+            global.log.error(`Failed to get entity ${req.params.uid}`, err);
             res.locals.output.fail(
                 err,
                 500
@@ -23,69 +20,15 @@ router.get('/mint-count', (req, res) => {
             return;
         }
 
-        row.count += 3;
+        if(!row) {
+            res.locals.output.fail(
+                `Entity with uid ${req.params.uid} doesn't exist`,
+                404
+            ).send();
+            return;
+        }
 
         res.locals.output.success(row).send();
-    });
-});
-
-/*
-* Get metadata for a Rosie the Red Panda NFT
-*/
-router.get('/:tokenId', (req, res) => {
-
-    res.locals.output.success().send();
-
-});
-
-
-router.post('/', (req, res) => {
-
-    let missingParams = [];
-    let fields        = ['email', 'password'];
-
-    for(let field of fields) {
-        if(!req.body.hasOwnProperty(field)) missingParams.push(field);
-    }
-
-    if(missingParams.length > 0) {
-        return res.locals.output.fail(
-            `The following required parameters are missing: ${missingParams.join(', ')}`,
-            400
-        ).send();
-    }
-
-    let uid = uuid();
-    fields.push('uid');
-
-    return bcrypt.hash(
-        req.body.password, 
-        global.config.database.password.saltRounds
-    ).then((hash) => {
-
-        global.db.run(
-            `INSERT INTO ${res.locals.table}(${fields.join(', ')}) VALUES(?, ?, ?)`,
-            [
-                req.body.email,
-                hash,
-                uid
-            ],
-            function(err) {
-                if(err) {
-                    global.log.error(`Failed to save user`, err);
-    
-                    res.locals.output.fail(
-                        err,
-                        500
-                    ).send();
-                    return;
-                }
-    
-                res.locals.output.success({
-                    uid: uid
-                }).send();
-            }
-        );
     });
 });
 

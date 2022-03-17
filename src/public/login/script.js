@@ -12,7 +12,10 @@ function login(e) {
             password: password
         }
     }).then((res) => {
-        document.cookie = `accessToken=${res.data.data.accessToken}; Path=/; SameSite=Strict`;
+        const decoded   = jwt_decode(res.data.data.accessToken);
+        const expires   = new Date((new Date()).getTime() + ((decoded.exp - decoded.iat - 3600) * 1000)); // Browser time might be different, make the cookie expire 1 hour before it actually does.
+        document.cookie = `accessToken=${res.data.data.accessToken}; Path=/; SameSite=Strict; Expires=${expires.toUTCString()}`;
+
         window.location.replace('/admin'); 
     }).catch((err) => {
         alert(err.response.data.error);

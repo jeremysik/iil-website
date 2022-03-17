@@ -36,6 +36,29 @@ body {
     margin-left: 1em;
 }
 
+.navbar-nav {
+    margin-right: 1em;
+}
+
+.modal-backdrop {
+    opacity: 0.9 !important;
+}
+
+.modal-content {
+    background-color: #2A5E74;
+    padding:          2em 2em;
+}
+
+.btn-primary {
+    background-color: #59B1C4 !important;
+    border:           none !important;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+    background-color: #458A99 !important;
+    box-shadow:       none !important;
+}
+
 .logo {
     width: 30px;
 }

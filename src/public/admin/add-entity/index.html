@@ -13,21 +13,12 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-    <div class="container py-5">
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand">IsItLegit? Admin</a>
-                <form class="d-flex">
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                    <button class="btn btn-outline-success" type="submit">Search</button>
-                </form>
-            </div>
-        </nav>
-    </div>
+    <div template="success-modal"></div>
+    <div template="admin-header"></div>
 
     <div class="container text-normal text-white form-container">
         <div class="fs-1 text-bold py-3">Add NFT Collection</div>
-        <form onsubmit="login(event)">
+        <form onsubmit="addEntity(event)">
             <div class="mb-3">
                 <label for="add-nft-collection-name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="add-nft-collection-name">
@@ -62,14 +53,13 @@
         </form>
     </div>
 
-    <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
-        <span>
-            <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
-        </span>
-    </footer>
+    <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
+    <script src="/lib/mustache.min.js"         type="application/javascript"></script>
+    <script src="/template/loader.js"          type="application/javascript"></script>
+    <script src="/admin/common.js"             type="application/javascript"></script>
     <script src="script.js"                    type="application/javascript"></script>
 </body>
 

@@ -13,29 +13,14 @@
 </head>
 
 <body class="d-flex flex-column h-100">
-    <div class="container py-5">
-        <nav class="navbar navbar-light bg-light">
-            <div class="container-fluid">
-                <a class="navbar-brand" href="/admin">Admin</a>
-                <div class="navbar-nav d-flex">
-                    <a class="nav-link active" aria-current="page" href="#">Home</a>
-                    <a class="nav-link" href="#">Features</a>
-                    <a class="nav-link" href="#">Pricing</a>
-                    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-                </div>
-            </div>
-        </nav>
-    </div>
-
-    <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
-        <span>
-            <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
-        </span>
-    </footer>
+    <div template="admin-header"></div>
+    <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
-    <script src="script.js"                    type="application/javascript"></script>
+    <script src="/lib/mustache.min.js"         type="application/javascript"></script>
+    <script src="/template/loader.js"          type="application/javascript"></script>
+    <script src="/admin/common.js"             type="application/javascript"></script>
 </body>
 
 </html>

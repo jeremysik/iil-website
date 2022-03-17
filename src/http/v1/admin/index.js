@@ -67,7 +67,7 @@ router.post('/', (req, res) => {
 
     if(process.env.NODE_ENV == 'production') {
         return res.locals.output.fail(
-            `Unauthorized`,
+            `Unauthorised`,
             401
         ).send();
     }
