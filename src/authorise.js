@@ -19,7 +19,7 @@ function authorise(req, res, next, admin) {
 
     const accessToken = split[1];
     let decoded       = null;
-    try {
+    try { // TODO: Hide secret
         decoded = jwt.verify(accessToken, 'secret'); // This checks expiry too!
         if(admin && !decoded.admin) throw('Admin privileges required!');
     }

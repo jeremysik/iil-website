@@ -20,55 +20,41 @@ router.post('/login', (req, res) => {
         ).send();
     }
 
-    global.db.get(
-        `SELECT * FROM ${res.locals.table} WHERE username = ?`,
-        [
-            req.body.username
-        ],
-        function(err, row) {
-            if(err) {
-                global.log.error(`Failed to find admin`, err);
+    const stmt = global.db.prepare(`SELECT * FROM ${res.locals.table} WHERE username = ?`);
+    const row  = stmt.get(req.body.username);
 
-                return res.locals.output.fail(
-                    err,
-                    500
-                ).send();
-            }
+    if(!row) {
+        return res.locals.output.fail(
+            `${req.body.username} doesn't exist`,
+            404
+        ).send();
+    }
 
-            if(!row) {
-                return res.locals.output.fail(
-                    `${req.body.username} doesn't exist`,
-                    404
-                ).send();
-            }
+    return bcrypt.compare(
+        req.body.password, 
+        row.password
+    ).then((result) => {
 
-            return bcrypt.compare(
-                req.body.password, 
-                row.password
-            ).then((result) => {
-
-                if(!result) {
-                    return res.locals.output.fail(
-                        `Invalid login credentials`,
-                        401
-                    ).send();
-                }
-
-                let accessToken = jwt.sign(
-                    {
-                        exp:   Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 24 hour expiry
-                        email: req.body.email,
-                        admin: row.admin
-                    },
-                    'secret'
-                );
-        
-                res.locals.output.success({
-                    accessToken: accessToken
-                }).send();
-            });
+        if(!result) {
+            return res.locals.output.fail(
+                `Invalid login credentials`,
+                401
+            ).send();
         }
-    );
+
+        let accessToken = jwt.sign(
+            {
+                exp:   Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 24 hour expiry
+                email: req.body.email,
+                admin: row.admin
+            },
+            'secret' // TODO: Hide me
+        );
+
+        res.locals.output.success({
+            accessToken: accessToken
+        }).send();
+    })
 });
 
 router.post('/', (req, res) => {
@@ -99,26 +85,20 @@ router.post('/', (req, res) => {
         global.config.database.password.saltRounds
     ).then((hash) => {
 
-        global.db.run(
-            `INSERT INTO ${res.locals.table}(${fields.join(', ')}) VALUES(?, ?)`,
-            [
-                req.body.username,
-                hash
-            ],
-            function(err) {
-                if(err) {
-                    global.log.error(`Failed to save user`, err);
-    
-                    res.locals.output.fail(
-                        err,
-                        500
-                    ).send();
-                    return;
-                }
-    
-                res.locals.output.success().send();
-            }
-        );
+        const stmt = global.db.prepare(`INSERT INTO ${res.locals.table}(${fields.join(', ')}) VALUES(?, ?)`);
+        try {
+            stmt.run(req.body.username, hash);
+        }
+        catch(err) {
+            global.log.error(`Failed to save user ${req.body.username}: ${err.code}`);
+            res.locals.output.fail(
+                `Failed to save user`,
+                500
+            ).send();
+            return;
+        }
+
+        res.locals.output.success().send();
     });
 });
 

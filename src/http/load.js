@@ -17,38 +17,32 @@ module.exports = function(app) {
                 let table          = `${relativeFile.split('/')[1]}_${versionName}`; 
 
                 // Check to see if the table exists before loading endpoints
-                global.db.get(`SELECT count(*) AS count FROM sqlite_master WHERE type='table' AND name=?;`, table, function(err, row) {
-                    if(err) {
-                        global.log.error(err);
-                        return resolve();
-                    }
+                const stmt = global.db.prepare(`SELECT count(*) AS count FROM sqlite_master WHERE type='table' AND name=?`);
+                const row  = stmt.get(table);
 
-                    if(row.count == 0)
-                    {
-                        global.log.info(`Database table ${table} not found, loading ${versionName} endpoints anyway`);
-                        table = null;
-                    }
-                    else
-                    {
-                        global.log.info(`Database table ${table} exists, loading ${relativePath} endpoints successfully`);
-                        global.db.get('PRAGMA foreign_keys = ON');
-                    }
-            
-                    app.use(`/${relativePath}`, (req, res, next) => {
-                        res.locals = {
-                            table: table,
-                            output: new (require(`./${versionName}/payload`))(req, res)
-                        };
+                if(row.count == 0) {
+                    global.log.info(`Database table ${table} not found, loading ${versionName} endpoints anyway`);
+                    table = null;
+                }
+                else {
+                    global.log.info(`Database table ${table} exists, loading ${relativePath} endpoints successfully`);
+                    global.db.prepare(`PRAGMA foreign_keys = ON`).run();
+                }
         
-                        next();
-                    });
-        
-                    app.use(`/${relativePath}`, require(`./${relativeFile}`));
-
-                    global.log.info(`${relativePath} loaded endpoints successfully`);
-
-                    resolve();
+                app.use(`/${relativePath}`, (req, res, next) => {
+                    res.locals = {
+                        table: table,
+                        output: new (require(`./${versionName}/payload`))(req, res)
+                    };
+    
+                    next();
                 });
+    
+                app.use(`/${relativePath}`, require(`./${relativeFile}`));
+
+                global.log.info(`${relativePath} loaded endpoints successfully`);
+
+                resolve();
             }));
         });
 

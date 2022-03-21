@@ -27,72 +27,54 @@ router.post('/admin', authorise.admin, (req, res) => {
         global.config.database.password.saltRounds
     ).then((hash) => {
 
-        global.db.run(
-            `INSERT OR IGNORE INTO user_v1(username, password) VALUES(?, ?)`,
-            [
-                req.body.username,
-                hash
-            ],
-            function(err) {
-                if(err) {
-                    global.log.error(`Failed to create new user (admin add review)`, err);
-    
-                    res.locals.output.fail(
-                        err,
-                        500
-                    ).send();
-                    return;
-                }
-    
-                let uid = uuid();
-    
-                global.db.run(
-                    `INSERT INTO ${res.locals.table}(uid, entityUid, username, rating, review, approved) VALUES(?, ?, ?, ?, ?, ?)`,
-                    [
-                        uid,
-                        req.body.entityUid,
-                        req.body.username,
-                        req.body.rating,
-                        req.body.review,
-                        1
-                    ],
-                    function(err) {
-                        if(err) {
-                            global.log.error(`Failed to save review (admin)`, err);
-            
-                            res.locals.output.fail(
-                                err,
-                                500
-                            ).send();
-                            return;
-                        }
+        let uid = uuid();
 
-                        global.db.run(
-                            `UPDATE user_v1 SET tokenBalance = tokenBalance + 1, tokenTotal = tokenTotal + 1 WHERE username = ?`,
-                            [
-                                req.body.username
-                            ],
-                            function(err) {
-                                if(err) {
-                                    global.log.error(`Failed to update user's token balance (admin add review)`, err);
-                    
-                                    res.locals.output.fail(
-                                        err,
-                                        500
-                                    ).send();
-                                    return;
-                                }
-                            
-                                res.locals.output.success({
-                                    entityUid: req.body.entityUid,
-                                    uid:       uid
-                                }).send();
-                            }
-                        );
-                    }
-                );
+        const transaction = global.db.transaction(() => {
+            const insertUserStmt = global.db.prepare(`INSERT OR IGNORE INTO user_v1(username, password) VALUES(?, ?)`);
+            insertUserStmt.run(req.body.username, hash);
+            
+            const insertReviewStmt = global.db.prepare(`INSERT INTO ${res.locals.table}(uid, entityUid, username, rating, review, approved) VALUES(?, ?, ?, ?, ?, ?)`);
+            const insertReviewInfo = insertReviewStmt.run([
+                uid,
+                req.body.entityUid,
+                req.body.username,
+                req.body.rating,
+                req.body.review,
+                1
+            ]);
+    
+            if(insertReviewInfo.changes != 1) {
+                throw({
+                    code:    500,
+                    message: `Failed to save review (admin)`
+                });
             }
-        );
+    
+            const updateTokensStmt = global.db.prepare(`UPDATE user_v1 SET tokenBalance = tokenBalance + 1, tokenTotal = tokenTotal + 1 WHERE username = ?`);
+            const updateTokensInfo = updateTokensStmt.run(req.body.username);
+    
+            if(updateTokensInfo.changes != 1) {
+                throw({
+                    code:    500,
+                    message: `Failed to update user's token balance (admin add review)`
+                });
+            }
+        });
+
+        try {
+            transaction();
+        }
+        catch(err) {
+            global.log.error(err.message);
+    
+            res.locals.output.fail(
+                err.message,
+                err.code
+            ).send();
+            return;
+        }
+    
+        res.locals.output.success().send();
     });
 });
 

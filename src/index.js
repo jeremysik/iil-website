@@ -7,7 +7,7 @@ const bunyan            = require('bunyan');
 const bunyanDebugStream = require('bunyan-debug-stream');
 const http              = require('http');
 const https             = require('https');
-const sqlite3           = require('sqlite3');
+const betterSqlite3     = require('better-sqlite3');
 const dotenv            = require('dotenv');
 const TelegramBot       = require('node-telegram-bot-api/lib/telegram');
 const app               = express();
@@ -79,16 +79,7 @@ async function init() {
     global.log.info('Database file found');
 
     // Load database
-    let db = await new Promise((resolve) => {
-        let db = new sqlite3.Database(global.config.database.path, sqlite3.OPEN_READWRITE, (err) => {
-            if(err) {
-                global.log.error(err);
-                process.exit(1);
-            }
-
-            resolve(db);
-        });
-    });
+    const db = new betterSqlite3(global.config.database.path);
 
     // Attach database object global.db
     global.db = db;

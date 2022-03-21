@@ -11,72 +11,70 @@ router.get('/:uid', (req, res, next) => {
         return;
     }
 
-    global.db.get(`SELECT * FROM ${res.locals.table} WHERE uid = ?`, [req.params.uid], function(err, row) {
-        if(err) {
-            global.log.error(`Failed to get entity ${req.params.uid}`, err);
-            res.locals.output.fail(
-                err,
-                500
-            ).send();
-            return;
-        }
+    const stmt = global.db.prepare(`SELECT * FROM ${res.locals.table} WHERE uid = ?`);
+    const row  = stmt.get(req.params.uid);
 
-        if(!row) {
-            res.locals.output.fail(
-                `Entity with uid ${req.params.uid} doesn't exist`,
-                404
-            ).send();
-            return;
-        }
+    if(!row) {
+        res.locals.output.fail(
+            `Entity with uid ${req.params.uid} doesn't exist`,
+            404
+        ).send();
+        return;
+    }
 
-        res.locals.output.success(row).send();
-    });
+    res.locals.output.success(row).send();
 });
 
 router.delete('/:uid', authorise.admin, (req, res) => {
 
-    global.db.get(`SELECT * FROM ${res.locals.table} WHERE uid = ?`, [req.params.uid], function(err, row) {
-        if(err) {
-            global.log.error(`Failed to get entity ${req.params.uid} for deletion`, err);
-            res.locals.output.fail(
-                err,
-                500
-            ).send();
-            return;
-        }
+    const transaction = global.db.transaction(() => {
+        const selectStmt = global.db.prepare(`SELECT * FROM ${res.locals.table} WHERE uid = ?`);
+        const selectRow  = selectStmt.get(req.params.uid);
 
-        if(!row) {
-            res.locals.output.fail(
-                `Entity with uid ${req.params.uid} doesn't exist!`,
-                404
-            ).send();
-            return;
-        }
-
-        global.db.run(`DELETE FROM ${row.type}_v1 WHERE entityUid = ?`, [req.params.uid], function(err, row) {
-            if(err) {
-                global.log.error(`Failed to delete ${row.type} entity ${req.params.uid} (entityUid)`, err);
-                res.locals.output.fail(
-                    err,
-                    500
-                ).send();
-                return;
-            }
-
-            global.db.run(`DELETE FROM ${res.locals.table} WHERE uid = ?`, [req.params.uid], function(err, row) {
-                if(err) {
-                    global.log.error(`Failed to delete entity ${req.params.uid}`, err);
-                    res.locals.output.fail(
-                        err,
-                        500
-                    ).send();
-                    return;
-                }
-
-                res.locals.output.success().send();
+        if(!selectRow) {
+            throw({
+                code:    404,
+                message: `Failed to get entity ${req.params.uid} for deletion`
             });
-        });
+        }
+        
+        const deleteTypeStmt = global.db.prepare(`DELETE FROM ${selectRow.type}_v1 WHERE entityUid = ?`);
+        const deleteTypeInfo = deleteTypeStmt.run(req.params.uid);
+
+        if(deleteTypeInfo.changes != 1) {
+            throw({
+                code:    500,
+                message: `Failed to delete ${selectRow.type} entity ${req.params.uid} (entityUid)`
+            });
+        }
+
+        const deleteEntityStmt = global.db.prepare(`DELETE FROM ${res.locals.table} WHERE uid = ?`);
+        const deleteEntityInfo = deleteEntityStmt.run(req.params.uid);
+
+        if(deleteEntityInfo.changes != 1) {
+            throw({
+                code:    500,
+                message: `Failed to delete entity ${req.params.uid}`
+            });
+        }
     });
+
+    try {
+        transaction();
+    }
+    catch(err) {
+        global.log.error(err.message);
+
+        console.error(err.code);
+
+        res.locals.output.fail(
+            err.message,
+            err.code
+        ).send();
+        return;
+    }
+
+    res.locals.output.success().send();
 });
 
 module.exports = router;
