@@ -1,7 +1,6 @@
 const jwt = require('jsonwebtoken');
 
-module.exports = function(req, res, next) {
-    console.log('wat da hell');
+function authorise(req, res, next, admin) {
 
     if(!req.headers.authorization) {
         return res.locals.output.fail(
@@ -22,13 +21,19 @@ module.exports = function(req, res, next) {
     let decoded       = null;
     try {
         decoded = jwt.verify(accessToken, 'secret'); // This checks expiry too!
+        if(admin && !decoded.admin) throw('Admin privileges required!');
     }
     catch(err) {
         return res.locals.output.fail(
-            `Unauthorised!`,
+            typeof err == 'string' ? err : `Unauthorised!`,
             401
         ).send();
     }
 
     next();
 }
+
+module.exports = {
+    member: function(req, res, next) { authorise(req, res, next, false); },
+    admin:  function(req, res, next) { authorise(req, res, next, true); }
+};

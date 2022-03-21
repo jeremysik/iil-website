@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en-us" class="h-100" xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport"           content="width=device-width, initial-scale=1">
+    
+    <link rel="shortcut icon" href="/asset/favicon.ico">
+    <link rel="stylesheet"    href="/lib/bootstrap.min.css">
+    <link rel="stylesheet"    href="/common.css">
+    <link rel="stylesheet"    href="style.css">
+</head>
+
+<body class="d-flex flex-column h-100">
+    <div id="confirm-modal-container"></div>
+    <div template="success-modal"></div>
+    <div template="admin-header"></div>
+
+    <div class="container text-normal text-white form-container">
+        <div class="fs-1 text-bold py-3">Add NFT Collection Review</div>
+        <form onsubmit="addReview(event)" autocomplete="off">
+            <div class="mb-3">
+                <label for="add-nft-review-id" class="form-label">NFT Collection</label>
+                <input class="form-control" list="data-list-options" id="add-nft-review-nft-collection" placeholder="Type to search..." onchange="changeNftCollection(event)">
+                <datalist id="data-list-options">
+                </datalist>
+            </div>
+            <input type="hidden" id="add-nft-review-entity-uid">
+            <div class="mb-3">
+                <label for="add-nft-review-name" class="form-label">Rating</label>
+                <div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="add-nft-review-rating" id="add-nft-review-rating-1" value="1">
+                        <label class="form-check-label" for="add-nft-review-rating-1">1 (100% scam)</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="add-nft-review-rating" id="add-nft-review-rating-2" value="2">
+                        <label class="form-check-label" for="add-nft-review-rating-2">2</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="add-nft-review-rating" id="add-nft-review-rating-3" value="3">
+                        <label class="form-check-label" for="add-nft-review-rating-3">3</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="add-nft-review-rating" id="add-nft-review-rating-4" value="4">
+                        <label class="form-check-label" for="add-nft-review-rating-4">4</label>
+                    </div>
+                    <div class="form-check form-check-inline">
+                        <input class="form-check-input" type="radio" name="add-nft-review-rating" id="add-nft-review-rating-5" value="5">
+                        <label class="form-check-label" for="add-nft-review-rating-5">5 (completely legit)</label>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-review-username" class="form-label">Username</label>
+                <input type="text" class="form-control" id="add-nft-review-username">
+            </div>
+            <div class="mb-3">
+                <label for="add-nft-review-review" class="form-label">Review</label>
+                <textarea class="form-control" id="add-nft-review-review" rows="10"></textarea>
+            </div>
+            <div class="py-3">
+                <button id="submit-button" type="submit" class="btn btn-primary w-100" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+
+    <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
+
+    <script src="/lib/axios.min.js"            type="application/javascript"></script>
+    <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
+    <script src="/lib/mustache.min.js"         type="application/javascript"></script>
+    <script src="/template/loader.js"          type="application/javascript"></script>
+    <script src="/admin/common.js"             type="application/javascript"></script>
+    <script src="script.js"                    type="application/javascript"></script>
+</body>
+
+</html>

@@ -7,7 +7,7 @@ router.use('/', bodyParser.json());
 router.post('/login', (req, res) => {
 
     let missingParams = [];
-    let fields        = ['email', 'password'];
+    let fields        = ['username', 'password'];
 
     for(let field of fields) {
         if(!req.body.hasOwnProperty(field) || !req.body[field]) missingParams.push(field);
@@ -21,9 +21,9 @@ router.post('/login', (req, res) => {
     }
 
     global.db.get(
-        `SELECT * FROM ${res.locals.table} WHERE email = ?`,
+        `SELECT * FROM ${res.locals.table} WHERE username = ?`,
         [
-            req.body.email
+            req.body.username
         ],
         function(err, row) {
             if(err) {
@@ -32,6 +32,13 @@ router.post('/login', (req, res) => {
                 return res.locals.output.fail(
                     err,
                     500
+                ).send();
+            }
+
+            if(!row) {
+                return res.locals.output.fail(
+                    `${req.body.username} doesn't exist`,
+                    404
                 ).send();
             }
 
@@ -50,7 +57,8 @@ router.post('/login', (req, res) => {
                 let accessToken = jwt.sign(
                     {
                         exp:   Math.floor(Date.now() / 1000) + (60 * 60 * 24), // 24 hour expiry
-                        email: req.body.email
+                        email: req.body.email,
+                        admin: row.admin
                     },
                     'secret'
                 );
@@ -73,7 +81,7 @@ router.post('/', (req, res) => {
     }
 
     let missingParams = [];
-    let fields        = ['email', 'password'];
+    let fields        = ['username', 'password'];
 
     for(let field of fields) {
         if(!req.body.hasOwnProperty(field)) missingParams.push(field);
@@ -94,12 +102,12 @@ router.post('/', (req, res) => {
         global.db.run(
             `INSERT INTO ${res.locals.table}(${fields.join(', ')}) VALUES(?, ?)`,
             [
-                req.body.email,
+                req.body.username,
                 hash
             ],
             function(err) {
                 if(err) {
-                    global.log.error(`Failed to save admin`, err);
+                    global.log.error(`Failed to save user`, err);
     
                     res.locals.output.fail(
                         err,

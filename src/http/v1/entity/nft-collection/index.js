@@ -73,10 +73,7 @@ router.get('/', (req, res) => {
     });
 });
 
-// ------------------- AUTHORISATION REQUIRED BEYOND THIS POINT -------------------
-router.use('/', authorise);
-
-router.post('/', (req, res) => {
+router.post('/', authorise.admin, (req, res) => {
 
     let missingParams = [];
     let fields        = ['name', 'bannerImageUrl'];
@@ -147,6 +144,73 @@ router.post('/', (req, res) => {
                         entityUid: entityUid,
                         uid:       nftCollectionUid
                     }).send();
+                }
+            );
+        }
+    );
+});
+
+router.patch('/:uid', authorise.admin, (req, res) => {
+
+    let missingParams = [];
+    let fields        = ['name', 'bannerImageUrl'];
+
+    for(let field of fields) {
+        if(!req.body.hasOwnProperty(field)) missingParams.push(field);
+    }
+
+    if(missingParams.length > 0) {
+        return res.locals.output.fail(
+            `The following required parameters are missing: ${missingParams.join(', ')}`,
+            400
+        ).send();
+    }
+
+    global.db.run(
+        `UPDATE entity_v1 SET name = ? WHERE uid = ?`,
+        [
+            req.body.name,
+            req.body.entityUid
+        ],
+        function(err) {
+            if(err) {
+                global.log.error(`Failed to update entity ${req.body.entityUid} (entityUid)`, err);
+
+                res.locals.output.fail(
+                    err,
+                    500
+                ).send();
+                return;
+            }
+
+            let fieldsToUpdate = [];
+            let optionalFields = ['websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
+            for(let field of optionalFields) {
+                if(req.body.hasOwnProperty(field)) fieldsToUpdate.push(field);
+            }
+
+            let values = fieldsToUpdate.map((field) => req.body[field]);
+
+            fieldsToUpdate.push('bannerImageUrl');
+            values.push(req.body.bannerImageUrl);
+
+            values.push(req.params.uid);
+
+            global.db.run(
+                `UPDATE nft_collection_v1 SET ${fieldsToUpdate.join(' = ?, ')} = ? WHERE uid = ?`,
+                values,
+                function(err) {
+                    if(err) {
+                        global.log.error(`Failed to update NFT collection ${req.params.uid}`, err);
+        
+                        res.locals.output.fail(
+                            err,
+                            500
+                        ).send();
+                        return;
+                    }
+        
+                    res.locals.output.success().send();
                 }
             );
         }

@@ -13,23 +13,21 @@
 </head>
 
 <body class="d-flex flex-column h-100">
+    <div id="confirm-modal-container"></div>
     <div template="success-modal"></div>
     <div template="admin-header"></div>
 
     <div class="container text-normal text-white form-container">
         <div class="fs-1 text-bold py-3">Edit NFT Collection</div>
-        <form onsubmit="editEntity(event)">
+        <form onsubmit="editEntity(event)" autocomplete="off">
             <div class="mb-3">
                 <label for="edit-nft-collection-id" class="form-label">NFT Collection</label>
-                <input class="form-control" list="data-list-options" id="edit-nft-collection-id" placeholder="Type to search...">
+                <input class="form-control" list="data-list-options" id="edit-nft-collection-nft-collection" placeholder="Type to search..." onchange="changeNftCollection(event)">
                 <datalist id="data-list-options">
-                    <option value="San Francisco">
-                    <option value="New York">
-                    <option value="Seattle">
-                    <option value="Los Angeles">
-                    <option value="Chicago">
                 </datalist>
             </div>
+            <input type="hidden" id="edit-nft-collection-uid">
+            <input type="hidden" id="edit-nft-collection-entity-uid">
             <div class="mb-3">
                 <label for="edit-nft-collection-name" class="form-label">Name</label>
                 <input type="text" class="form-control" id="edit-nft-collection-name">
@@ -59,10 +57,10 @@
                 <textarea class="form-control" id="edit-nft-collection-description" rows="5"></textarea>
             </div>
             <div class="py-3">
-                <button id="submit-button" type="submit" class="btn btn-primary w-100">Submit</button>
+                <button id="submit-button" type="submit" class="btn btn-primary w-100" disabled>Submit</button>
             </div>
             <div class="py-3">
-                <button id="delete-button" type="submit" class="btn btn-danger w-100">Delete</button>
+                <button id="delete-button" type="submit" class="btn btn-danger w-100" disabled>Delete</button>
             </div>
         </form>
     </div>
