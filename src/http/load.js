@@ -14,24 +14,11 @@ module.exports = function(app) {
                 const pathParts    = relativeFile.split('/');
                 const relativePath = pathParts.slice(0, pathParts.length - 1).join('/'); // e.g. 'v1/server'
                 const versionName  = relativeFile.split('/')[0]; // e.g. 'v1'
-                let table          = `${relativeFile.split('/')[1]}_${versionName}`; 
 
-                // Check to see if the table exists before loading endpoints
-                const stmt = global.db.prepare(`SELECT count(*) AS count FROM sqlite_master WHERE type='table' AND name=?`);
-                const row  = stmt.get(table);
-
-                if(row.count == 0) {
-                    global.log.info(`Database table ${table} not found, loading ${versionName} endpoints anyway`);
-                    table = null;
-                }
-                else {
-                    global.log.info(`Database table ${table} exists, loading ${relativePath} endpoints successfully`);
-                    global.db.prepare(`PRAGMA foreign_keys = ON`).run();
-                }
+                global.db.prepare(`PRAGMA foreign_keys = ON`).run();
         
                 app.use(`/${relativePath}`, (req, res, next) => {
                     res.locals = {
-                        table: table,
                         output: new (require(`./${versionName}/payload`))(req, res)
                     };
     

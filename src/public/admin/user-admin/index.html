@@ -13,7 +13,26 @@
 </head>
 
 <body class="d-flex flex-column h-100">
+    <div id="confirm-modal-container"></div>
+    <div template="info-modal"></div>
     <div template="admin-header"></div>
+
+    <div class="container text-normal text-white form-container">
+        <div class="fs-1 text-bold py-3">Reset Password</div>
+        <form onsubmit="resetPassword(event)" autocomplete="off">
+            <div class="mb-3">
+                <label for="user-admin-reset-password-username" class="form-label">User</label>
+                <input class="form-control" list="data-list-options" id="user-admin-reset-password-username" placeholder="Type to search..." onchange="changeUser(event)">
+                <datalist id="data-list-options">
+                </datalist>
+            </div>
+            <input type="hidden" id="user-admin-reset-password-uid">
+            <div class="py-3">
+                <button id="submit-button" type="submit" class="btn btn-primary w-100" disabled>Submit</button>
+            </div>
+        </form>
+    </div>
+
     <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
@@ -21,6 +40,7 @@
     <script src="/lib/mustache.min.js"         type="application/javascript"></script>
     <script src="/template/loader.js"          type="application/javascript"></script>
     <script src="/admin/common.js"             type="application/javascript"></script>
+    <script src="script.js"                    type="application/javascript"></script>
 </body>
 
 </html>

@@ -9,20 +9,20 @@
     <link rel="shortcut icon" href="/asset/favicon.ico">
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
-    <link rel="stylesheet"    href="style.css">
+    <link rel="stylesheet"    href="/admin/common.css">
 </head>
 
 <body class="d-flex flex-column h-100">
     <div id="confirm-modal-container"></div>
-    <div template="success-modal"></div>
+    <div template="info-modal"></div>
     <div template="admin-header"></div>
 
     <div class="container text-normal text-white form-container">
-        <div class="fs-1 text-bold py-3">Add NFT Collection Review</div>
+        <div class="fs-1 text-bold py-3">Add NFT Project Review</div>
         <form onsubmit="addReview(event)" autocomplete="off">
             <div class="mb-3">
-                <label for="add-nft-review-id" class="form-label">NFT Collection</label>
-                <input class="form-control" list="data-list-options" id="add-nft-review-nft-collection" placeholder="Type to search..." onchange="changeNftCollection(event)">
+                <label for="add-nft-review-nft-project" class="form-label">NFT Project</label>
+                <input class="form-control" list="data-list-options" id="add-nft-review-nft-project" placeholder="Type to search..." onchange="changeNftProject(event)">
                 <datalist id="data-list-options">
                 </datalist>
             </div>

@@ -1,17 +1,11 @@
-const router                     = require('express').Router();
-const bodyParser                 = require('body-parser');
-const { validate: validateUuid } = require('uuid');
-const authorise                  = require.main.require('./authorise');
+const router     = require('express').Router();
+const bodyParser = require('body-parser');
+const authorise  = require.main.require('./authorise');
 router.use('/', bodyParser.json());
 
-router.get('/:uid', (req, res, next) => {
+router.get('/:uid', (req, res) => {
 
-    if(!validateUuid(req.params.uid)) {
-        next();
-        return;
-    }
-
-    const stmt = global.db.prepare(`SELECT * FROM ${res.locals.table} WHERE uid = ?`);
+    const stmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE uid = ?`);
     const row  = stmt.get(req.params.uid);
 
     if(!row) {
@@ -28,7 +22,7 @@ router.get('/:uid', (req, res, next) => {
 router.delete('/:uid', authorise.admin, (req, res) => {
 
     const transaction = global.db.transaction(() => {
-        const selectStmt = global.db.prepare(`SELECT * FROM ${res.locals.table} WHERE uid = ?`);
+        const selectStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE uid = ?`);
         const selectRow  = selectStmt.get(req.params.uid);
 
         if(!selectRow) {
@@ -48,7 +42,7 @@ router.delete('/:uid', authorise.admin, (req, res) => {
             });
         }
 
-        const deleteEntityStmt = global.db.prepare(`DELETE FROM ${res.locals.table} WHERE uid = ?`);
+        const deleteEntityStmt = global.db.prepare(`DELETE FROM entity_v1 WHERE uid = ?`);
         const deleteEntityInfo = deleteEntityStmt.run(req.params.uid);
 
         if(deleteEntityInfo.changes != 1) {
@@ -69,7 +63,7 @@ router.delete('/:uid', authorise.admin, (req, res) => {
 
         res.locals.output.fail(
             err.message,
-            err.code
+            typeof err.code == 'number' ? err.code : 500
         ).send();
         return;
     }

@@ -5,9 +5,11 @@ CREATE TABLE IF NOT EXISTS entity_v1(
     created DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
-CREATE TABLE IF NOT EXISTS nft_collection_v1(
+CREATE TABLE IF NOT EXISTS nft_project_v1(
     uid TEXT NOT NULL PRIMARY KEY,
     entityUid TEXT NOT NULL,
+    logoImageUrl TEXT NOT NULL,
+    featuredImageUrl TEXT NOT NULL,
     bannerImageUrl TEXT NOT NULL,
     websiteUrl TEXT,
     openSeaUrl TEXT,
@@ -21,17 +23,18 @@ CREATE TABLE IF NOT EXISTS nft_collection_v1(
 CREATE TABLE IF NOT EXISTS review_v1(
     uid TEXT NOT NULL PRIMARY KEY,
     entityUid TEXT NOT NULL,
-    username TEXT NOT NULL,
+    userUid TEXT NOT NULL UNIQUE,
     rating INT NOT NULL,
     review TEXT NOT NULL,
     approved INT DEFAULT 0,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (entityUid) REFERENCES entity_v1(uid),
-    FOREIGN KEY (username) REFERENCES user_v1(username)
+    FOREIGN KEY (userUid) REFERENCES user_v1(uid)
 );
 
 CREATE TABLE IF NOT EXISTS user_v1(
-    username TEXT NOT NULL PRIMARY KEY,
+    uid TEXT NOT NULL PRIMARY KEY,
+    username TEXT NOT NULL UNIQUE,
     password TEXT NOT NULL,
     admin INT DEFAULT 0,
     tokenBalance INT DEFAULT 0,

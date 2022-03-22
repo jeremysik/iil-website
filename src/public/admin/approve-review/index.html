@@ -13,7 +13,27 @@
 </head>
 
 <body class="d-flex flex-column h-100">
+    <div id="confirm-modal-container"></div>
+    <div template="info-modal"></div>
     <div template="admin-header"></div>
+
+    <div class="container">
+        <div class="fs-1 text-bold py-3 text-normal text-white">Approve Review</div>
+        <table class="table text-normal text-white">
+            <thead>
+                <tr>
+                    <th scope="col">Entity Name</th>
+                    <th scope="col">Entity Type</th>
+                    <th scope="col">Username</th>
+                    <th scope="col">Rating</th>
+                    <th scope="col">Review</th>
+                </tr>
+            </thead>
+            <tbody id="table-body">
+            </tbody>
+        </table>
+    </div>
+
     <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
@@ -21,6 +41,7 @@
     <script src="/lib/mustache.min.js"         type="application/javascript"></script>
     <script src="/template/loader.js"          type="application/javascript"></script>
     <script src="/admin/common.js"             type="application/javascript"></script>
+    <script src="script.js"                    type="application/javascript"></script>
 </body>
 
 </html>

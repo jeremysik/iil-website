@@ -9,52 +9,60 @@
     <link rel="shortcut icon" href="/asset/favicon.ico">
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
-    <link rel="stylesheet"    href="style.css">
+    <link rel="stylesheet"    href="/admin/common.css">
 </head>
 
 <body class="d-flex flex-column h-100">
     <div id="confirm-modal-container"></div>
-    <div template="success-modal"></div>
+    <div template="info-modal"></div>
     <div template="admin-header"></div>
 
     <div class="container text-normal text-white form-container">
-        <div class="fs-1 text-bold py-3">Edit NFT Collection</div>
+        <div class="fs-1 text-bold py-3">Edit NFT Project</div>
         <form onsubmit="editEntity(event)" autocomplete="off">
             <div class="mb-3">
-                <label for="edit-nft-collection-id" class="form-label">NFT Collection</label>
-                <input class="form-control" list="data-list-options" id="edit-nft-collection-nft-collection" placeholder="Type to search..." onchange="changeNftCollection(event)">
+                <label for="edit-nft-project-nft-project" class="form-label">NFT Project</label>
+                <input class="form-control" list="data-list-options" id="edit-nft-project-nft-project" placeholder="Type to search..." onchange="changeNftProject(event)">
                 <datalist id="data-list-options">
                 </datalist>
             </div>
-            <input type="hidden" id="edit-nft-collection-uid">
-            <input type="hidden" id="edit-nft-collection-entity-uid">
+            <input type="hidden" id="edit-nft-project-uid">
+            <input type="hidden" id="edit-nft-project-entity-uid">
             <div class="mb-3">
-                <label for="edit-nft-collection-name" class="form-label">Name</label>
-                <input type="text" class="form-control" id="edit-nft-collection-name">
+                <label for="edit-nft-project-name" class="form-label">Name</label>
+                <input type="text" class="form-control" id="edit-nft-project-name">
             </div>
             <div class="mb-3">
-                <label for="edit-nft-collection-banner-image-url" class="form-label">Banner Image URL</label>
-                <input type="text" class="form-control" id="edit-nft-collection-banner-image-url">
+                <label for="edit-nft-project-logo-image-url" class="form-label">Logo Image URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-logo-image-url">
             </div>
             <div class="mb-3">
-                <label for="edit-nft-collection-website-url" class="form-label">Website URL</label>
-                <input type="text" class="form-control" id="edit-nft-collection-website-url">
+                <label for="edit-nft-project-featured-image-url" class="form-label">Featured Image URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-featured-image-url">
             </div>
             <div class="mb-3">
-                <label for="edit-nft-collection-opensea-url" class="form-label">OpenSea URL</label>
-                <input type="text" class="form-control" id="edit-nft-collection-opensea-url">
+                <label for="edit-nft-project-banner-image-url" class="form-label">Banner Image URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-banner-image-url">
             </div>
             <div class="mb-3">
-                <label for="edit-nft-collection-twitter-url" class="form-label">Twitter URL</label>
-                <input type="text" class="form-control" id="edit-nft-collection-twitter-url">
+                <label for="edit-nft-project-website-url" class="form-label">Website URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-website-url">
             </div>
             <div class="mb-3">
-                <label for="edit-nft-collection-discord-url" class="form-label">Discord URL</label>
-                <input type="text" class="form-control" id="edit-nft-collection-discord-url">
+                <label for="edit-nft-project-opensea-url" class="form-label">OpenSea URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-opensea-url">
             </div>
             <div class="mb-3">
-                <label for="edit-nft-collection-description" class="form-label">Description</label>
-                <textarea class="form-control" id="edit-nft-collection-description" rows="5"></textarea>
+                <label for="edit-nft-project-twitter-url" class="form-label">Twitter URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-twitter-url">
+            </div>
+            <div class="mb-3">
+                <label for="edit-nft-project-discord-url" class="form-label">Discord URL</label>
+                <input type="text" class="form-control" id="edit-nft-project-discord-url">
+            </div>
+            <div class="mb-3">
+                <label for="edit-nft-project-description" class="form-label">Description</label>
+                <textarea class="form-control" id="edit-nft-project-description" rows="5"></textarea>
             </div>
             <div class="py-3">
                 <button id="submit-button" type="submit" class="btn btn-primary w-100" disabled>Submit</button>
