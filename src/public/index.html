@@ -10,16 +10,24 @@
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="/style.css">
+    <link rel="stylesheet"    href="/template/titleSearch.css">
+    <link rel="stylesheet"    href="/template/entityCard.css">
 </head>
 
 <body class="d-flex flex-column h-100">
+    <div template="header"></div>
+    <div template="title-search"></div>
     <div class="container">
-        <header class="d-flex py-5 header-icons w-75 container">
-            <span>
-                <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
-            </span>
-        </header>
+        <div class="container py-5" id="entity-card-container">
+            <div class="text-center">
+                <div class="loading-spinner spinner-border text-cyan" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+        <div class="container py-5" id="entity-rows-container"></div>
     </div>
+
     <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
         <span>
             <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
@@ -28,7 +36,9 @@
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
-    <script src="/script.js"                   type="application/javascript"></script>
+    <script src="/lib/mustache.min.js"         type="application/javascript"></script>
+    <script src="/template/loader.js"          type="application/javascript"></script>
+    <script src="script.js"                    type="application/javascript"></script>
 </body>
 
 </html>

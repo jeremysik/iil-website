@@ -12,6 +12,32 @@
     font-style:  normal;
 }
 
+/* ------ Colours ------ */
+:root {
+    --purple-colour:      #8C72FF;
+    --matte-black-colour: #232323;
+    --cyan-colour:        #6CD3FF;
+}
+/* ------ Colours ------ */
+
+body {
+    background-color: var(--matte-black-colour);
+}
+
+.text-normal {
+    font-family: 'proximanova';
+}
+
+.text-bold {
+    font-family: 'proximanova';
+    font-weight: bold;
+}
+
+.text-cyan {
+    color: var(--cyan-colour);
+}
+
+/* ------ Header ------ */
 a {
     color:                     white;
     text-decoration-color:     #59B1C4;
@@ -24,52 +50,22 @@ a:hover {
     text-decoration-color: #397394;
 }
 
-body {
-    background-color: #232323;
-}
-
-.navbar {
-    border-radius: 0.5rem;
-}
-
-.navbar-brand {
-    margin-left: 1em;
-}
-
-.navbar-nav {
-    margin-right: 1em;
-}
-
-.modal-backdrop {
-    opacity: 0.9 !important;
-}
-
-.modal-content {
-    background-color: #2A5E74;
-    padding:          2em 2em;
-}
-
-.btn-primary {
-    background-color: #59B1C4 !important;
+header .btn-primary {
+    background-color: var(--purple-colour) !important;
     border:           none !important;
+    border-radius:    2em;
 }
 
-.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+header .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
     background-color: #458A99 !important;
     box-shadow:       none !important;
 }
+/* ------ Header ------ */
 
-.logo {
-    width: 30px;
-}
-
-.text-normal {
-    font-family: 'proximanova';
-}
-
-.text-bold {
-    font-family: 'proximanova';
-    font-weight: bold;
+.loading-spinner {
+    height: 3em;
+    width:  3em;
+    border-width: 0.5em;
 }
 
 @media(min-width: 767px) {

@@ -205,7 +205,7 @@ router.patch('/:uid', authorise.admin, (req, res) => {
         if(req.body.hasOwnProperty(field)) fieldsToUpdate.push(field);
     }
 
-    let values = fieldsToUpdate.map((field) => req.body[field] ? req.body[field] : null);
+    let values = fieldsToUpdate.map((field) => req.body[field] === '' ? null : req.body[field]);
 
     if(req.body.hasOwnProperty('password')) {
 
@@ -242,6 +242,11 @@ router.patch('/:uid', authorise.admin, (req, res) => {
     
             res.locals.output.success().send();
         });
+    }
+
+    if(values.length == 0) {
+        res.locals.output.success().send();
+        return;
     }
 
     values.push(req.params.uid);

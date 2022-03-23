@@ -77,7 +77,7 @@ router.post('/', authorise.admin, (req, res) => {
         if(req.body.hasOwnProperty(field)) fieldsToInsert.push(field);
     }
 
-    let values = fieldsToInsert.map((field) => req.body[field] ? req.body[field] : null);
+    let values = fieldsToInsert.map((field) => req.body[field] == '' ? null : req.body[field]);
 
     let nftProjectUid = uuid();
     fieldsToInsert.push('uid');
@@ -116,45 +116,36 @@ router.post('/', authorise.admin, (req, res) => {
 
 router.patch('/:uid', authorise.admin, (req, res) => {
 
-    let missingParams = [];
-    let fields        = ['name', 'bannerImageUrl'];
-
-    for(let field of fields) {
-        if(!req.body.hasOwnProperty(field)) missingParams.push(field);
-    }
-
-    if(missingParams.length > 0) {
-        return res.locals.output.fail(
-            `The following required parameters are missing: ${missingParams.join(', ')}`,
-            400
-        ).send();
-    }
-
     let fieldsToUpdate = [];
-    let optionalFields = ['websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
+    let optionalFields = ['logoImageUrl', 'featuredImageUrl', 'bannerImageUrl', 'websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
     for(let field of optionalFields) {
         if(req.body.hasOwnProperty(field)) fieldsToUpdate.push(field);
     }
 
-    let values = fieldsToUpdate.map((field) => req.body[field] ? req.body[field] : null);
+    let values = fieldsToUpdate.map((field) => req.body[field] === '' ? null : req.body[field]);
 
-    fieldsToUpdate.push('bannerImageUrl');
-    values.push(req.body.bannerImageUrl);
+    if(values.length == 0) {
+        res.locals.output.success().send();
+        return;
+    }
+
     values.push(req.params.uid);
 
     const transaction = global.db.transaction(() => {
-        const selectNftStmt = global.db.prepare(`SELECT * FROM nft_project_v1 WHERE uid = ?`);
-        const selectNftRow  = selectNftStmt.get(req.params.uid);
+        if(req.body.hasOwnProperty('name')) {
+            const selectNftStmt = global.db.prepare(`SELECT * FROM nft_project_v1 WHERE uid = ?`);
+            const selectNftRow  = selectNftStmt.get(req.params.uid);
 
-        if(!selectNftRow) {
-            throw({
-                code:    404,
-                message: `NFT project ${req.params.uid} couldn't be found`
-            });
+            if(!selectNftRow) {
+                throw({
+                    code:    404,
+                    message: `NFT project ${req.params.uid} couldn't be found`
+                });
+            }
+
+            const updateEntityStmt = global.db.prepare(`UPDATE entity_v1 SET name = ? WHERE uid = ?`);
+            updateEntityStmt.run(req.body.name, selectNftRow.entityUid);
         }
-
-        const updateEntityStmt = global.db.prepare(`UPDATE entity_v1 SET name = ? WHERE uid = ?`);
-        updateEntityStmt.run(req.body.name, selectNftRow.entityUid);
 
         const updateNftStmt = global.db.prepare(`UPDATE nft_project_v1 SET ${fieldsToUpdate.join(' = ?, ')} = ? WHERE uid = ?`);
         updateNftStmt.run(values);

@@ -11,18 +11,18 @@ function generatePassword() {
 function resetPassword(e) {
     e.preventDefault();
 
-    let uid      = document.getElementById("user-admin-reset-password-uid").value;
+    let uid      = document.getElementById('user-admin-reset-password-uid').value;
     let password = generatePassword();
 
-    let infoModal = new bootstrap.Modal(document.getElementById('info-modal'),  {backdrop: 'static'});
+    let infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
 
-    document.getElementById("info-modal-info").innerHTML = `Success! New password is: ${password}`;
+    document.getElementById('info-modal-info').innerHTML = `Success! New password is: ${password}`;
 
     axios({
         method: 'patch',
         url:    `/v1/user/${uid}`,
         headers: {
-            'Authorization': `Bearer ${getAccessToken()}`
+            Authorization: `Bearer ${getAccessToken()}`
         },
         data: {
             password: password
@@ -41,20 +41,20 @@ function changeUser(e) {
     const username = e.srcElement.value;
     const user     = users.find((row) => row.username == username);
 
-    document.getElementById("submit-button").disabled             = false;
-    document.getElementById("user-admin-reset-password-uid").value = user.uid;
+    document.getElementById('submit-button').disabled             = false;
+    document.getElementById('user-admin-reset-password-uid').value = user.uid;
 }
 
 function loadUsers() {
-    document.getElementById("user-admin-reset-password-username").value = '';
+    document.getElementById('user-admin-reset-password-username').value = '';
 
-    document.getElementById("submit-button").disabled = true;
+    document.getElementById('submit-button').disabled = true;
 
     axios({
         method: 'get',
         url:    `/v1/user`,
         headers: {
-            'Authorization': `Bearer ${getAccessToken()}`
+            Authorization: `Bearer ${getAccessToken()}`
         }
     }).then((res) => {
         let datalistOptionTemplate = '<option value="{{ username }}">';
@@ -66,14 +66,14 @@ function loadUsers() {
                 user
             );
         });
-        document.getElementById("data-list-options").innerHTML = renderedOptions;
+        document.getElementById('data-list-options').innerHTML = renderedOptions;
 
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
     });
 }
 
-document.addEventListener("DOMContentLoaded", function() {
+document.addEventListener('DOMContentLoaded', function() {
 
     loadUsers();
 });

@@ -1,8 +1,8 @@
 function login(e) {
     e.preventDefault();
 
-    let username = document.getElementById("login-username").value;
-    let password = document.getElementById("login-password").value;
+    let username = document.getElementById('login-username').value;
+    let password = document.getElementById('login-password').value;
 
     axios({
         method: 'post',
@@ -15,8 +15,8 @@ function login(e) {
         const decoded   = jwt_decode(res.data.data.accessToken);
         if(!decoded.admin) {
             alert(`${username} is not an admin!`);
-            document.getElementById("login-username").value = '';
-            document.getElementById("login-password").value = '';
+            document.getElementById('login-username').value = '';
+            document.getElementById('login-password').value = '';
             return Promise.resolve();
         }
 

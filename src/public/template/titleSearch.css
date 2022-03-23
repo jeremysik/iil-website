@@ -1,0 +1,21 @@
+#search-project::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+#search-project {
+    border: 0;
+}
+
+#search-project:focus {
+    outline: none;
+}
+
+.search-container {
+    padding:       0.8em 1.2em;
+    border-radius: 2em;
+    border:        0;
+}
+
+.search-icon {
+    height: 1.2em
+}
