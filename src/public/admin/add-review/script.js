@@ -1,10 +1,13 @@
 function addReview(e) {
     e.preventDefault();
 
-    let entityUid = document.getElementById('add-nft-review-entity-uid').value;
-    let rating    = document.querySelector('input[name="add-nft-review-rating"]:checked').value;
-    let username  = document.getElementById('add-nft-review-username').value;
-    let review    = document.getElementById('add-nft-review-review').value;
+    let entityUid           = document.getElementById('add-nft-review-entity-uid').value;
+    let originalityRating   = document.querySelector('input[name="add-nft-review-originality-rating"]:checked').value;
+    let communityRating     = document.querySelector('input[name="add-nft-review-community-rating"]:checked').value;
+    let communicationRating = document.querySelector('input[name="add-nft-review-communication-rating"]:checked').value;
+    let consistencyRating   = document.querySelector('input[name="add-nft-review-consistency-rating"]:checked').value;
+    let username            = document.getElementById('add-nft-review-username').value;
+    let comment             = document.getElementById('add-nft-review-comment').value;
 
     let infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
     document.getElementById('info-modal-info').innerHTML = 'Success!';
@@ -16,10 +19,13 @@ function addReview(e) {
             Authorization: `Bearer ${getAccessToken()}`
         },
         data: {
-            entityUid: entityUid,
-            rating:    rating,
-            username:  username,
-            review:    review
+            entityUid:           entityUid,
+            username:            username,
+            originalityRating:   originalityRating,
+            communityRating:     communityRating,
+            communicationRating: communicationRating,
+            consistencyRating:   consistencyRating,
+            comment:             comment
         }
     }).then((res) => {
         infoModal.show();
@@ -43,7 +49,7 @@ function changeNftProject(e) {
 function loadNftProjects() {
     document.getElementById('add-nft-review-nft-project').value = '';
     document.getElementById('add-nft-review-username').value    = '';
-    document.getElementById('add-nft-review-review').value      = '';
+    document.getElementById('add-nft-review-comment').value     = '';
 
     document.getElementById('submit-button').disabled = true;
 

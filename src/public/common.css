@@ -7,6 +7,13 @@
 
 @font-face {
     font-family: 'proximanova';
+    src:         url('/asset/proxima_nova_medium.woff') format('woff');
+    font-weight: medium;
+    font-style:  normal;
+}
+
+@font-face {
+    font-family: 'proximanova';
     src:         url('/asset/proxima_nova_bold.woff') format('woff');
     font-weight: bold;
     font-style:  normal;
@@ -17,6 +24,7 @@
     --purple-colour:      #8C72FF;
     --matte-black-colour: #232323;
     --cyan-colour:        #6CD3FF;
+    --light-grey-colour:  #B6B6B6;
 }
 /* ------ Colours ------ */
 
@@ -28,6 +36,11 @@ body {
     font-family: 'proximanova';
 }
 
+.text-medium {
+    font-family: 'proximanova';
+    font-weight: medium;
+}
+
 .text-bold {
     font-family: 'proximanova';
     font-weight: bold;
@@ -37,23 +50,28 @@ body {
     color: var(--cyan-colour);
 }
 
+.fs-5-5 {
+    font-size: 1.1rem;
+}
+
 /* ------ Header ------ */
 a {
-    color:                     white;
-    text-decoration-color:     #59B1C4;
-    text-decoration-thickness: 0.1em;
-    text-underline-offset:     3px;
+    color:           white;
+    text-decoration: none;
 }
 
 a:hover {
-    color:                 #59B1C4;
-    text-decoration-color: #397394;
+    color: var(--purple-colour);
+}
+
+a.active {
+    color: var(--cyan-colour);
 }
 
 header .btn-primary {
     background-color: var(--purple-colour) !important;
     border:           none !important;
-    border-radius:    2em;
+    border-radius:    2rem;
 }
 
 header .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
@@ -63,9 +81,9 @@ header .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
 /* ------ Header ------ */
 
 .loading-spinner {
-    height: 3em;
-    width:  3em;
-    border-width: 0.5em;
+    height: 3rem;
+    width:  3rem;
+    border-width: 0.5rem;
 }
 
 @media(min-width: 767px) {

@@ -71,4 +71,61 @@ router.delete('/:uid', authorise.admin, (req, res) => {
     res.locals.output.success().send();
 });
 
+/*
+* Get a list of entities
+* Headers:
+* "records = A-B", where A & B are index numbers of the records required
+* "order   = X", where X is desc or asc
+* "type    = X", where X is entity type
+*/
+router.get('/', (req, res) => {
+
+    let type = null;
+    if(req.headers.type == 'nft_project') type = type;
+
+    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM entity_v1 ${type ? `WHERE type = ${type}` : ''}`);
+    const countRow  = countStmt.get();
+
+    if(!countRow) {
+        global.log.error(`Failed to get total entity count`, err);
+        res.locals.output.fail(
+            err,
+            500
+        ).send();
+        return;
+    }
+
+    const total = countRow.total;
+    let order = null;
+    if(req.headers.order == 'asc' || req.headers.order == 'desc') order = req.headers.order;
+
+    // Get the rows
+    if(req.headers.records) {
+        let limitOffset = req.headers.records.split('-');
+
+        if(limitOffset.length == 2) {
+            // Specific records requested
+            let offset = limitOffset[0];
+            let limit  = limitOffset[1] - offset + 1;
+
+            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 ${type ? `WHERE type = ${type}` : ''} ${order ? `ORDER BY rating ${order} ` : ''} LIMIT ? OFFSET ?`);
+            const limitRow  = limitStmt.all(limit, offset);
+
+            res.locals.output.success({
+                total: total,
+                rows:  limitRow
+            }).send();
+            return;
+        }
+    }
+
+    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 ${type ? `WHERE type = ${type}` : ''} ${order ? `ORDER BY rating ${order} ` : ''}`);
+    const allRow  = allStmt.all();
+
+    res.locals.output.success({
+        total: total,
+        rows:  allRow
+    }).send();
+});
+
 module.exports = router;

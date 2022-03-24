@@ -18,7 +18,7 @@ function generatePassword() {
 router.post('/admin', authorise.admin, (req, res) => {
 
     let missingParams = [];
-    let fields        = ['entityUid', 'rating', 'username', 'review'];
+    let fields        = ['entityUid', 'communityRating', 'originalityRating', 'communicationRating', 'consistencyRating', 'username'];
 
     for(let field of fields) {
         if(!req.body.hasOwnProperty(field)) missingParams.push(field);
@@ -48,15 +48,14 @@ router.post('/admin', authorise.admin, (req, res) => {
             const selectUserStmt = global.db.prepare(`SELECT * FROM user_v1 WHERE username = ?`);
             const selectUserRow  = selectUserStmt.get(req.body.username);
             
-            const insertReviewStmt = global.db.prepare(`INSERT INTO review_v1(uid, entityUid, userUid, rating, review, approved) VALUES(?, ?, ?, ?, ?, ?)`);
+            const insertReviewStmt = global.db.prepare(`INSERT INTO review_v1(uid, entityUid, userUid, comment, approved) VALUES(?, ?, ?, ?, ?)`);
             let insertReviewInfo;
             try {
                 insertReviewInfo = insertReviewStmt.run([
                     reviewUid,
                     req.body.entityUid,
                     selectUserRow.uid,
-                    req.body.rating,
-                    req.body.review,
+                    req.body.hasOwnProperty('comment') ? req.body.comment : null,
                     1
                 ]);
             }
@@ -66,9 +65,39 @@ router.post('/admin', authorise.admin, (req, res) => {
                     message: `Couldn't save review: ${err.message}`
                 });
             }
+
+            const insertRatingStmt = global.db.prepare(`INSERT INTO nft_project_rating_v1(uid, entityUid, reviewUid, communityRating, originalityRating, communicationRating, consistencyRating) VALUES(?, ?, ?, ?, ?, ?, ?)`);
+            let insertRatingInfo;
+            try {
+                insertRatingInfo = insertRatingStmt.run([
+                    uuid(),
+                    req.body.entityUid,
+                    reviewUid,
+                    req.body.communityRating,
+                    req.body.originalityRating,
+                    req.body.communicationRating,
+                    req.body.consistencyRating
+                ]);
+            }
+            catch(err) {
+                throw({
+                    code:    400,
+                    message: `Couldn't save rating: ${err.message}`
+                });
+            }
     
             const updateTokensStmt = global.db.prepare(`UPDATE user_v1 SET tokenBalance = tokenBalance + 1, tokenTotal = tokenTotal + 1 WHERE uid = ?`);
             updateTokensStmt.run(selectUserRow.uid);
+
+            const selectSumStmt = db.prepare(`SELECT SUM((communityRating + originalityRating + communicationRating + consistencyRating) / 4.0) / COUNT(*) AS rating FROM nft_project_rating_v1 WHERE entityUid = ?`);
+            let rating          = selectSumStmt.get(req.body.entityUid).rating;
+
+            const updateEntityStmt = db.prepare(`UPDATE entity_v1 SET rating = ?, reviewCount = (SELECT count(*) FROM review_v1 WHERE entityUid = ?) WHERE uid = ?`);
+            updateEntityStmt.run(
+                rating,
+                req.body.entityUid,
+                req.body.entityUid
+            );
         });
 
         try {

@@ -11,22 +11,21 @@
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="/style.css">
     <link rel="stylesheet"    href="/template/titleSearch.css">
+    <link rel="stylesheet"    href="/template/tripleEntityCard.css">
     <link rel="stylesheet"    href="/template/entityCard.css">
 </head>
 
 <body class="d-flex flex-column h-100">
     <div template="header"></div>
     <div template="title-search"></div>
-    <div class="container">
-        <div class="container py-5" id="entity-card-container">
-            <div class="text-center">
-                <div class="loading-spinner spinner-border text-cyan" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+    <div class="py-5" id="entity-card-container">
+        <div class="text-center">
+            <div class="loading-spinner spinner-border text-cyan" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
-        <div class="container py-5" id="entity-rows-container"></div>
     </div>
+    <div class="container py-5" id="entity-rows-container"></div>
 
     <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
         <span>
@@ -38,6 +37,7 @@
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
     <script src="/lib/mustache.min.js"         type="application/javascript"></script>
     <script src="/template/loader.js"          type="application/javascript"></script>
+    <script src="/common.js"                   type="application/javascript"></script>
     <script src="script.js"                    type="application/javascript"></script>
 </body>
 

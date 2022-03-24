@@ -3,15 +3,15 @@
 }
 
 .navbar {
-    border-radius: 0.5rem;
+    border-radius: 0.5rrem;
 }
 
 .navbar-brand {
-    margin-left: 1em;
+    margin-left: 1rem;
 }
 
 .navbar-nav {
-    margin-right: 1em;
+    margin-right: 1rem;
 }
 
 .modal-backdrop {
@@ -20,5 +20,5 @@
 
 .modal-content {
     background-color: #2A5E74;
-    padding:          2em 2em;
+    padding:          2rem 2rem;
 }

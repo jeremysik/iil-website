@@ -8,6 +8,7 @@ router.use('/', bodyParser.json());
 * Get a list of NFT projects
 * Headers:
 * "records = A-B", where A & B are index numbers of the records required
+* "order   = X", where X is desc or asc
 */
 router.get('/', (req, res) => {
 
@@ -24,6 +25,8 @@ router.get('/', (req, res) => {
     }
 
     const total = countRow.total;
+    let order = null;
+    if(req.headers.order == 'asc' || req.headers.order == 'desc') order = req.headers.order;
 
     // Get the rows
     if(req.headers.records) {
@@ -34,7 +37,7 @@ router.get('/', (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid LIMIT ? OFFSET ?`);
+            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid ${order ? `ORDER BY rating ${order} ` : ''} LIMIT ? OFFSET ?`);
             const limitRow  = limitStmt.all(limit, offset);
 
             res.locals.output.success({
@@ -45,7 +48,7 @@ router.get('/', (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid`);
+    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid ${order ? `ORDER BY rating ${order} ` : ''}`);
     const allRow  = allStmt.all();
 
     res.locals.output.success({

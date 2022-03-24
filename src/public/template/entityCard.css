@@ -1,0 +1,68 @@
+.entity-card {
+    --image-height: 232px;
+    --hr-height:    0.3rem;
+}
+
+.entity-card .card-container {
+    background-color: white;
+    height:           624px;
+    border-radius:    1rem;
+    overflow:         hidden;
+}
+
+.entity-card .featured-image-container img {
+    height:     var(--image-height);
+    position:   relative;
+    left:       -50%;
+}
+
+.entity-card .featured-image-container {
+    overflow: hidden;
+}
+
+.entity-card .inner {
+    display:  inline-block;
+    position: relative;
+    right:    -50%;
+}
+
+.entity-card .info {
+    padding: 1.5rem;
+    height:  calc(50% - (var(--hr-height) / 2) - 1rem);
+}
+
+.entity-card .rating-container {
+    height: calc(50% - (var(--hr-height) / 2) - 3.5rem);
+}
+
+.entity-card .rating {
+    margin-top: -0.75rem;
+}
+
+.entity-card .review-count {
+    margin-top: -0.5rem;
+}
+
+.entity-card .name {
+    margin-bottom: 0.5rem;
+}
+
+.entity-card .info-rating-container {
+    height: calc(100% - var(--image-height));
+}
+
+.entity-card hr {
+    margin-left:   35%;
+    margin-right:  35%;
+    height:        var(--hr-height);
+    border-radius: 1rem;
+    color:         var(--light-grey-colour);
+}
+
+.entity-card .medal-image-container {
+    transform: translateY(-2.5rem);
+}
+
+.entity-card .medal-image-container img {
+    width: 7rem;
+}
