@@ -26,6 +26,7 @@
     --cyan-colour:        #6CD3FF;
     --light-grey-colour:  #E6E6E6;
     --hr-height:          0.3rem;
+    --card-padding:       1.5rem;
 }
 /* ------ Colours ------ */
 
@@ -63,17 +64,48 @@ hr {
     opacity: 1;
 }
 
+/* ------ Stealth Links ------ */
+
+.stealth-link {
+    color:           black;
+    text-decoration: none;
+}
+
+.stealth-link:hover {
+    color: black;
+}
+
+/* ------ Stealth Links ------ */
+
+/* ------ Image Container (Horizontally Centered) ------ */
+.image-container {
+    overflow: hidden;
+}
+
+.image-container img {
+    position: relative;
+    left:     -50%;
+}
+
+.image-container .inner {
+    display:  inline-block;
+    position: relative;
+    right:    -50%;
+    
+}
+/* ------ Image Containers (Horizontally Centered) ------ */
+
 /* ------ Header ------ */
-a {
+header a {
     color:           white;
     text-decoration: none;
 }
 
-a:hover {
+header a:hover {
     color: var(--purple-colour);
 }
 
-a.active {
+header a.active {
     color: var(--cyan-colour);
 }
 

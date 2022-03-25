@@ -170,4 +170,19 @@ router.patch('/:uid', authorise.admin, (req, res) => {
     res.locals.output.success().send();
 });
 
+router.get('/:uid', (req, res) => {
+    const stmt = global.db.prepare(`SELECT * FROM nft_project_v1 LEFT JOIN entity_v1 ON nft_project_v1.entityUid = entity_v1.uid WHERE nft_project_v1.uid = ?`);
+    const row  = stmt.get(req.params.uid);
+
+    if(!row) {
+        res.locals.output.fail(
+            `NFT project ${req.params.uid} not found`,
+            404
+        ).send();
+        return;
+    }
+
+    res.locals.output.success(row).send();
+});
+
 module.exports = router;

@@ -11,25 +11,12 @@
     overflow:         hidden;
 }
 
-.entity-card .featured-image-container img {
-    height:     var(--image-height);
-    position:   relative;
-    left:       -50%;
-}
-
-.entity-card .featured-image-container {
-    overflow: hidden;
-    height:   232px;
-}
-
-.entity-card .inner {
-    display:  inline-block;
-    position: relative;
-    right:    -50%;
+.entity-card .image-container {
+    height: 232px;
 }
 
 .entity-card .info {
-    padding: 1.5rem;
+    padding: var(--card-padding);
     height:  calc(55% - (var(--hr-height) / 2) - 1rem);
 }
 

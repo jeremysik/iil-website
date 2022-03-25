@@ -1,26 +1,28 @@
 <div class="entity-card">
-    <div class="card-container">
-        <div class="featured-image-container">
-            <div class="inner">
-                <img src="{{ featuredImageUrl }}">
+    <a class="stealth-link" href="{{ entityUrl }}">
+        <div class="card-container">
+            <div class="image-container d-flex align-items-center">
+                <div class="inner">
+                    <img src="{{ featuredImageUrl }}">
+                </div>
             </div>
-        </div>
-    
-        <div class="info-rating-container">
-            <div class="info">
-                <div class="name text-bold fs-6">{{ #truncateName }}{{ name }}{{ /truncateName }}</div>
-                <div class="description">{{ #truncateDescription }}{{ description }}{{ /truncateDescription }}</div>
-            </div>
-            <hr>
-            <div class="rating-container d-flex align-items-center">
-                <div class="text-center w-100">
-                    <div class="text-bold rating fs-1">{{ #roundRating }}{{ rating }}{{ /roundRating }}&nbsp;/&nbsp;5</div>
-                    <div class="review-count fs-5">{{ reviewCount }} reviews</div>
+        
+            <div class="info-rating-container">
+                <div class="info">
+                    <div class="name text-bold fs-6">{{ #truncateName }}{{ name }}{{ /truncateName }}</div>
+                    <div class="description">{{ #truncateDescription }}{{ description }}{{ /truncateDescription }}</div>
+                </div>
+                <hr>
+                <div class="rating-container d-flex align-items-center">
+                    <div class="text-center w-100">
+                        <div class="text-bold rating fs-1">{{ #roundRating }}{{ rating }}{{ /roundRating }}&nbsp;/&nbsp;5</div>
+                        <div class="review-count fs-5">{{ reviewCount }} reviews</div>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-    <div class="medal-image-container text-center">
-        <img src="{{ medalImageUrl }}">
-    </div>
+        <div class="medal-image-container text-center">
+            <img src="{{ medalImageUrl }}">
+        </div>
+    </a>
 </div>

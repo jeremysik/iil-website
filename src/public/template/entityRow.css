@@ -3,25 +3,10 @@
     border-radius:    0.5rem;
 }
 
-.entity-row .logo-image-container img {
-    height:     var(--image-height);
-    position:   relative;
-    left:       -50%;
-    bottom:     -50%
-}
-
-.entity-row .logo-image-container {
-    overflow:      hidden;
+.entity-row .image-container {
     height:        var(--column-width);
     width:         var(--column-width);
     border-radius: 0.5rem;
-}
-
-.entity-row .inner {
-    display:  inline-block;
-    position: relative;
-    right:    -50%;
-    top:      -50%;
 }
 
 .entity-row .rank span {

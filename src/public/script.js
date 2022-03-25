@@ -1,5 +1,5 @@
 function searchProject(e) {
-
+    // TODO: Implement me
 }
 
 // -------- Template Functions --------
@@ -85,7 +85,8 @@ function loadRows(count) {
                             'roundRating': function() {
                                 return round(3);
                             },
-                            'medalImageUrl': `/asset/medal-${currentRow}.svg` 
+                            'medalImageUrl': `/asset/medal-${currentRow}.svg`,
+                            'entityUrl':     `/nft-project/?uid=${res.data.data.rows[i].uid}` 
                         },
                         res.data.data.rows[i]
                     )
@@ -102,7 +103,8 @@ function loadRows(count) {
                         'roundRating': function() {
                             return round(3);
                         },
-                        'rank': currentRow + 1
+                        'rank':      currentRow + 1,
+                        'entityUrl': `/nft-project/?uid=${res.data.data.rows[i].uid}` 
                     },
                     res.data.data.rows[i]
                 )

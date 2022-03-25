@@ -1,20 +1,22 @@
 <div class="entity-row container my-4">
-    <div class="row py-3">
-        <div class="col rank d-flex align-items-center justify-content-center fs-2 text-bold"><span>{{ rank }}.</span></div>
-        <div class="col project">
-            <div class="logo-image-container">
-                <div class="inner">
-                    <img src="{{ logoImageUrl }}">
+    <a class="stealth-link" href="{{ entityUrl }}">
+        <div class="row py-3">
+            <div class="col rank d-flex align-items-center justify-content-center fs-2 text-bold"><span>{{ rank }}.</span></div>
+            <div class="col project">
+                <div class="image-container d-flex align-items-center">
+                    <div class="inner">
+                        <img src="{{ logoImageUrl }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col name d-flex align-items-center fs-7 text-bold"><span>{{ name }}</span></div>
+            <div class="col vl"></div>
+            <div class="col rating d-flex align-items-center justify-content-end">
+                <div class="rating-container text-end">
+                    <div class="text-bold fs-2">{{ #roundRating }}{{ rating }}{{ /roundRating }}&nbsp;/&nbsp;5</div>
+                    <div class="review-count fs-7">{{ reviewCount }} reviews</div>
                 </div>
             </div>
         </div>
-        <div class="col name d-flex align-items-center fs-7 text-bold"><span>{{ name }}</span></div>
-        <div class="col vl"></div>
-        <div class="col rating d-flex align-items-center justify-content-end">
-            <div class="rating-container text-end">
-                <div class="text-bold fs-2">{{ #roundRating }}{{ rating }}{{ /roundRating }}&nbsp;/&nbsp;5</div>
-                <div class="review-count fs-7">{{ reviewCount }} reviews</div>
-            </div>
-        </div>
-    </div>
+    </a>
 </div>
