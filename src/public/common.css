@@ -24,7 +24,8 @@
     --purple-colour:      #8C72FF;
     --matte-black-colour: #232323;
     --cyan-colour:        #6CD3FF;
-    --light-grey-colour:  #B6B6B6;
+    --light-grey-colour:  #E6E6E6;
+    --hr-height:          0.3rem;
 }
 /* ------ Colours ------ */
 
@@ -50,8 +51,16 @@ body {
     color: var(--cyan-colour);
 }
 
-.fs-5-5 {
-    font-size: 1.1rem;
+.fs-6 {
+    font-size: 1.1rem !important;
+}
+
+.fs-7 {
+    font-size: 1.05rem;
+}
+
+hr {
+    opacity: 1;
 }
 
 /* ------ Header ------ */

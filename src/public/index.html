@@ -13,6 +13,7 @@
     <link rel="stylesheet"    href="/template/titleSearch.css">
     <link rel="stylesheet"    href="/template/tripleEntityCard.css">
     <link rel="stylesheet"    href="/template/entityCard.css">
+    <link rel="stylesheet"    href="/template/entityRow.css">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -25,13 +26,25 @@
             </div>
         </div>
     </div>
-    <div class="container py-5" id="entity-rows-container"></div>
-
-    <footer class="d-flex flex-wrap justify-content-center mt-auto py-5">
-        <span>
-            <a href="https://twitter.com/FluffyMansion" target="_blank"><img class="logo" src="/asset/twitter_logo.svg"></a>
-        </span>
-    </footer>
+    <div class="container infinite-entity-row">
+        <div class="container">
+            <div class="row text-white text-center text-bold">
+                <div class="col rank">RANK</div>
+                <div class="col-1 project">PROJECT</div>
+                <div class="col name"></div>
+                <div class="col rating">RATING</div>
+            </div>
+        </div>
+        <div id="infinite-entity-row-container"></div>
+        <div class="text-center py-5" id="row-spinner">
+            <div class="loading-spinner spinner-border text-cyan" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div class="text-center py-5 text-white text-bold fs-2" id="last-message" style="display: none;">
+            End of NFT Projects
+        </div>
+    </div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>

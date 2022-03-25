@@ -1,0 +1,52 @@
+.entity-row {
+    background-color: white;
+    border-radius:    0.5rem;
+}
+
+.entity-row .logo-image-container img {
+    height:     var(--image-height);
+    position:   relative;
+    left:       -50%;
+    bottom:     -50%
+}
+
+.entity-row .logo-image-container {
+    overflow:      hidden;
+    height:        var(--column-width);
+    width:         var(--column-width);
+    border-radius: 0.5rem;
+}
+
+.entity-row .inner {
+    display:  inline-block;
+    position: relative;
+    right:    -50%;
+    top:      -50%;
+}
+
+.entity-row .rank span {
+    transform: translateX(0.3rem);
+}
+
+.entity-row .name span {
+    padding: 0 1rem;
+}
+
+.entity-row .rating-container {
+    padding-right: 1rem;
+}
+
+.entity-row .review-count {
+    margin-top: -0.5em
+}
+
+.entity-row .vl {
+    margin-top:    1rem;
+    margin-bottom: 1rem;
+    flex:          0 0 auto;
+    border:        3px solid var(--light-grey-colour);
+    width:         0;
+    padding-left:  0;
+    padding-right: 0;
+    border-radius: 1rem;
+}

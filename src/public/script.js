@@ -2,90 +2,144 @@ function searchProject(e) {
 
 }
 
-document.addEventListener('TemplatesLoaded', (event) => {
-    document.getElementById('title-search-title').innerHTML = 'NFT Projects';
+// -------- Template Functions --------
+function truncate(charCount) {
+    return function(text, render) {
+        let renderedText = render(text);
+        if(renderedText.length < charCount - 3) return renderedText;
+        return renderedText.substr(0, charCount - 3) + '...';
+    }
+}
 
-    // Datalist
-    axios({
-        method: 'get',
-        url:    `/v1/entity`,
-        headers: {
-            type: 'nft_project'
+function round(precision) {
+    return function(text, render) {
+        let rating = Number.parseFloat(render(text));
+        return rating.toPrecision(precision);
+    }
+}
+// -------- Template Functions --------
+
+let tripleEntityCardTemplate  = null;
+let entityCardTemplate        = null;
+let entityRowTemplate         = null;
+let currentRow                = 0;
+let lastRow                   = null;
+
+function loadRows(count) {
+
+    let promises = [];
+    if(!tripleEntityCardTemplate || !entityCardTemplate || !entityRowTemplate) {
+        promises.push(
+            fetch(
+                `/template/triple-entity-card.template.html`
+            ).then((response) => response.text())
+        );
+        promises.push(
+            fetch(
+                `/template/entity-card.template.html`
+            ).then((response) => response.text())
+        );
+        promises.push(
+            fetch(
+                `/template/entity-row.template.html`
+            ).then((response) => response.text())
+        );
+    }
+
+    return Promise.all(
+        promises
+    ).then((res) => {
+        if(res.length != 0) {
+            tripleEntityCardTemplate  = res[0];
+            entityCardTemplate        = res[1];
+            entityRowTemplate         = res[2];
         }
-    }).then((res) => {
-        let datalistOptionTemplate = '<option value="{{ name }}">';
-        let renderedOptions        = '';
-        nftProjects                = res.data.data.rows;
-        nftProjects.forEach((nftProject) => {
-            renderedOptions += Mustache.render(
-                datalistOptionTemplate,
-                nftProject
-            );
-        });
-        document.getElementById('search-data-list-options').innerHTML = renderedOptions;
-    }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
-    });
 
-    // Records
-    Promise.all([
-        fetch(
-            `/template/triple-entity-card.template.html`
-        ).then((response) => response.text()),
-
-        fetch(
-            `/template/entity-card.template.html`
-        ).then((response) => response.text()),
-
-        axios({
+        return axios({
             method: 'get',
             url:    `/v1/nft-project`,
             headers: {
-                records: '0-9',
+                records: `${currentRow + 1}-${currentRow + count}`,
                 order: 'desc'
             }
-        })
-    ]).then((res) => {
-        const tripleEntityCardTemplate = res[0];
-        const entityCardTemplate       = res[1];
-        const nftProjectRes            = res[2].data;
+        });
+    }).then((res) => {
 
         let entityCardsHtml = {};
-        for(let i = 0; i < 3; i++) {
-            entityCardsHtml[`card${i}`] = Mustache.render(
-                entityCardTemplate,
+        let entityRowsHtml  = '';
+        lastRow             = res.data.data.total - 1;
+
+        for(let i = 0; i < res.data.data.rows.length; i++) {
+            
+            if(currentRow < 3) {
+                entityCardsHtml[`card${i}`] = Mustache.render(
+                    entityCardTemplate,
+                    Object.assign(
+                        {
+                            'truncateName': function() {
+                                return truncate(50);
+                            },
+                            'truncateDescription': function() {
+                                return truncate(100);
+                            },
+                            'roundRating': function() {
+                                return round(3);
+                            },
+                            'medalImageUrl': `/asset/medal-${currentRow}.svg` 
+                        },
+                        res.data.data.rows[i]
+                    )
+                );
+
+                currentRow++;
+                continue;
+            }
+
+            entityRowsHtml += Mustache.render(
+                entityRowTemplate,
                 Object.assign(
                     {
-                        'truncateName': function() {
-                            return function(text, render) {
-                                let renderedText = render(text);
-                                if(renderedText.length < 47) return renderedText;
-                                return renderedText.substr(0, 47) + '...';
-                            }
-                        },
-                        'truncateDescription': function() {
-                            return function(text, render) {
-                                let renderedText = render(text);
-                                if(renderedText.length < 97) return renderedText;
-                                return renderedText.substr(0, 97) + '...';
-                            }
-                        },
                         'roundRating': function() {
-                            return function(text, render) {
-                                let rating = Number.parseFloat(render(text));
-                                return rating.toPrecision(3);
-                            }
+                            return round(3);
                         },
-                        'medalImageUrl': `/asset/medal-${i}.svg` 
+                        'rank': currentRow + 1
                     },
-                    nftProjectRes.data.rows[i]
+                    res.data.data.rows[i]
                 )
             );
-
+            currentRow++;
         }
-        document.getElementById('entity-card-container').innerHTML = Mustache.render(tripleEntityCardTemplate, entityCardsHtml);
+
+        if(Object.keys(entityCardsHtml).length != 0) {
+            // First load
+            document.getElementById('entity-card-container').innerHTML         = Mustache.render(tripleEntityCardTemplate, entityCardsHtml);
+            document.getElementById('infinite-entity-row-container').innerHTML = '';
+        }
+
+        document.getElementById('infinite-entity-row-container').innerHTML += entityRowsHtml;
+        document.getElementById('row-spinner').style.display               = 'none';
+
+        if(currentRow == lastRow) document.getElementById('last-message').style.display = 'block';
 
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
     });
+}
+
+document.addEventListener('TemplatesLoaded', (event) => {
+    document.getElementById('title-search-title').innerHTML = 'NFT Projects';
+
+    loadRows(10);
 });
+
+window.addEventListener('scroll', () => {
+    let element = document.getElementById('infinite-entity-row-container');
+    var offset  = element.getBoundingClientRect().top - element.offsetParent.getBoundingClientRect().top;
+    const top   = window.pageYOffset + window.innerHeight - offset;
+    let spinner = document.getElementById('row-spinner');
+
+    if(top >= element.scrollHeight && currentRow != lastRow && spinner.style.display == 'none') {
+        spinner.style.display = 'block';
+        loadRows(10);
+    }
+}, { passive: false });
