@@ -15,15 +15,24 @@
                     </div>
                 </div>
                 <div class="col info-column">
-                    <div class="row">
-                        <div class="col">
+                    <div class="row info-row">
+                        <div class="col text-bold fs-6 d-flex align-items-center">
                             {{ name }}
                         </div>
-                        <div class="col">
-                            Socials
+                        <div class="col web-link d-flex align-items-center" style="{{ ^websiteUrl }}display: none !important;{{ /websiteUrl }}">
+                            <a href="{{ websiteUrl }}"><img src="/asset/website_grey_logo.svg"></a>
+                        </div>
+                        <div class="col web-link d-flex align-items-center" style="{{ ^openSeaUrl }}display: none !important;{{ /openSeaUrl }}">
+                            <a href="{{ openSeaUrl }}"><img src="/asset/opensea_grey_logo.svg"></a>
+                        </div>
+                        <div class="col web-link d-flex align-items-center" style="{{ ^discordUrl }}display: none !important;{{ /discordUrl }}">
+                            <a href="{{ discordUrl }}"><img src="/asset/discord_grey_logo.svg"></a>
+                        </div>
+                        <div class="col web-link d-flex align-items-center" style="{{ ^twitterUrl }}display: none !important;{{ /twitterUrl }}">
+                            <a href="{{ twitterUrl }}"><img src="/asset/twitter_grey_logo.svg"></a>
                         </div>
                     </div>
-                    <div>
+                    <div class="description">
                         {{ description }}
                     </div>
                 </div>

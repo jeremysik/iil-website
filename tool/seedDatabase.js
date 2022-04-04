@@ -27,14 +27,18 @@ for(let i = 0; i < faker.datatype.number({min: 20, max: 100}); i++) {
         const insertEntityStmt = db.prepare(`INSERT INTO entity_v1(uid, name, type) VALUES(?, ?, 'nft_project')`);
         insertEntityStmt.run(entityUid, `${faker.company.companyName()} ${faker.animal.type()} ${faker.music.genre()} ${faker.name.firstName()}`);
 
-        const insertNftStmt = db.prepare(`INSERT INTO nft_project_v1(uid, entityUid, logoImageUrl, featuredImageUrl, bannerImageUrl, description) VALUES(?, ?, ?, ?, ?, ?)`);
+        const insertNftStmt = db.prepare(`INSERT INTO nft_project_v1(uid, entityUid, logoImageUrl, featuredImageUrl, bannerImageUrl, description, websiteUrl, twitterUrl, discordUrl, openSeaUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
         insertNftStmt.run(
             faker.datatype.uuid(), 
             entityUid,
             'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h232',
             'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h350',
             'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h550',
-            faker.lorem.paragraph()
+            faker.lorem.paragraph(),
+            faker.datatype.boolean() ? faker.internet.url() : null,
+            faker.datatype.boolean() ? faker.internet.url() : null,
+            faker.datatype.boolean() ? faker.internet.url() : null,
+            faker.datatype.boolean() ? faker.internet.url() : null
         );
     });
 
@@ -73,12 +77,11 @@ entityUids.forEach((entityUid) => {
                 faker.datatype.float({min: 0, max: 1}) > 0.8 ? 0 : 1
             );
 
-            const insertRatingStmt = db.prepare(`INSERT INTO nft_project_rating_v1(uid, entityUid, reviewUid, communityRating, originalityRating, communicationRating, consistencyRating) VALUES(?, ?, ?, ?, ?, ?, ?)`);
+            const insertRatingStmt = db.prepare(`INSERT INTO nft_project_rating_v1(uid, entityUid, reviewUid, communityRating, originalityRating, communicationRating) VALUES(?, ?, ?, ?, ?, ?)`);
             insertRatingStmt.run(
                 faker.datatype.uuid(),
                 entityUid,
                 reviewUid,
-                faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.number({min: 1, max: 5})
@@ -102,22 +105,36 @@ console.log(`Inserted ${totalReviewCount} reviews in total`);
 
 // Update ratings
 entityUids.forEach((entityUid) => {
-    let rating = null;
+    let ratings = null;
     const transaction = db.transaction(() => {
-        const selectSumStmt = db.prepare(`SELECT SUM((communityRating + originalityRating + communicationRating + consistencyRating) / 4.0) / COUNT(*) AS rating FROM nft_project_rating_v1 WHERE entityUid = ?`);
-        rating              = selectSumStmt.get(entityUid).rating;
+        const selectSumStmt = db.prepare(`
+            SELECT CAST(SUM(communityRating) AS REAL) / COUNT(*) AS communityRating,
+                CAST(SUM(originalityRating) AS REAL) / COUNT(*) AS originalityRating,
+                CAST(SUM(communicationRating) AS REAL) / COUNT(*) AS communicationRating
+            FROM nft_project_rating_v1 WHERE entityUid = ?
+        `);
+        ratings        = selectSumStmt.get(entityUid);
+        ratings.rating = (ratings.communityRating + ratings.originalityRating + ratings.communicationRating) / 3;
 
         const updateEntityStmt = db.prepare(`UPDATE entity_v1 SET rating = ?, reviewCount = (SELECT count(*) FROM review_v1 WHERE entityUid = ?) WHERE uid = ?`);
         updateEntityStmt.run(
-            rating,
+            ratings.rating,
             entityUid,
+            entityUid
+        );
+
+        const updateNFTProjectStmt = db.prepare(`UPDATE nft_project_v1 SET communityRating = ?, originalityRating = ?, communicationRating = ? WHERE entityUid = ?`);
+        updateNFTProjectStmt.run(
+            ratings.communityRating,
+            ratings.originalityRating,
+            ratings.communicationRating,
             entityUid
         );
     });
 
     try {
         transaction();
-        console.log(`Updated rating for entity ${entityUid}: ${rating}`);
+        console.log(`Updated rating for entity ${entityUid}. Rating: ${ratings.rating}, community: ${ratings.communityRating}, originality: ${ratings.originalityRating}, communication: ${ratings.communicationRating}`);
     }
     catch(err) {
         console.error(`Failed to insert review: ${err}`);

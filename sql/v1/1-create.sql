@@ -29,6 +29,9 @@ CREATE TABLE IF NOT EXISTS nft_project_v1(
     twitterUrl TEXT,
     discordUrl TEXT,
     description TEXT,
+    communityRating REAL DEFAULT 0,
+    originalityRating REAL DEFAULT 0,
+    communicationRating REAL DEFAULT 0,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (entityUid) REFERENCES entity_v1(uid)
 );
@@ -39,8 +42,9 @@ CREATE TABLE IF NOT EXISTS nft_project_rating_v1(
     reviewUid TEXT NOT NULL,
     communityRating INT NOT NULL,
     originalityRating INT NOT NULL,
+    -- FOUNDER?
+    -- RESELLABLE? Value?    
     communicationRating INT NOT NULL,
-    consistencyRating INT NOT NULL,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (entityUid) REFERENCES entity_v1(uid),
     FOREIGN KEY (reviewUid) REFERENCES review_v1(uid)

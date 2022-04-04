@@ -85,6 +85,8 @@ router.post('/admin', authorise.admin, (req, res) => {
                     message: `Couldn't save rating: ${err.message}`
                 });
             }
+
+            // TODO: Update with communityRating etc.
     
             const updateTokensStmt = global.db.prepare(`UPDATE user_v1 SET tokenBalance = tokenBalance + 1, tokenTotal = tokenTotal + 1 WHERE uid = ?`);
             updateTokensStmt.run(selectUserRow.uid);

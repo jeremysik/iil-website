@@ -1,0 +1,11 @@
+.nft-project-review-row .card {
+    padding:          var(--card-padding);
+    background-color: white;
+    border-radius:    0.5rem;
+}
+
+@media(min-width: 767px) {
+    .nft-project-review-row .col-rating {
+        padding-left: var(--bs-gutter-x);
+    }
+}

@@ -1,0 +1,16 @@
+.nft-project-review-form .card {
+    background:    white;
+    border-radius: 1rem;
+    padding:       var(--card-padding);
+}
+
+.nft-project-review-form .col-label {
+    flex:    0 0 auto;
+    width:   10rem;
+}
+
+@media(min-width: 767px) {
+    .nft-project-review-form .col-comment {
+        padding-left: 2rem;
+    }
+}

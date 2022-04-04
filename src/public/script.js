@@ -59,7 +59,7 @@ function loadRows(count) {
             method: 'get',
             url:    `/v1/nft-project`,
             headers: {
-                records: `${currentRow + 1}-${currentRow + count}`,
+                records: `${currentRow}-${currentRow + count - 1}`,
                 order: 'desc'
             }
         });
@@ -121,7 +121,7 @@ function loadRows(count) {
         document.getElementById('infinite-entity-row-container').innerHTML += entityRowsHtml;
         document.getElementById('row-spinner').style.display               = 'none';
 
-        if(currentRow == lastRow) document.getElementById('last-message').style.display = 'block';
+        if(currentRow >= lastRow) document.getElementById('last-message').style.display = 'block';
 
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
@@ -140,7 +140,7 @@ window.addEventListener('scroll', () => {
     const top   = window.pageYOffset + window.innerHeight - offset;
     let spinner = document.getElementById('row-spinner');
 
-    if(top >= element.scrollHeight && currentRow != lastRow && spinner.style.display == 'none') {
+    if(top >= element.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
         spinner.style.display = 'block';
         loadRows(10);
     }

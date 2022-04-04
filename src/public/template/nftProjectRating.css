@@ -1,0 +1,39 @@
+.nft-project-rating .rating-container {
+    padding:    0 var(--card-padding);
+    margin-top: -0.5em;
+}
+
+.nft-project-rating .pseudo-row {
+    height: 1.5rem;
+}
+
+.nft-project-rating .breakdown-rating-column {
+    padding-right: 0;
+    padding-left:  0;
+}
+
+.nft-project-rating .progress {
+    border-radius: 0.5rem;
+}
+
+.nft-project-rating .very-high-rating {
+    background-color: var(--green-colour);
+}
+
+.nft-project-rating .high-rating {
+    background-color: var(--light-green-colour);
+}
+
+.nft-project-rating .low-rating {
+    background-color: var(--orange-colour);
+}
+
+.nft-project-rating .very-low-rating {
+    background-color: var(--red-colour);
+}
+
+@media(min-width: 992px) {
+    .nft-project-rating .row {
+        width: 75%;
+    }
+}

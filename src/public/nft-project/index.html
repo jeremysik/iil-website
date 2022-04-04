@@ -11,6 +11,9 @@
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="style.css">
     <link rel="stylesheet"    href="/template/nftProjectBanner.css">
+    <link rel="stylesheet"    href="/template/nftProjectRating.css">
+    <link rel="stylesheet"    href="/template/nftProjectReviewForm.css">
+    <link rel="stylesheet"    href="/template/nftProjectReviewRow.css">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -22,10 +25,24 @@
             </div>
         </div>
     </div>
+    <div class="my-5" id="nft-project-rating-container"></div>
+    <div template="nft-project-review-form"></div>
+    <div class="container infinite-review-row">
+        <div id="infinite-review-row-container"></div>
+        <div class="text-center py-5" id="row-spinner">
+            <div class="loading-spinner spinner-border text-cyan" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+        <div class="text-center py-5 text-white text-bold fs-2" id="last-message" style="display: none;">
+            End of Reviews
+        </div>
+    </div>
 
     <script src="/lib/axios.min.js"            type="application/javascript"></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
     <script src="/lib/mustache.min.js"         type="application/javascript"></script>
+    <script src="/lib/moment.min.js"           type="application/javascript"></script>
     <script src="/template/loader.js"          type="application/javascript"></script>
     <script src="/common.js"                   type="application/javascript"></script>
     <script src="script.js"                    type="application/javascript"></script>

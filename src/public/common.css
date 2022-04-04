@@ -21,12 +21,18 @@
 
 /* ------ Colours ------ */
 :root {
-    --purple-colour:      #8C72FF;
-    --matte-black-colour: #232323;
-    --cyan-colour:        #6CD3FF;
-    --light-grey-colour:  #E6E6E6;
-    --hr-height:          0.3rem;
-    --card-padding:       1.5rem;
+    --purple-colour:          #8C72FF;
+    --matte-black-colour:     #232323;
+    --cyan-colour:            #6CD3FF;
+    --grey-colour:            #A7A4AF;
+    --light-grey-colour:      #E6E6E6;
+    --very-light-grey-colour: #F8FAFC;
+    --green-colour:           #39AEA9;
+    --light-green-colour:     #A2D5AB;
+    --red-colour:             #C85C5C;
+    --orange-colour:          #F9975D;
+    --hr-height:              0.3rem;
+    --card-padding:           1.5rem;
 }
 /* ------ Colours ------ */
 
@@ -52,12 +58,28 @@ body {
     color: var(--cyan-colour);
 }
 
+.text-purple {
+    color: var(--purple-colour);
+}
+
+.text-red {
+    color: var(--red-colour);
+}
+
+.text-grey {
+    color: var(--grey-colour);
+}
+
 .fs-6 {
     font-size: 1.1rem !important;
 }
 
 .fs-7 {
     font-size: 1.05rem;
+}
+
+.fs-8 {
+    font-size: 0.9rem;
 }
 
 hr {
@@ -108,18 +130,29 @@ header a:hover {
 header a.active {
     color: var(--cyan-colour);
 }
+/* ------ Header ------ */
 
-header .btn-primary {
+/* ------ Buttons ------ */
+.btn-primary {
     background-color: var(--purple-colour) !important;
     border:           none !important;
     border-radius:    2rem;
 }
 
-header .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active {
     background-color: #458A99 !important;
     box-shadow:       none !important;
 }
-/* ------ Header ------ */
+/* ------ Buttons ------ */
+
+/* ------ Textarea ------ */
+:root textarea, :root textarea:focus { /* Why do you need :root here? */
+    background-color: var(--very-light-grey-colour);
+    border:           none;
+    box-shadow:       none !important;
+    padding:          1em;
+}
+/* ------ Textarea ------ */
 
 .loading-spinner {
     height: 3rem;

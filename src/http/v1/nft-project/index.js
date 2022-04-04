@@ -170,6 +170,62 @@ router.patch('/:uid', authorise.admin, (req, res) => {
     res.locals.output.success().send();
 });
 
+/*
+* Get a list of reviews
+* Headers:
+* "records  = A-B", where A & B are index numbers of the records required
+* "approved = X,X..", where X is -1 (rejected), 0 (waiting), 1 (approved)
+* "user     = X", where X is 1, 0 indicating whether or not to include user name
+*/
+router.get('/:uid/review', (req, res) => {
+    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid WHERE nft_project_v1.uid = ?`);
+    const countRow  = countStmt.get(req.params.uid);
+
+    if(!countRow) {
+        global.log.error('Failed to get total NFT project review count', err);
+        res.locals.output.fail(
+            err,
+            500
+        ).send();
+        return;
+    }
+
+    const total  = countRow.total;
+    let approved = [0, 1];
+    let user     = false;
+    
+    if(req.headers.hasOwnProperty('approved')) approved = req.headers.approved.split(',');
+    if(req.headers.hasOwnProperty('user'))     user     = req.headers.user;
+
+    // Get the rows
+    if(req.headers.records) {
+        let limitOffset = req.headers.records.split('-');
+
+        if(limitOffset.length == 2) {
+            // Specific records requested
+            let offset = limitOffset[0];
+            let limit  = limitOffset[1] - offset + 1;
+
+            const limitStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.uid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
+            const limitRow  = limitStmt.all([req.params.uid].concat(approved).concat([limit, offset]));
+
+            res.locals.output.success({
+                total: total,
+                rows:  limitRow
+            }).send();
+            return;
+        }
+    }
+
+    const allStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.uid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
+    const allRow  = allStmt.all([req.params.uid].concat(approved));
+
+    res.locals.output.success({
+        total: total,
+        rows:  allRow
+    }).send();
+});
+
 router.get('/:uid', (req, res) => {
     const stmt = global.db.prepare(`SELECT * FROM nft_project_v1 LEFT JOIN entity_v1 ON nft_project_v1.entityUid = entity_v1.uid WHERE nft_project_v1.uid = ?`);
     const row  = stmt.get(req.params.uid);
