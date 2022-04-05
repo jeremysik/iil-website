@@ -13,7 +13,8 @@
 }
 
 .nft-project-rating .progress {
-    border-radius: 0.5rem;
+    border-radius:    0.5rem;
+    background-color: var(--dark-grey-colour);
 }
 
 .nft-project-rating .very-high-rating {
@@ -30,6 +31,10 @@
 
 .nft-project-rating .very-low-rating {
     background-color: var(--red-colour);
+}
+
+.nft-project-rating .breakdown-rating-label-container {
+    padding-right: var(--card-padding);
 }
 
 @media(min-width: 992px) {

@@ -35,10 +35,10 @@ for(let i = 0; i < faker.datatype.number({min: 20, max: 100}); i++) {
             'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h350',
             'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h550',
             faker.lorem.paragraph(),
-            faker.datatype.boolean() ? faker.internet.url() : null,
-            faker.datatype.boolean() ? faker.internet.url() : null,
-            faker.datatype.boolean() ? faker.internet.url() : null,
-            faker.datatype.boolean() ? faker.internet.url() : null
+            faker.internet.url(),
+            faker.internet.url(),
+            faker.internet.url(),
+            faker.internet.url()
         );
     });
 

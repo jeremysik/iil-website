@@ -125,8 +125,6 @@ function loadRows(count) {
             currentRow++;
         }
 
-        console.log(`c: ${currentRow}, l: ${lastRow}`);
-
         document.getElementById('infinite-review-row-container').innerHTML += reviewRowsHtml;
         document.getElementById('row-spinner').style.display               = 'none';
 

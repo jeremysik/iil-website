@@ -14,13 +14,16 @@
 
 .infinite-entity-row .rating {
     flex:  0 0 auto;
-    width: calc((var(--column-width) * 2) + var(--bs-gutter-x));
+    width: calc((var(--column-width) * 1.5) + var(--bs-gutter-x));
 }
 
 @media(min-width: 767px) {
 }
 
 @media(min-width: 992px) {
+    .infinite-entity-row .rating {
+        width: calc((var(--column-width) * 2) + var(--bs-gutter-x));
+    }
 }
 
 @media(min-width: 1200px) {

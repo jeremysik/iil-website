@@ -6,22 +6,26 @@
 
 .entity-card .card-container {
     background-color: white;
-    height:           624px;
+    height:           calc(var(--image-height) * 2.25);
     border-radius:    1rem;
     overflow:         hidden;
 }
 
 .entity-card .image-container {
-    height: 232px;
+    height: var(--image-height);
 }
 
 .entity-card .info {
     padding: var(--card-padding);
-    height:  calc(55% - (var(--hr-height) / 2) - 1rem);
+    height:  calc(40% - (var(--hr-height) / 2) - 1rem);
 }
 
 .entity-card .rating-container {
-    height: calc(45% - (var(--hr-height) / 2) - 3.5rem);
+    height: calc(60% - (var(--hr-height) / 2) - 3.5rem);
+}
+
+.entity-card .description {
+    display: none;
 }
 
 .entity-card .rating {
@@ -54,4 +58,28 @@
 
 .entity-card .medal-image-container img {
     width: 7rem;
+}
+
+@media(min-width: 767px) {
+}
+
+@media(min-width: 992px) {
+    .entity-card .card-container {
+        height: calc(var(--image-height) + 392px);
+    }
+
+    .entity-card .info {
+        height: calc(55% - (var(--hr-height) / 2) - 1rem);
+    }
+    
+    .entity-card .rating-container {
+        height: calc(45% - (var(--hr-height) / 2) - 3.5rem);
+    }
+
+    .entity-card .description {
+        display: block;
+    }
+}
+
+@media(min-width: 1200px) {
 }

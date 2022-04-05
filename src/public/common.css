@@ -24,6 +24,7 @@
     --purple-colour:          #8C72FF;
     --matte-black-colour:     #232323;
     --cyan-colour:            #6CD3FF;
+    --dark-grey-colour:       #737373;
     --grey-colour:            #A7A4AF;
     --light-grey-colour:      #E6E6E6;
     --very-light-grey-colour: #F8FAFC;
@@ -130,6 +131,14 @@ header a:hover {
 header a.active {
     color: var(--cyan-colour);
 }
+
+header .logo {
+    width: 1.25rem;
+}
+
+header {
+    margin-bottom: 3rem;
+}
 /* ------ Header ------ */
 
 /* ------ Buttons ------ */
@@ -158,6 +167,10 @@ header a.active {
     height: 3rem;
     width:  3rem;
     border-width: 0.5rem;
+}
+
+.third-width {
+    max-width: calc(100% / 3); /* 100% of the width divided evenly by 3 elements */
 }
 
 @media(min-width: 767px) {
