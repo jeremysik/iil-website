@@ -1,6 +1,9 @@
 .nft-project-rating .rating-container {
-    padding:    0 var(--card-padding);
     margin-top: -0.5em;
+}
+
+.nft-project-rating .review-count {
+    margin-top: -0.25rem;
 }
 
 .nft-project-rating .pseudo-row {
@@ -33,8 +36,14 @@
     background-color: var(--red-colour);
 }
 
-.nft-project-rating .breakdown-rating-label-container {
-    padding-right: var(--card-padding);
+@media(min-width: 767px) {
+    .nft-project-rating .rating-container {
+        padding: 0 var(--card-padding);
+    }
+
+    .nft-project-rating .breakdown-rating-label-container {
+        padding-right: var(--card-padding);
+    }
 }
 
 @media(min-width: 992px) {

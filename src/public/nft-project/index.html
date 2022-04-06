@@ -5,27 +5,42 @@
     <meta charset="utf-8">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport"           content="width=device-width, initial-scale=1">
+
+    <title>IsItLegit?</title>
     
     <link rel="shortcut icon" href="/asset/favicon.ico">
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
-    <link rel="stylesheet"    href="style.css">
+    <link rel="stylesheet"    href="/template/mobileNftProjectBanner.css">
     <link rel="stylesheet"    href="/template/nftProjectBanner.css">
     <link rel="stylesheet"    href="/template/nftProjectRating.css">
     <link rel="stylesheet"    href="/template/nftProjectReviewForm.css">
     <link rel="stylesheet"    href="/template/nftProjectReviewRow.css">
 </head>
 
-<body class="d-flex flex-column h-100">
-    <div template="header"></div>
-    <div id="nft-project-banner-container">
-        <div class="text-center">
-            <div class="loading-spinner spinner-border text-cyan" role="status">
-                <span class="visually-hidden">Loading...</span>
+<body class="d-flex flex-column">
+    <div id="mobile-mode">
+        <div template="mobile-header"></div>
+        <div id="mobile-nft-project-banner-container">
+            <div class="text-center">
+                <div class="loading-spinner spinner-border text-cyan" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
         </div>
     </div>
-    <div class="my-5" id="nft-project-rating-container"></div>
+    <div id="desktop-mode">
+        <div template="header"></div>
+        <div id="nft-project-banner-container">
+            <div class="text-center">
+                <div class="loading-spinner spinner-border text-cyan" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="my-4 my-md-5" id="nft-project-rating-container"></div>
     <div template="nft-project-review-form"></div>
     <div class="container infinite-review-row">
         <div id="infinite-review-row-container"></div>

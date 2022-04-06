@@ -1,0 +1,21 @@
+<div class="mobile-entity-row container my-3">
+    <a class="stealth-link" href="{{ entityUrl }}">
+        <div class="row py-3">
+            <div class="col rank d-flex align-items-center justify-content-center fs-6 text-bold"><span>{{ rank }}.</span></div>
+            <div class="col project d-flex align-items-center">
+                <div class="image-container d-flex align-items-center">
+                    <div class="inner">
+                        <img src="{{ logoImageUrl }}">
+                    </div>
+                </div>
+            </div>
+            <div class="col name d-flex align-items-center fs-8 text-bold"><span>{{ #truncateName }}{{ name }}{{ /truncateName }}</span></div>
+            <div class="col rating d-flex align-items-center justify-content-end">
+                <div class="rating-container text-end">
+                    <div class="text-bold fs-7">{{ #roundRating }}{{ rating }}{{ /roundRating }}&nbsp;/&nbsp;5</div>
+                    <div class="review-count fs-9">{{ reviewCount }} reviews</div>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

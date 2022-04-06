@@ -19,10 +19,10 @@
     font-style:  normal;
 }
 
-/* ------ Colours ------ */
 :root {
     --purple-colour:          #8C72FF;
     --matte-black-colour:     #232323;
+    --light-cyan-colour:      #90E0EF;
     --cyan-colour:            #6CD3FF;
     --dark-grey-colour:       #737373;
     --grey-colour:            #A7A4AF;
@@ -32,10 +32,10 @@
     --light-green-colour:     #A2D5AB;
     --red-colour:             #C85C5C;
     --orange-colour:          #F9975D;
+    --yellow-colour:          #FBD148;
     --hr-height:              0.3rem;
     --card-padding:           1.5rem;
 }
-/* ------ Colours ------ */
 
 body {
     background-color: var(--matte-black-colour);
@@ -72,7 +72,7 @@ body {
 }
 
 .fs-6 {
-    font-size: 1.1rem !important;
+    font-size: 1.1rem;
 }
 
 .fs-7 {
@@ -81,6 +81,10 @@ body {
 
 .fs-8 {
     font-size: 0.9rem;
+}
+
+.fs-9 {
+    font-size: 0.8rem;
 }
 
 hr {
@@ -119,25 +123,33 @@ hr {
 /* ------ Image Containers (Horizontally Centered) ------ */
 
 /* ------ Header ------ */
-header a {
+#mobile-header {
+    display: block;
+}
+
+#header {
+    margin-bottom: 3rem;
+}
+
+#header a {
     color:           white;
     text-decoration: none;
 }
 
-header a:hover {
+#header a:hover {
     color: var(--purple-colour);
 }
 
-header a.active {
+#header a.active {
     color: var(--cyan-colour);
 }
 
-header .logo {
+#header .logo {
     width: 1.25rem;
 }
 
-header {
-    margin-bottom: 3rem;
+#header .header-logo {
+    height: 2rem;
 }
 /* ------ Header ------ */
 
@@ -163,6 +175,14 @@ header {
 }
 /* ------ Textarea ------ */
 
+#mobile-mode {
+    display: block;
+}
+
+#desktop-mode {
+    display: none;
+}
+
 .loading-spinner {
     height: 3rem;
     width:  3rem;
@@ -174,6 +194,25 @@ header {
 }
 
 @media(min-width: 767px) {
+    #mobile-mode {
+        display: none;
+    }
+    
+    #desktop-mode {
+        display: block;
+    }
+
+    .fs-md-6 {
+        font-size: 1.1rem !important;
+    }
+
+    .fs-md-7 {
+        font-size: 1.05rem !important;
+    }
+
+    .fs-md-n {
+        font-size: 1rem !important;
+    }
 }
 
 @media(min-width: 992px) {

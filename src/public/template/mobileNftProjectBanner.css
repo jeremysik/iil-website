@@ -1,0 +1,32 @@
+.mobile-nft-project-banner {
+    --logo-size:           125px;
+    --column-padding:      calc(var(--card-padding) * 1.5);
+    --web-link-icon-width: 28px;
+    --logo-offset:         calc((-0.45 * var(--logo-size)) - var(--card-padding));
+}
+
+.mobile-nft-project-banner .card-container {
+    background:    white;
+    border-radius: 1rem;
+    overflow:      hidden;
+}
+
+.mobile-nft-project-banner .bottom-half {
+    padding: var(--card-padding);
+}
+
+.mobile-nft-project-banner .banner-image {
+    height: 200px;
+}
+
+.mobile-nft-project-banner .web-link {
+    margin: 0 0.5em;
+}
+
+.mobile-nft-project-banner .bottom-half .image-container {
+    width:         var(--logo-size);
+    height:        var(--logo-size);
+    border-radius: 1rem;
+    transform:     translateY(var(--logo-offset));
+    margin-bottom: var(--logo-offset);
+}

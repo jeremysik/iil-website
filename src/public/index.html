@@ -6,42 +6,63 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta name="viewport"           content="width=device-width, initial-scale=1">
     
+    <title>IsItLegit?</title>
+    
     <link rel="shortcut icon" href="/asset/favicon.ico">
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="style.css">
-    <link rel="stylesheet"    href="/template/titleSearch.css">
+    <link rel="stylesheet"    href="/template/title.css">
     <link rel="stylesheet"    href="/template/entityCard.css">
+    <link rel="stylesheet"    href="/template/mobileEntityRow.css">
     <link rel="stylesheet"    href="/template/entityRow.css">
 </head>
 
-<body class="d-flex flex-column h-100">
-    <div template="header"></div>
-    <div template="title-search"></div>
-    <div class="py-5" id="entity-card-container">
-        <div class="text-center">
-            <div class="loading-spinner spinner-border text-cyan" role="status">
-                <span class="visually-hidden">Loading...</span>
+<body class="d-flex flex-column">
+    <div id="mobile-mode">
+        <div template="mobile-header"></div>
+        <div template="mobile-title"></div>
+        <div class="my-4 container">
+            <div id="mobile-infinite-entity-row-container"></div>
+            <div id="mobile-row-spinner" class="text-center py-5">
+                <div class="loading-spinner spinner-border text-cyan" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <div id="mobile-last-message" class="text-center py-5 text-white text-bold fs-2" style="display: none;">
+                End of NFT Projects
             </div>
         </div>
     </div>
-    <div class="container infinite-entity-row">
+    
+    <div id="desktop-mode">
+        <div template="header"></div>
+        <div template="title"></div>
+        <div class="my-5" id="entity-card-container">
+            <div class="text-center">
+                <div class="loading-spinner spinner-border text-cyan" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
         <div class="container">
-            <div class="row text-white text-center text-bold">
-                <div class="col rank">RANK</div>
-                <div class="col-1 project">PROJECT</div>
-                <div class="col name"></div>
-                <div class="col rating">RATING</div>
+            <div class="container infinite-entity-row-header">
+                <div class="row text-white text-center text-bold">
+                    <div class="col rank">RANK</div>
+                    <div class="col-1 project">PROJECT</div>
+                    <div class="col name"></div>
+                    <div class="col rating">RATING</div>
+                </div>
             </div>
-        </div>
-        <div id="infinite-entity-row-container"></div>
-        <div class="text-center py-5" id="row-spinner">
-            <div class="loading-spinner spinner-border text-cyan" role="status">
-                <span class="visually-hidden">Loading...</span>
+            <div id="infinite-entity-row-container"></div>
+            <div id="row-spinner" class="text-center py-5">
+                <div class="loading-spinner spinner-border text-cyan" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
             </div>
-        </div>
-        <div class="text-center py-5 text-white text-bold fs-2" id="last-message" style="display: none;">
-            End of NFT Projects
+            <div id="last-message" class="text-center py-5 text-white text-bold fs-2" style="display: none;">
+                End of NFT Projects
+            </div>
         </div>
     </div>
 

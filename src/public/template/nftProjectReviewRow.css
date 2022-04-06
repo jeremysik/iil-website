@@ -4,8 +4,30 @@
     border-radius:    0.5rem;
 }
 
+.mobile {
+    display: block;
+}
+
+.desktop {
+    display: none;
+}
+
 @media(min-width: 767px) {
     .nft-project-review-row .col-rating {
         padding-left: var(--bs-gutter-x);
     }
+
+    .mobile {
+        display: none;
+    }
+    
+    .desktop {
+        display: block;
+    }
+}
+
+@media(min-width: 992px) {
+}
+
+@media(min-width: 1200px) {
 }

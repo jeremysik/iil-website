@@ -27,12 +27,22 @@
 }
 
 .nft-project-review-form .col-label {
-    flex:    0 0 auto;
-    width:   10rem;
+    flex:  0 0 auto;
+    width: 8.5rem;
 }
 
 @media(min-width: 767px) {
     .nft-project-review-form .col-comment {
         padding-left: 2rem;
     }
+
+    .nft-project-review-form .col-label {
+        width: 10rem;
+    }
+}
+
+@media(min-width: 992px) {
+}
+
+@media(min-width: 1200px) {
 }

@@ -23,6 +23,10 @@ document.addEventListener('TemplatesLoaded', (event) => {
 
     Promise.all([
         fetch(
+            `/template/mobile-nft-project-banner.template.html`
+        ).then((response) => response.text()),
+
+        fetch(
             `/template/nft-project-banner.template.html`
         ).then((response) => response.text()),
 
@@ -39,13 +43,15 @@ document.addEventListener('TemplatesLoaded', (event) => {
             url:    `/v1/nft-project/${uid}`
         })
     ]).then((res) => {
-        const nftProjectBannerTemplate     = res[0];
-        const nftProjectRatingTemplate     = res[1];
-        const nftProjectReviewFormTemplate = res[2];
-        const nftProject                   = res[3].data.data;
+        const mobileNftProjectBannerTemplate = res[0];
+        const nftProjectBannerTemplate       = res[1];
+        const nftProjectRatingTemplate       = res[2];
+        const nftProjectReviewFormTemplate   = res[3];
+        const nftProject                     = res[4].data.data;
 
-        document.getElementById('nft-project-banner-container').innerHTML = Mustache.render(nftProjectBannerTemplate, nftProject);
-        document.getElementById('nft-project-rating-container').innerHTML = Mustache.render(
+        document.getElementById('mobile-nft-project-banner-container').innerHTML = Mustache.render(mobileNftProjectBannerTemplate, nftProject);
+        document.getElementById('nft-project-banner-container').innerHTML        = Mustache.render(nftProjectBannerTemplate, nftProject);
+        document.getElementById('nft-project-rating-container').innerHTML        = Mustache.render(
             nftProjectRatingTemplate, 
             Object.assign(
                 {

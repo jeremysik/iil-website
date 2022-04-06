@@ -1,0 +1,56 @@
+.mobile-entity-row {
+    background-color:      white;
+    border-radius:         0.5rem;
+    --mobile-column-width: 35px;
+}
+
+.mobile-entity-row .rank {
+    flex:  0 0 auto;
+    width: calc(var(--mobile-column-width) + var(--bs-gutter-x));
+}
+
+.mobile-entity-row .project {
+    flex:          0 0 auto;
+    width:         calc(var(--mobile-column-width) * 1.25);
+    padding-left:  0;
+    padding-right: 0;
+}
+
+.mobile-entity-row .rating {
+    flex:  0 0 auto;
+    width: calc(100px + var(--bs-gutter-x));
+}
+
+.mobile-entity-row:first-child {
+    background-color: var(--yellow-colour);
+}
+
+.mobile-entity-row:nth-child(2) {
+    background-color: var(--light-cyan-colour);
+}
+
+.mobile-entity-row:nth-child(3) {
+    background-color: var(--light-green-colour);
+}
+
+.mobile-entity-row .image-container {
+    height:        calc(var(--mobile-column-width) * 1.25);
+    width:         calc(var(--mobile-column-width) * 1.25);
+    border-radius: 0.5rem;
+}
+
+.emobile-ntity-row .rank span {
+    transform: translateX(0.3rem);
+}
+
+.mobile-entity-row .name span {
+    padding-left: 0.5rem;
+}
+
+.mobile-entity-row .rating-container {
+    padding-right: 1rem;
+}
+
+.mobile-entity-row .review-count {
+    margin-top: -0.25em
+}

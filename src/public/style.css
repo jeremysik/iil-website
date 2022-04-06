@@ -1,18 +1,18 @@
-.infinite-entity-row {
+:root {
     --column-width: 90px;
 }
 
-.infinite-entity-row .rank {
+.infinite-entity-row-header .rank {
     flex:  0 0 auto;
     width: calc(var(--column-width) + var(--bs-gutter-x));
 }
 
-.infinite-entity-row .project {
+.infinite-entity-row-header .project {
     flex:  0 0 auto;
     width: calc(var(--column-width) + var(--bs-gutter-x));
 }
 
-.infinite-entity-row .rating {
+.infinite-entity-row-header .rating {
     flex:  0 0 auto;
     width: calc((var(--column-width) * 1.5) + var(--bs-gutter-x));
 }
@@ -21,7 +21,7 @@
 }
 
 @media(min-width: 992px) {
-    .infinite-entity-row .rating {
+    .infinite-entity-row-header .rating {
         width: calc((var(--column-width) * 2) + var(--bs-gutter-x));
     }
 }
