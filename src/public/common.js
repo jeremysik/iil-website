@@ -1,9 +1,8 @@
 function searchEntities(e) {
     e.preventDefault();
-    
     let searchTerm = e.srcElement.querySelector('input').value;
-    console.log(`Searching: ${searchTerm}`);
-    // TODO: Implement me
+    
+    window.location.href = `/search/?q=${encodeURIComponent(searchTerm)}`;
 }
 
 document.addEventListener('TemplatesLoaded', function() {

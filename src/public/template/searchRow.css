@@ -1,0 +1,30 @@
+.search-row {
+    background-color: white;
+    border-radius:    0.5rem;
+    --column-width:   50px;
+}
+
+.search-row .project {
+    flex:        0 0 auto;
+    width:       calc(var(--column-width) + var(--bs-gutter-x));
+    margin-left: 1rem;
+}
+
+.search-row .rating {
+    flex:  0 0 auto;
+    width: calc(100px + var(--bs-gutter-x));
+}
+
+.search-row .image-container {
+    height:        calc(var(--column-width));
+    width:         calc(var(--column-width));
+    border-radius: 0.5rem;
+}
+
+.search-row .rating-container {
+    padding-right: 1rem;
+}
+
+.search-row .review-count {
+    margin-top: -0.25em
+}

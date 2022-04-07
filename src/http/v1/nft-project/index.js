@@ -73,29 +73,25 @@ router.post('/', authorise.admin, (req, res) => {
         ).send();
     }
 
-    let fieldsToInsert = fields.filter((field) => field != 'name');
+    let fieldsToInsert = fields.filter((field) => field != 'name' && field != 'logoImageUrl');
 
     let optionalFields = ['websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
     for(let field of optionalFields) {
         if(req.body.hasOwnProperty(field)) fieldsToInsert.push(field);
     }
 
-    let values = fieldsToInsert.map((field) => req.body[field] == '' ? null : req.body[field]);
+    let nftProjectvalues = fieldsToInsert.map((field) => req.body[field] == '' ? null : req.body[field]);
 
-    let nftProjectUid = uuid();
-    fieldsToInsert.push('uid');
-    values.push(nftProjectUid);
-
-    let entityUid = uuid();
+    let uid = uuid();
     fieldsToInsert.push('entityUid');
-    values.push(entityUid);
+    nftProjectvalues.push(uid);
 
     const transaction = global.db.transaction(() => {
-        const insertEntityStmt = global.db.prepare(`INSERT INTO entity_v1(uid, name, type) VALUES(?, ?, 'nft_project')`);
-        insertEntityStmt.run(entityUid, req.body.name);
+        const insertEntityStmt = global.db.prepare(`INSERT INTO entity_v1(uid, name, type, logoImageUrl) VALUES(?, ?, ?, ?)`);
+        insertEntityStmt.run(uid, req.body.name, 'nft_project', req.body.logoImageUrl);
 
         const insertNftStmt = global.db.prepare(`INSERT INTO nft_project_v1(${fieldsToInsert.join(', ')}) VALUES(${"?, ".repeat(fieldsToInsert.length - 1)}?)`);
-        insertNftStmt.run(values);
+        insertNftStmt.run(nftProjectvalues);
     });
 
     try {
@@ -112,53 +108,47 @@ router.post('/', authorise.admin, (req, res) => {
     }
 
     res.locals.output.success({
-        entityUid: entityUid,
-        uid:       nftProjectUid
+        entityUid: uid
     }).send();
 });
 
-router.patch('/:uid', authorise.admin, (req, res) => {
+router.patch('/:entityUid', authorise.admin, (req, res) => {
 
-    let fieldsToUpdate = [];
-    let optionalFields = ['logoImageUrl', 'featuredImageUrl', 'bannerImageUrl', 'websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
-    for(let field of optionalFields) {
-        if(req.body.hasOwnProperty(field)) fieldsToUpdate.push(field);
+    let entityFieldsToUpdate     = [];
+    let entityOptionalFields     = ['name', 'logoImageUrl'];
+    let nftProjectfieldsToUpdate = [];
+    let nftProjectoptionalFields = ['featuredImageUrl', 'bannerImageUrl', 'websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
+    for(let field of entityOptionalFields) {
+        if(req.body.hasOwnProperty(field)) entityFieldsToUpdate.push(field);
+    }
+    for(let field of nftProjectoptionalFields) {
+        if(req.body.hasOwnProperty(field)) nftProjectfieldsToUpdate.push(field);
     }
 
-    let values = fieldsToUpdate.map((field) => req.body[field] === '' ? null : req.body[field]);
+    let entityValues     = entityFieldsToUpdate.map((field) => req.body[field] === '' ? null : req.body[field]);
+    let nftProjectvalues = nftProjectfieldsToUpdate.map((field) => req.body[field] === '' ? null : req.body[field]);
 
-    if(values.length == 0) {
+    if(entityValues.length == 0 && nftProjectvalues.length == 0) {
         res.locals.output.success().send();
         return;
     }
 
-    values.push(req.params.uid);
+    entityValues.push(req.params.entityUid);
+    nftProjectvalues.push(req.params.entityUid);
 
     const transaction = global.db.transaction(() => {
-        if(req.body.hasOwnProperty('name')) {
-            const selectNftStmt = global.db.prepare(`SELECT * FROM nft_project_v1 WHERE uid = ?`);
-            const selectNftRow  = selectNftStmt.get(req.params.uid);
+        const updateEntityStmt = global.db.prepare(`UPDATE entity_v1 SET ${entityFieldsToUpdate.join(' = ?, ')} = ? WHERE uid = ?`);
+        updateEntityStmt.run(entityValues);
 
-            if(!selectNftRow) {
-                throw({
-                    code:    404,
-                    message: `NFT project ${req.params.uid} couldn't be found`
-                });
-            }
-
-            const updateEntityStmt = global.db.prepare(`UPDATE entity_v1 SET name = ? WHERE uid = ?`);
-            updateEntityStmt.run(req.body.name, selectNftRow.entityUid);
-        }
-
-        const updateNftStmt = global.db.prepare(`UPDATE nft_project_v1 SET ${fieldsToUpdate.join(' = ?, ')} = ? WHERE uid = ?`);
-        updateNftStmt.run(values);
+        const updateNftStmt = global.db.prepare(`UPDATE nft_project_v1 SET ${nftProjectfieldsToUpdate.join(' = ?, ')} = ? WHERE entityUid = ?`);
+        updateNftStmt.run(nftProjectvalues);
     });
 
     try {
         transaction();
     }
     catch(err) {
-        global.log.error(`Failed to update NFT project "${req.params.uid}": ${err.message}`);
+        global.log.error(`Failed to update NFT project "${req.params.entityUid}": ${err.message}`);
 
         res.locals.output.fail(
             `Failed to update NFT project: ${err.message}`,
@@ -177,9 +167,9 @@ router.patch('/:uid', authorise.admin, (req, res) => {
 * "approved = X,X..", where X is -1 (rejected), 0 (waiting), 1 (approved)
 * "user     = X", where X is 1, 0 indicating whether or not to include user name
 */
-router.get('/:uid/review', (req, res) => {
-    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid WHERE nft_project_v1.uid = ?`);
-    const countRow  = countStmt.get(req.params.uid);
+router.get('/:entityUid/review', (req, res) => {
+    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid WHERE nft_project_v1.entityUid = ?`);
+    const countRow  = countStmt.get(req.params.entityUid);
 
     if(!countRow) {
         global.log.error('Failed to get total NFT project review count', err);
@@ -206,8 +196,8 @@ router.get('/:uid/review', (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.uid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
-            const limitRow  = limitStmt.all([req.params.uid].concat(approved).concat([limit, offset]));
+            const limitStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
+            const limitRow  = limitStmt.all([req.params.entityUid].concat(approved).concat([limit, offset]));
 
             res.locals.output.success({
                 total: total,
@@ -217,8 +207,8 @@ router.get('/:uid/review', (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.uid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
-    const allRow  = allStmt.all([req.params.uid].concat(approved));
+    const allStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
+    const allRow  = allStmt.all([req.params.entityUid].concat(approved));
 
     res.locals.output.success({
         total: total,
@@ -226,13 +216,13 @@ router.get('/:uid/review', (req, res) => {
     }).send();
 });
 
-router.get('/:uid', (req, res) => {
-    const stmt = global.db.prepare(`SELECT * FROM nft_project_v1 LEFT JOIN entity_v1 ON nft_project_v1.entityUid = entity_v1.uid WHERE nft_project_v1.uid = ?`);
-    const row  = stmt.get(req.params.uid);
+router.get('/:entityUid', (req, res) => {
+    const stmt = global.db.prepare(`SELECT * FROM nft_project_v1 LEFT JOIN entity_v1 ON nft_project_v1.entityUid = entity_v1.uid WHERE nft_project_v1.entityUid = ?`);
+    const row  = stmt.get(req.params.entityUid);
 
     if(!row) {
         res.locals.output.fail(
-            `NFT project ${req.params.uid} not found`,
+            `NFT project ${req.params.entityUid} not found`,
             404
         ).send();
         return;

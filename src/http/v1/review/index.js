@@ -18,7 +18,7 @@ function generatePassword() {
 router.post('/admin', authorise.admin, (req, res) => {
 
     let missingParams = [];
-    let fields        = ['entityUid', 'communityRating', 'originalityRating', 'communicationRating', 'consistencyRating', 'username'];
+    let fields        = ['entityUid', 'communityRating', 'originalityRating', 'communicationRating', 'username'];
 
     for(let field of fields) {
         if(!req.body.hasOwnProperty(field)) missingParams.push(field);
@@ -66,17 +66,15 @@ router.post('/admin', authorise.admin, (req, res) => {
                 });
             }
 
-            const insertRatingStmt = global.db.prepare(`INSERT INTO nft_project_rating_v1(uid, entityUid, reviewUid, communityRating, originalityRating, communicationRating, consistencyRating) VALUES(?, ?, ?, ?, ?, ?, ?)`);
+            const insertRatingStmt = global.db.prepare(`INSERT INTO nft_project_rating_v1(entityUid, reviewUid, communityRating, originalityRating, communicationRating) VALUES(?, ?, ?, ?, ?)`);
             let insertRatingInfo;
             try {
                 insertRatingInfo = insertRatingStmt.run([
-                    uuid(),
                     req.body.entityUid,
                     reviewUid,
                     req.body.communityRating,
                     req.body.originalityRating,
-                    req.body.communicationRating,
-                    req.body.consistencyRating
+                    req.body.communicationRating
                 ]);
             }
             catch(err) {
@@ -91,7 +89,7 @@ router.post('/admin', authorise.admin, (req, res) => {
             const updateTokensStmt = global.db.prepare(`UPDATE user_v1 SET tokenBalance = tokenBalance + 1, tokenTotal = tokenTotal + 1 WHERE uid = ?`);
             updateTokensStmt.run(selectUserRow.uid);
 
-            const selectSumStmt = db.prepare(`SELECT SUM((communityRating + originalityRating + communicationRating + consistencyRating) / 4.0) / COUNT(*) AS rating FROM nft_project_rating_v1 WHERE entityUid = ?`);
+            const selectSumStmt = db.prepare(`SELECT SUM((communityRating + originalityRating + communicationRating) / 3.0) / COUNT(*) AS rating FROM nft_project_rating_v1 WHERE entityUid = ?`);
             let rating          = selectSumStmt.get(req.body.entityUid).rating;
 
             const updateEntityStmt = db.prepare(`UPDATE entity_v1 SET rating = ?, reviewCount = (SELECT count(*) FROM review_v1 WHERE entityUid = ?) WHERE uid = ?`);

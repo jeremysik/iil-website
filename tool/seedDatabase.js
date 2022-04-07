@@ -18,22 +18,25 @@ console.log(`Inserted admin user`);
 
 // Create NFT Projects
 let entityUids  = [];
-let entityCount = 0;
-for(let i = 0; i < faker.datatype.number({min: 20, max: 100}); i++) {
+let entityCount = faker.datatype.number({min: 20, max: 100});
+for(let i = 0; i < entityCount; i++) {
     const transaction = db.transaction(() => {
         const entityUid = faker.datatype.uuid();
         entityUids.push(entityUid);
 
-        const insertEntityStmt = db.prepare(`INSERT INTO entity_v1(uid, name, type) VALUES(?, ?, 'nft_project')`);
-        insertEntityStmt.run(entityUid, `${faker.company.companyName()} ${faker.animal.type()} ${faker.music.genre()} ${faker.name.firstName()}`);
+        const insertEntityStmt = db.prepare(`INSERT INTO entity_v1(uid, name, type, logoImageUrl) VALUES(?, ?, ?, ?)`);
+        insertEntityStmt.run(
+            entityUid, 
+            `${faker.company.companyName()} ${faker.animal.type()} ${faker.music.genre()} ${faker.name.firstName()}`,
+            'nft_project',
+            'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h232'
+        );
 
-        const insertNftStmt = db.prepare(`INSERT INTO nft_project_v1(uid, entityUid, logoImageUrl, featuredImageUrl, bannerImageUrl, description, websiteUrl, twitterUrl, discordUrl, openSeaUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+        const insertNftStmt = db.prepare(`INSERT INTO nft_project_v1(entityUid, featuredImageUrl, bannerImageUrl, description, websiteUrl, twitterUrl, discordUrl, openSeaUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?)`);
         insertNftStmt.run(
-            faker.datatype.uuid(), 
             entityUid,
-            'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h232',
-            'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h350',
-            'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h550',
+            'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h400',
+            'https://lh3.googleusercontent.com/b0fSnR5cPyzYKx2udZGTS_KANhr8RxvsgfrPiZ9atdc9nMB7qSGHnoXyLt9DJG_QuqfZaBSet3bp8NjeaC0gfG7CVAZ_w8mLeIQm=h400',
             faker.lorem.paragraph(),
             faker.internet.url(),
             faker.internet.url(),
@@ -44,7 +47,7 @@ for(let i = 0; i < faker.datatype.number({min: 20, max: 100}); i++) {
 
     try {
         transaction();
-        entityCount++;
+        entityCount--;
     }
     catch(err) {
         console.error(`Failed to insert NFT project: ${err}`);
@@ -56,8 +59,8 @@ console.log(`Inserted ${entityCount} entities`);
 // Add reviews
 let totalReviewCount = 0;
 entityUids.forEach((entityUid) => {
-    let reviewCount = 0;
-    for(let i = 0; i < faker.datatype.number({max: 2500}); i++) {
+    let reviewCount = faker.datatype.number({min: 10, max: 250});
+    for(let i = 0; i < reviewCount; i++) {
         const transaction = db.transaction(() => {
             const userUid        = faker.datatype.uuid();
             const insertUserStmt = db.prepare(`INSERT INTO user_v1(uid, username, password) VALUES(?, ?, ?)`);
@@ -77,11 +80,10 @@ entityUids.forEach((entityUid) => {
                 faker.datatype.float({min: 0, max: 1}) > 0.8 ? 0 : 1
             );
 
-            const insertRatingStmt = db.prepare(`INSERT INTO nft_project_rating_v1(uid, entityUid, reviewUid, communityRating, originalityRating, communicationRating) VALUES(?, ?, ?, ?, ?, ?)`);
+            const insertRatingStmt = db.prepare(`INSERT INTO nft_project_rating_v1(reviewUid, entityUid, communityRating, originalityRating, communicationRating) VALUES(?, ?, ?, ?, ?)`);
             insertRatingStmt.run(
-                faker.datatype.uuid(),
-                entityUid,
                 reviewUid,
+                entityUid,
                 faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.number({min: 1, max: 5})
@@ -90,7 +92,7 @@ entityUids.forEach((entityUid) => {
     
         try {
             transaction();
-            reviewCount++;
+            reviewCount--;
         }
         catch(err) {
             console.error(`Failed to insert review: ${err}`);

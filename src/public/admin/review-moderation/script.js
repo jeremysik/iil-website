@@ -6,8 +6,6 @@ fetch(
     reviewModerationTableRowTemplate = template;
 });
 
-let infoModal;
-
 function approveReview(uid) {
     axios({
         method: 'patch',
@@ -19,7 +17,6 @@ function approveReview(uid) {
             approved: 1
         }
     }).then((res) => {
-        infoModal.show();
         loadReviews();
 
     }).catch((err) => {
@@ -38,7 +35,6 @@ function rejectReview(uid) {
             approved: -1
         }
     }).then((res) => {
-        infoModal.show();
         loadReviews();
 
     }).catch((err) => {
@@ -74,7 +70,4 @@ function loadReviews() {
 document.addEventListener('TemplatesLoaded', function() {
 
     loadReviews();
-
-    infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
-    document.getElementById('info-modal-info').innerHTML = 'Success!';
 });

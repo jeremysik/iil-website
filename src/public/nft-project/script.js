@@ -1,5 +1,5 @@
 const urlParams                 = new URLSearchParams(window.location.search);
-const uid                       = urlParams.get('uid');
+const entityUid                 = urlParams.get('entityUid');
 let nftProjectReviewRowTemplate = null;
 
 document.addEventListener('TemplatesLoaded', (event) => {
@@ -19,7 +19,7 @@ document.addEventListener('TemplatesLoaded', (event) => {
 
         axios({
             method: 'get',
-            url:    `/v1/nft-project/${uid}`
+            url:    `/v1/nft-project/${entityUid}`
         })
     ]).then((res) => {
         const mobileNftProjectBannerTemplate = res[0];
@@ -84,7 +84,7 @@ function loadRows(count) {
 
         return axios({
             method: 'get',
-            url:    `/v1/nft-project/${uid}/review`,
+            url:    `/v1/nft-project/${entityUid}/review`,
             headers: {
                 records:  `${currentRow}-${currentRow + count - 1}`,
                 user:     1,

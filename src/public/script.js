@@ -46,7 +46,7 @@ function loadRows(count) {
             url:    `/v1/nft-project`,
             headers: {
                 records: `${currentRow}-${currentRow + count - 1}`,
-                order: 'desc'
+                order:   'desc'
             }
         });
     }).then((res) => {
@@ -69,7 +69,7 @@ function loadRows(count) {
                             return round(3);
                         },
                         'rank':      currentRow + 1,
-                        'entityUrl': `/nft-project/?uid=${res.data.data.rows[i].uid}` 
+                        'entityUrl': `/nft-project/?entityUid=${res.data.data.rows[i].entityUid}` 
                     },
                     res.data.data.rows[i]
                 )
@@ -90,7 +90,7 @@ function loadRows(count) {
                                 return round(3);
                             },
                             'medalImageUrl': `/asset/medal-${currentRow}.svg`,
-                            'entityUrl':     `/nft-project/?uid=${res.data.data.rows[i].uid}` 
+                            'entityUrl':     `/nft-project/?entityUid=${res.data.data.rows[i].entityUid}` 
                         },
                         res.data.data.rows[i]
                     )
@@ -108,7 +108,7 @@ function loadRows(count) {
                             return round(3);
                         },
                         'rank':      currentRow + 1,
-                        'entityUrl': `/nft-project/?uid=${res.data.data.rows[i].uid}` 
+                        'entityUrl': `/nft-project/?entityUid=${res.data.data.rows[i].entityUid}` 
                     },
                     res.data.data.rows[i]
                 )

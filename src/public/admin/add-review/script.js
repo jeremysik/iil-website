@@ -5,7 +5,6 @@ function addReview(e) {
     let originalityRating   = document.querySelector('input[name="add-nft-review-originality-rating"]:checked').value;
     let communityRating     = document.querySelector('input[name="add-nft-review-community-rating"]:checked').value;
     let communicationRating = document.querySelector('input[name="add-nft-review-communication-rating"]:checked').value;
-    let consistencyRating   = document.querySelector('input[name="add-nft-review-consistency-rating"]:checked').value;
     let username            = document.getElementById('add-nft-review-username').value;
     let comment             = document.getElementById('add-nft-review-comment').value;
 
@@ -24,7 +23,6 @@ function addReview(e) {
             originalityRating:   originalityRating,
             communityRating:     communityRating,
             communicationRating: communicationRating,
-            consistencyRating:   consistencyRating,
             comment:             comment
         }
     }).then((res) => {

@@ -112,7 +112,12 @@ async function init() {
     }
 
     // Serve static files
-    app.use('/', express.static('./src/public'));
+    if(process.env.NODE_ENV == 'production') {
+        app.use('/', express.static('./public'));
+    }
+    else {
+        app.use('/', express.static('./src/public'));
+    }
 
     if(process.env.NODE_ENV == 'production') {
         // HTTPS listener

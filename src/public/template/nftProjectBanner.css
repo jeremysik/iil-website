@@ -45,3 +45,7 @@
 .nft-project-banner .info-column .web-link img {
     width: var(--web-link-icon-width);
 }
+
+.nft-project-banner .banner-image {
+    max-height: 350px;
+}

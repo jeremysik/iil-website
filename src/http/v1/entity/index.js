@@ -3,6 +3,60 @@ const bodyParser = require('body-parser');
 const authorise  = require.main.require('./authorise');
 router.use('/', bodyParser.json());
 
+/*
+* Search entities
+* Headers:
+* "records = A-B", where A & B are index numbers of the records required
+* "type    = X", where X is entity type
+*/
+router.get('/search/:query', (req, res) => {
+    let type = null;
+    const validTypes = ['nft_project'];
+    if(validTypes.includes(req.headers.type)) type = type;
+
+    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = ${type}` : ''}`);
+    const countRow  = countStmt.get(`%${req.params.query}%`);
+
+    if(!countRow) {
+        global.log.error(`Failed to get total entity count for search term: ${req.params.query}`, err);
+        res.locals.output.fail(
+            err,
+            500
+        ).send();
+        return;
+    }
+
+    const total = countRow.total;
+
+    // Get the rows
+    if(req.headers.records) {
+        let limitOffset = req.headers.records.split('-');
+
+        if(limitOffset.length == 2) {
+            // Specific records requested
+            let offset = limitOffset[0];
+            let limit  = limitOffset[1] - offset + 1;
+
+            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = ${type}` : ''} LIMIT ? OFFSET ?`);
+            const limitRow  = limitStmt.all(`%${req.params.query}%`, limit, offset);
+
+            res.locals.output.success({
+                total: total,
+                rows:  limitRow
+            }).send();
+            return;
+        }
+    }
+
+    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = ${type}` : ''}`);
+    const allRow  = allStmt.all(`%${req.params.query}%`);
+
+    res.locals.output.success({
+        total: total,
+        rows:  allRow
+    }).send();
+});
+
 router.get('/:uid', (req, res) => {
 
     const stmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE uid = ?`);
@@ -31,6 +85,12 @@ router.delete('/:uid', authorise.admin, (req, res) => {
                 message: `Failed to get entity ${req.params.uid} for deletion`
             });
         }
+
+        const deleteTypeRatingStmt = global.db.prepare(`DELETE FROM ${selectRow.type}_rating_v1 WHERE entityUid = ?`);
+        deleteTypeRatingStmt.run(req.params.uid);
+
+        const deleteReviewStmt = global.db.prepare(`DELETE FROM review_v1 WHERE entityUid = ?`);
+        deleteReviewStmt.run(req.params.uid);
         
         const deleteTypeStmt = global.db.prepare(`DELETE FROM ${selectRow.type}_v1 WHERE entityUid = ?`);
         const deleteTypeInfo = deleteTypeStmt.run(req.params.uid);
@@ -80,8 +140,9 @@ router.delete('/:uid', authorise.admin, (req, res) => {
 */
 router.get('/', (req, res) => {
 
-    let type = null;
-    if(req.headers.type == 'nft_project') type = type;
+    let type         = null;
+    const validTypes = ['nft_project'];
+    if(validTypes.includes(req.headers.type)) type = type;
 
     const countStmt = global.db.prepare(`SELECT count(*) AS total FROM entity_v1 ${type ? `WHERE type = ${type}` : ''}`);
     const countRow  = countStmt.get();
