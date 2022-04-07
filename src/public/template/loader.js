@@ -1,3 +1,20 @@
+// -------- Template Functions --------
+function truncate(charCount) {
+    return function(text, render) {
+        let renderedText = render(text);
+        if(renderedText.length < charCount - 3) return renderedText;
+        return renderedText.substr(0, charCount - 3) + '...';
+    }
+}
+
+function round(precision) {
+    return function(text, render) {
+        let rating = Number.parseFloat(render(text));
+        return rating.toPrecision(precision);
+    }
+}
+// -------- Template Functions --------
+
 // Sorry, it was faster for me to build a templating system on Mustache.js than to learn React.js =P
 const templatesLoadedEvent = new Event('TemplatesLoaded');
 let promises               = [];

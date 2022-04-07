@@ -1,11 +1,62 @@
-<header id="mobile-header" class="container py-5">
+<div class="header container py-5">
     <div class="row">
         <div class="col d-flex justify-content-start align-items-center text-bold text-white"><a href="/"><img class="header-logo" src="/asset/header_logo.svg"></a></div>
         <div class="col col-auto d-flex justify-content-end align-items-center">
-            <a href="#" class="d-flex align-items-center"><img src="/asset/search_white.svg"></a>
+            <button class="stealth-button d-flex align-items-center" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu" aria-controls="offcanvas-menu"><img class="menu-search-icon svg-white" src="/asset/search_icon.svg"></button>
         </div>
         <div class="col col-auto d-flex justify-content-end align-items-center">
-            <a href="#" class="d-flex align-items-center"><img src="/asset/hamburger.svg"></a>
+            <button class="stealth-button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-menu" aria-controls="offcanvas-menu"><img class="svg-white" src="/asset/hamburger_icon.svg"></button>
         </div>
     </div>
-</header>
+    <div class="offcanvas offcanvas-end w-100" tabindex="-1" id="offcanvas-menu" aria-labelledby="offcanvasRightLabel">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col d-flex justify-content-start align-items-center text-bold text-white"><a href="/"><img class="header-logo" src="/asset/header_logo.svg"></a></div>
+                <div class="col col-auto d-flex justify-content-end align-items-center">
+                    <a href="#" class="d-flex align-items-center" data-bs-dismiss="offcanvas" aria-label="Close"><img class="svg-white" src="/asset/close_icon.svg"></a>
+                </div>
+            </div>
+        </div>
+        <div class="container pb-5"> 
+            <form onsubmit="searchEntities(event)">
+                <div class="col form-control search-container">
+                    <div class="row">
+                        <div class="col bg-transparent">
+                            <input class="w-100 text-normal search-entities" placeholder="Search...">
+                        </div>
+                        <div class="col-auto bg-transparent">
+                            <button type="submit" class="stealth-button"><img class="search-icon svg-nearly-black" src="/asset/search_icon.svg"></button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="container pb-4 text-bold text-white">
+            <a href="/" class="d-flex align-items-center navigation-link"><img class="me-3 navigation-icon svg-white" src="/asset/home_icon.svg">Home</a>
+        </div>
+        <div class="container pb-4 text-bold text-white">
+            <a href="/about" class="d-flex align-items-center navigation-link"><img class="me-3 navigation-icon svg-white" src="/asset/people_icon.svg">About</a>
+        </div>
+        <div class="container text-bold text-white">
+            <a href="/about" class="d-flex align-items-center navigation-link"><img class="me-3 navigation-icon svg-white" src="/asset/location_icon.svg">Roadmap</a>
+        </div>
+        <footer class="mt-auto pt-5">
+            <div class="row d-flex justify-content-center align-items-center connect-wallet-row">
+                <div class="col col-auto">
+                    <button type="button" class="btn btn-primary text-bold px-4"><small>Connect Wallet</small></button>
+                </div>
+            </div>
+            <div class="row d-flex justify-content-center align-items-center mb-5">
+                <div class="col col-auto">
+                    <a href="https://twitter.com/IsItLegit_xyz" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/twitter_grey_logo.svg"></a>
+                </div>
+                <div class="col col-auto">
+                    <a href="#" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/discord_grey_logo.svg"></a>
+                </div>
+                <div class="col col-auto">
+                    <a href="#" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/substack_grey_logo.svg"></a>
+                </div>
+            </div>  
+        </footer>
+    </div>
+</div>

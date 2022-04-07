@@ -91,18 +91,41 @@ hr {
     opacity: 1;
 }
 
-/* ------ Stealth Links ------ */
+/* ------ SVG Recolouring ------ */
+/* https://codepen.io/sosuke/pen/Pjoqqp */
+.svg-white {
+    filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(163deg) brightness(103%) contrast(101%);
+}
 
+.svg-nearly-black {
+    filter: invert(8%) sepia(9%) saturate(537%) hue-rotate(201deg) brightness(94%) contrast(92%);
+}
+
+.svg-cyan {
+    filter: invert(86%) sepia(16%) saturate(6073%) hue-rotate(170deg) brightness(101%) contrast(103%);
+}
+/* ------ SVG Recolouring ------ */
+
+/* ------ Stealth Links/Buttons ------ */
 .stealth-link {
-    color:           black;
+    color:           inherit;
     text-decoration: none;
 }
 
 .stealth-link:hover {
-    color: black;
+    color: inherit;
 }
 
-/* ------ Stealth Links ------ */
+.stealth-button {
+    background: none;
+	color:      inherit;
+	border:     none;
+	padding:    0;
+	font:       inherit;
+	cursor:     pointer;
+	outline:    inherit;
+}
+/* ------ Stealth Links/Buttons ------ */
 
 /* ------ Image Container (Horizontally Centered) ------ */
 .image-container {
@@ -123,35 +146,66 @@ hr {
 /* ------ Image Containers (Horizontally Centered) ------ */
 
 /* ------ Header ------ */
-#mobile-header {
-    display: block;
-}
-
-#header {
+.header {
     margin-bottom: 3rem;
 }
 
-#header a {
+.header a {
     color:           white;
     text-decoration: none;
 }
 
-#header a:hover {
+.header a:hover {
     color: var(--purple-colour);
 }
 
-#header a.active {
+.header a.active {
     color: var(--cyan-colour);
 }
 
-#header .logo {
+.header .logo {
     width: 1.25rem;
 }
 
-#header .header-logo {
+.header .header-logo {
     height: 2rem;
 }
 /* ------ Header ------ */
+
+/* ------ Offcanvas ------ */
+.offcanvas {
+    background-color: var(--matte-black-colour);
+}
+
+.offcanvas .connect-wallet-row {
+    margin-bottom: 2rem;
+}
+
+/* ------ Offcanvas ------ */
+
+/* ------ Search ------ */
+.search-entities::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+.search-entities {
+    border: 0;
+}
+
+.search-entities:focus {
+    outline: none;
+}
+
+.search-container {
+    padding:       0.8rem 1.2rem;
+    border-radius: 2rem;
+    border:        0;
+}
+
+.search-icon {
+    height: 1.2rem
+}
+/* ------ Search ------ */
 
 /* ------ Buttons ------ */
 .btn-primary {
@@ -175,11 +229,11 @@ hr {
 }
 /* ------ Textarea ------ */
 
-#mobile-mode {
+.mobile {
     display: block;
 }
 
-#desktop-mode {
+.desktop {
     display: none;
 }
 
@@ -194,11 +248,11 @@ hr {
 }
 
 @media(min-width: 767px) {
-    #mobile-mode {
+    .mobile {
         display: none;
     }
     
-    #desktop-mode {
+    .desktop {
         display: block;
     }
 

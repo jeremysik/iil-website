@@ -1,20 +1,3 @@
-// -------- Template Functions --------
-function truncate(charCount) {
-    return function(text, render) {
-        let renderedText = render(text);
-        if(renderedText.length < charCount - 3) return renderedText;
-        return renderedText.substr(0, charCount - 3) + '...';
-    }
-}
-
-function round(precision) {
-    return function(text, render) {
-        let rating = Number.parseFloat(render(text));
-        return rating.toPrecision(precision);
-    }
-}
-// -------- Template Functions --------
-
 const urlParams                 = new URLSearchParams(window.location.search);
 const uid                       = urlParams.get('uid');
 let nftProjectReviewRowTemplate = null;
@@ -34,10 +17,6 @@ document.addEventListener('TemplatesLoaded', (event) => {
             `/template/nft-project-rating.template.html`
         ).then((response) => response.text()),
 
-        fetch(
-            `/template/nft-project-review-form.template.html`
-        ).then((response) => response.text()),
-
         axios({
             method: 'get',
             url:    `/v1/nft-project/${uid}`
@@ -46,8 +25,7 @@ document.addEventListener('TemplatesLoaded', (event) => {
         const mobileNftProjectBannerTemplate = res[0];
         const nftProjectBannerTemplate       = res[1];
         const nftProjectRatingTemplate       = res[2];
-        const nftProjectReviewFormTemplate   = res[3];
-        const nftProject                     = res[4].data.data;
+        const nftProject                     = res[3].data.data;
 
         document.getElementById('mobile-nft-project-banner-container').innerHTML = Mustache.render(mobileNftProjectBannerTemplate, nftProject);
         document.getElementById('nft-project-banner-container').innerHTML        = Mustache.render(nftProjectBannerTemplate, nftProject);
@@ -75,7 +53,7 @@ document.addEventListener('TemplatesLoaded', (event) => {
             )
         );
 
-        loadRows(10);
+        init();
 
     }).catch((err) => {
         alert(err);
@@ -138,6 +116,15 @@ function loadRows(count) {
 
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
+    });
+}
+
+function init() {
+    return loadRows(
+        10
+    ).then(() => {
+        // Keep loading until we have something to scroll (the screen could be really tall and not very wide)
+        if(currentRow <= lastRow && document.body.scrollHeight <= window.innerHeight) return init();
     });
 }
 

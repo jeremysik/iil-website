@@ -1,24 +1,3 @@
-function searchProject(e) {
-    // TODO: Implement me
-}
-
-// -------- Template Functions --------
-function truncate(charCount) {
-    return function(text, render) {
-        let renderedText = render(text);
-        if(renderedText.length < charCount - 3) return renderedText;
-        return renderedText.substr(0, charCount - 3) + '...';
-    }
-}
-
-function round(precision) {
-    return function(text, render) {
-        let rating = Number.parseFloat(render(text));
-        return rating.toPrecision(precision);
-    }
-}
-// -------- Template Functions --------
-
 let tripleEntityCardTemplate  = null;
 let entityCardTemplate        = null;
 let mobileEntityRowTemplate   = null;
@@ -152,8 +131,6 @@ function loadRows(count) {
             document.getElementById('mobile-last-message').style.display = 'block';
             document.getElementById('last-message').style.display        = 'block';
         }
-
-        console.log('done');
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
     });
@@ -169,7 +146,7 @@ function init() {
 }
 
 document.addEventListener('TemplatesLoaded', (event) => {
-    Array.prototype.forEach.call(document.getElementsByClassName('title-title'), (element) => {
+    [].forEach.call(document.getElementsByClassName('title-title'), (element) => {
         element.innerHTML = 'NFT Projects';
     });
 
@@ -177,14 +154,14 @@ document.addEventListener('TemplatesLoaded', (event) => {
 });
 
 window.addEventListener('scroll', () => {
-    const responsiveContainers = ['mobile-mode', 'desktop-mode'];
-    const rowContainers        = ['mobile-infinite-entity-row-container', 'infinite-entity-row-container'];
-    const spinners             = ['mobile-row-spinner', 'row-spinner'];
+    const responsiveClasses = ['mobile', 'desktop'];
+    const rowContainers     = ['mobile-infinite-entity-row-container', 'infinite-entity-row-container'];
+    const spinners          = ['mobile-row-spinner', 'row-spinner'];
 
     for(let i = 0; i < rowContainers.length; i++) {
-        let responsiveContainer = document.getElementById(responsiveContainers[i]);
+        let responsiveClass = document.getElementsByClassName(responsiveClasses[i])[0];
 
-        if(window.getComputedStyle(responsiveContainer).display == 'none') continue;
+        if(window.getComputedStyle(responsiveClass).display == 'none') continue;
         
         const rowContainer = document.getElementById(rowContainers[i]);
         const spinner      = document.getElementById(spinners[i]);

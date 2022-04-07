@@ -2,18 +2,18 @@
     <div class="row">
         <div class="title-title col-7 text-bold text-white fs-1"></div>
         <div class="col">
-            <div class="col form-control search-container">
-                <div class="row">
-                    <div class="col bg-transparent">
-                        <input class="w-100 text-normal" list="search-data-list-options" id="search-project" placeholder="Search..." onchange="searchProject(event)">
-                    </div>
-                    <div class="col-auto bg-transparent">
-                        <img class="search-icon" src="/asset/search.svg">
+            <form onsubmit="searchEntities(event)">
+                <div class="col form-control search-container">
+                    <div class="row">
+                        <div class="col bg-transparent">
+                            <input class="w-100 text-normal search-entities" placeholder="Search...">
+                        </div>
+                        <div class="col-auto bg-transparent">
+                            <button type="submit" class="stealth-button"><img class="search-icon svg-nearly-black" src="/asset/search_icon.svg"></button>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <datalist id="search-data-list-options">
-            </datalist>
+            </form>
         </div>
     </div>
 </div>
