@@ -1,26 +1,27 @@
 <div class="header container py-4">
     <div class="row">
+        <div class="col col-auto col-lg d-flex align-items-center text-bold text-white"><a href="/"><img class="header-logo" src="/asset/header_logo.svg"></a></div>
         <div class="col">
-            <div class="row h-100 d-flex align-items-center text-bold text-white">
-                <div class="col col-auto text-center"><a href="/"        class="navigation-link">Home</a></div>
-                <div class="col col-auto text-center"><a href="/about"   class="navigation-link">About</a></div>
-                <div class="col col-auto text-center"><a href="/roadmap" class="navigation-link">Roadmap</a></div>
+            <div class="row h-100 d-flex justify-content-lg-center align-items-center text-bold text-white">
+                <div class="col col-auto text-center"><a href="/"       class="navigation-link">Home</a></div>
+                <div class="col col-auto text-center"><a href="/about/" class="navigation-link">About</a></div>
+                <!-- <div class="col col-auto text-center"><a href="/roadmap" class="navigation-link">Roadmap</a></div> -->
             </div>
         </div>
-        <div class="col col-auto d-flex justify-content-center align-items-center text-bold text-white"><a href="/"><img class="header-logo" src="/asset/header_logo.svg"></a></div>
-        <div class="col">
+        <div class="col col-auto col-lg">
             <div class="row d-flex justify-content-end align-items-center">
                 <div class="col col-auto">
                     <a href="https://twitter.com/IsItLegit_xyz" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/twitter_grey_logo.svg"></a>
                 </div>
                 <div class="col col-auto">
-                    <a href="#" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/discord_grey_logo.svg"></a>
+                    <a href="https://discord.gg/jXAktHqmpz" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/discord_grey_logo.svg"></a>
                 </div>
                 <div class="col col-auto">
-                    <a href="#" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/substack_grey_logo.svg"></a>
+                    <a href="https://isitlegit.substack.com/" target="_blank" class="d-flex align-items-center"><img class="logo" src="/asset/substack_grey_logo.svg"></a>
                 </div>
                 <div class="col col-auto">
-                    <button type="button" class="btn btn-primary text-bold"><small>Connect Wallet</small></button>
+                    <button type="button" class="connected btn btn-primary text-bold"    onclick="connect()"><small>Connect MetaMask</small></button>
+                    <button type="button" class="disconnected btn btn-primary text-bold" style="display:none;" disabled><small>MetaMask Connected</small></button>
                 </div> 
             </div>      
         </div>

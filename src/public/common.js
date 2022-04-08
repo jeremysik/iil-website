@@ -1,8 +1,49 @@
+let provider = null;
+
 function searchEntities(e) {
     e.preventDefault();
     let searchTerm = e.srcElement.querySelector('input').value;
     
     window.location.href = `/search/?q=${encodeURIComponent(searchTerm)}`;
+}
+
+function connect() {
+    if(!provider) {
+        console.error('No provider detected!');
+        return;
+    }
+
+    provider.send(
+        'eth_requestAccounts', 
+        []
+    ).then(() => {
+        const signer = provider.getSigner();
+        return signer.getAddress();
+    }).then((signerAddress) => {
+        console.log(signerAddress);
+    }).catch((e) => {
+        console.error(e);
+    });   
+}
+
+function onConnect() {
+    [].forEach.call(document.getElementsByClassName('connected'), (element) => {
+        element.style.display = 'none';
+    });
+    [].forEach.call(document.getElementsByClassName('disconnected'), (element) => {
+        element.style.display = 'block';
+    });
+
+    console.log('connected');
+}
+
+function onDisconnect() {
+    [].forEach.call(document.getElementsByClassName('connected'), (element) => {
+        element.style.display = 'block';
+    });
+    [].forEach.call(document.getElementsByClassName('disconnected'), (element) => {
+        element.style.display = 'none';
+    });
 }
 
 document.addEventListener('TemplatesLoaded', function() {
@@ -16,4 +57,21 @@ document.addEventListener('TemplatesLoaded', function() {
             });
         } 
     });
+
+    if(window.ethereum) {
+        provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        window.ethereum.on('accountsChanged', (accounts) => {
+            if(accounts.length > 0) {
+                onConnect();
+                return;
+            }
+
+            onDisconnect();
+        });
+
+        provider.listAccounts(
+        ).then((accounts) => {
+            if(accounts.length > 0) onConnect();
+        }).catch(() => {});
+    }
 });

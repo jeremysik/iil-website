@@ -1,9 +1,11 @@
 <div class="container nft-project-review-form">
     <div class="rounded-border">
-        <div class="overlay d-flex justify-content-center align-items-center">
-            <div class="text-center">
-                <div class="text-bold text-white fs-5 please-connect">Please connect your wallet to leave a review</div>
-                <button type="button" class="btn btn-primary text-bold"><small>Connect Wallet</small></button>
+        <div class="connected"> <!-- Fucking d-flex adds 'display: flex !important;'-->
+            <div class="overlay d-flex justify-content-center align-items-center">
+                <div class="text-center">
+                    <div class="text-bold text-white fs-5 please-connect">Please connect MetaMask to leave a review</div>
+                    <button type="button" class="btn btn-primary text-bold" onclick="connect()"><small>Connect MetaMask</small></button>
+                </div>
             </div>
         </div>
         <div class="content">
