@@ -14,10 +14,6 @@ function resetPassword(e) {
     let uid      = document.getElementById('user-admin-reset-password-uid').value;
     let password = generatePassword();
 
-    let infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
-
-    document.getElementById('info-modal-info').innerHTML = `Success! New password is: ${password}`;
-
     axios({
         method: 'patch',
         url:    `/v1/user/${uid}`,
@@ -28,7 +24,7 @@ function resetPassword(e) {
             password: password
         }
     }).then((res) => {
-        infoModal.show();
+        info.success('Success!', `New password is: ${password}`);
         loadUsers();
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));

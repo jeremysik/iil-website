@@ -34,9 +34,6 @@ function editEntity(e) {
     let discordUrl       = document.getElementById('edit-nft-project-discord-url').value;
     let description      = document.getElementById('edit-nft-project-description').value;
 
-    let infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
-    document.getElementById('info-modal-info').innerHTML = 'Success!';
-
     axios({
         method: 'patch',
         url:    `/v1/nft-project/${uid}`,
@@ -57,8 +54,7 @@ function editEntity(e) {
             description:      description
         }
     }).then((res) => {
-        infoModal.show();
-        loadNftProjects();
+        info.success('Success!', 'NFT project successfully updated.');
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
     });

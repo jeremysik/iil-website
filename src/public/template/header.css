@@ -1,0 +1,24 @@
+.header {
+    margin-bottom: 3rem;
+}
+
+.header a {
+    color:           white;
+    text-decoration: none;
+}
+
+.header a:hover {
+    color: var(--purple-colour);
+}
+
+.header a.active {
+    color: var(--cyan-colour);
+}
+
+.header .logo {
+    width: 1.25rem;
+}
+
+.header .header-logo {
+    height: 2rem;
+}

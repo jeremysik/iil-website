@@ -11,9 +11,6 @@ function addEntity(e) {
     let discordUrl       = document.getElementById('add-nft-project-discord-url').value;
     let description      = document.getElementById('add-nft-project-description').value;
 
-    let infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
-    document.getElementById('info-modal-info').innerHTML = 'Success!';
-
     axios({
         method: 'post',
         url:    `/v1/nft-project`,
@@ -42,7 +39,7 @@ function addEntity(e) {
         document.getElementById('add-nft-project-discord-url').value        = '';
         document.getElementById('add-nft-project-description').value        = '';
 
-        infoModal.show();
+        info.success('Success!', 'NFT project successfully added.');
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));
     });

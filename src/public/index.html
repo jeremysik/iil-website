@@ -12,17 +12,25 @@
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="style.css">
-    <link rel="stylesheet"    href="/template/entityCard.css">
-    <link rel="stylesheet"    href="/template/mobileEntityRow.css">
-    <link rel="stylesheet"    href="/template/entityRow.css">
+
+    <link template="info-modal" rel="stylesheet" href="/template/infoModal.css">
+    <link template="mobile-header" rel="stylesheet" href="/template/mobileHeader.css">
+    <link template="header" rel="stylesheet" href="/template/header.css">
+    <link template="title" rel="stylesheet" href="/template/title.css">
+
+    <link template-container="mobile-entity-row" rel="stylesheet" href="/template/mobileEntityRow.css">
+    <link template-container="entity-card" rel="stylesheet" href="/template/entityCard.css">
+    <link template-container="entity-row" rel="stylesheet" href="/template/entityRow.css">
 </head>
 
 <body class="d-flex flex-column">
+    <div template="info-modal"></div>
+
     <div class="mobile">
         <div template="mobile-header"></div>
         <div template="mobile-title"></div>
         <div class="my-4 container">
-            <div id="mobile-infinite-entity-row-container"></div>
+            <div template-container="mobile-entity-row"></div>
             <div id="mobile-row-spinner" class="text-center py-5">
                 <div class="loading-spinner spinner-border text-cyan" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -37,7 +45,7 @@
     <div class="desktop">
         <div template="header"></div>
         <div template="title"></div>
-        <div class="my-5" id="entity-card-container">
+        <div template-container="entity-card" class="my-5">
             <div class="text-center">
                 <div class="loading-spinner spinner-border text-cyan" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -53,7 +61,7 @@
                     <div class="col rating">RATING</div>
                 </div>
             </div>
-            <div id="infinite-entity-row-container"></div>
+            <div template-container="entity-row"></div>
             <div id="row-spinner" class="text-center py-5">
                 <div class="loading-spinner spinner-border text-cyan" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -72,6 +80,8 @@
     <script src="/template/loader.js"          type="application/javascript" defer></script>
     <script src="/common.js"                   type="application/javascript" defer></script>
     <script src="script.js"                    type="application/javascript" defer></script>
+
+    <script template="info-modal" src="/template/infoModal.js" type="application/javascript" defer></script>
 </body>
 
 </html>

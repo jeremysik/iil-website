@@ -1,0 +1,21 @@
+.title .search-entities::-webkit-calendar-picker-indicator {
+    opacity: 0;
+}
+
+.title .search-entities {
+    border: 0;
+}
+
+.title .search-entities:focus {
+    outline: none;
+}
+
+.title .search-container {
+    padding:       0.8rem 1.2rem;
+    border-radius: 2rem;
+    border:        0;
+}
+
+.title .search-icon {
+    height: 1.2rem
+}

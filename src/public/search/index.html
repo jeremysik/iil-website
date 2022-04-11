@@ -11,7 +11,12 @@
     <link rel="shortcut icon" href="/asset/favicon.ico">
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
-    <link rel="stylesheet"    href="/template/searchRow.css">
+
+    <link template="mobile-header" rel="stylesheet" href="/template/mobileHeader.css">
+    <link template="header" rel="stylesheet" href="/template/header.css">
+    <link template="title" rel="stylesheet" href="/template/title.css">
+
+    <link template-container="search-row" rel="stylesheet" href="/template/searchRow.css">
 </head>
 
 <body class="d-flex flex-column">
@@ -26,7 +31,7 @@
     </div>
 
     <div class="mt-4 mt-md-5 container">
-        <div id="infinite-search-row-container"></div>
+        <div template-container="search-row"></div>
         <div id="row-spinner" class="text-center py-5">
             <div class="loading-spinner spinner-border text-cyan" role="status">
                 <span class="visually-hidden">Loading...</span>

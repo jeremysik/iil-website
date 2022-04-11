@@ -8,9 +8,6 @@ function addReview(e) {
     let username            = document.getElementById('add-nft-review-username').value;
     let comment             = document.getElementById('add-nft-review-comment').value;
 
-    let infoModal = new bootstrap.Modal(document.getElementById('info-modal'), {backdrop: 'static'});
-    document.getElementById('info-modal-info').innerHTML = 'Success!';
-
     axios({
         method: 'post',
         url:    `/v1/review/admin`,
@@ -26,7 +23,7 @@ function addReview(e) {
             comment:             comment
         }
     }).then((res) => {
-        infoModal.show();
+        info.success('Success!', 'Review successfully added.');
         loadNftProjects();
     }).catch((err) => {
         alert(JSON.stringify(err.response.data));

@@ -16,6 +16,17 @@ function loadRows(count) {
         );
     }
 
+    if(query == '') {
+        alert('You must enter a search query!');
+        currentRow = 1;
+        lastRow    = 0;
+
+        document.getElementById('row-spinner').style.display  = 'none';
+        document.getElementById('last-message').style.display = 'block';
+        
+        return Promise.resolve();
+    }
+
     return Promise.all(
         promises
     ).then((res) => {
@@ -54,8 +65,8 @@ function loadRows(count) {
             currentRow++;
         }
 
-        document.getElementById('infinite-search-row-container').innerHTML += searchRowsHtml;
-        document.getElementById('row-spinner').style.display               = 'none';
+        document.querySelector('div[template-container="search-row"]').innerHTML += searchRowsHtml;
+        document.getElementById('row-spinner').style.display                      = 'none';
 
         if(currentRow >= lastRow) document.getElementById('last-message').style.display = 'block';
     }).catch((err) => {
@@ -85,7 +96,7 @@ document.addEventListener('TemplatesLoaded', (event) => {
 });
 
 window.addEventListener('scroll', () => {
-    let element = document.getElementById('infinite-search-row-container');
+    let element = document.querySelector('div[template-container="search-row"]');
     var offset  = element.getBoundingClientRect().top - element.offsetParent.getBoundingClientRect().top;
     const top   = window.pageYOffset + window.innerHeight - offset;
     let spinner = document.getElementById('row-spinner');

@@ -11,17 +11,21 @@
     <link rel="shortcut icon" href="/asset/favicon.ico">
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
-    <link rel="stylesheet"    href="/template/mobileNftProjectBanner.css">
-    <link rel="stylesheet"    href="/template/nftProjectBanner.css">
-    <link rel="stylesheet"    href="/template/nftProjectRating.css">
-    <link rel="stylesheet"    href="/template/nftProjectReviewForm.css">
-    <link rel="stylesheet"    href="/template/nftProjectReviewRow.css">
+
+    <link template="mobile-header" rel="stylesheet" href="/template/mobileHeader.css">
+    <link template="header" rel="stylesheet" href="/template/header.css">
+    <link template="nft-project-review-form" rel="stylesheet" href="/template/nftProjectReviewForm.css">
+
+    <link template-container="mobile-nft-project-banner" rel="stylesheet" href="/template/mobileNftProjectBanner.css">
+    <link template-container="nft-project-banner" rel="stylesheet" href="/template/nftProjectBanner.css">
+    <link template-container="nft-project-rating" rel="stylesheet" href="/template/nftProjectRating.css">
+    <link template-container="nft-project-review-row" rel="stylesheet" href="/template/nftProjectReviewRow.css">
 </head>
 
 <body class="d-flex flex-column">
     <div class="mobile">
         <div template="mobile-header"></div>
-        <div id="mobile-nft-project-banner-container">
+        <div template-container="mobile-nft-project-banner" id="mobile-nft-project-banner-container">
             <div class="text-center">
                 <div class="loading-spinner spinner-border text-cyan" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -31,7 +35,7 @@
     </div>
     <div class="desktop">
         <div template="header"></div>
-        <div id="nft-project-banner-container">
+        <div template-container="nft-project-banner" id="nft-project-banner-container">
             <div class="text-center">
                 <div class="loading-spinner spinner-border text-cyan" role="status">
                     <span class="visually-hidden">Loading...</span>
@@ -40,10 +44,10 @@
         </div>
     </div>
     
-    <div class="my-4 my-md-5" id="nft-project-rating-container"></div>
+    <div template-container="nft-project-rating" class="my-4 my-md-5" id="nft-project-rating-container"></div>
     <div template="nft-project-review-form"></div>
     <div class="container infinite-review-row">
-        <div id="infinite-review-row-container"></div>
+        <div template-container="nft-project-review-row" id="infinite-review-row-container"></div>
         <div class="text-center py-5" id="row-spinner">
             <div class="loading-spinner spinner-border text-cyan" role="status">
                 <span class="visually-hidden">Loading...</span>

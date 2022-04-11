@@ -12,6 +12,8 @@
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="/admin/common.css">
+
+    <link template="info-modal" rel="stylesheet" href="/template/infoModal.css">
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -35,14 +37,14 @@
         </form>
     </div>
 
-    <div template="footer" class="d-flex flex-wrap justify-content-center mt-auto py-5"></div>
+    <script src="/lib/axios.min.js"            type="application/javascript" defer></script>
+    <script src="/lib/bootstrap.bundle.min.js" type="application/javascript" defer></script>
+    <script src="/lib/mustache.min.js"         type="application/javascript" defer></script>
+    <script src="/template/loader.js"          type="application/javascript" defer></script>
+    <script src="/admin/common.js"             type="application/javascript" defer></script>
+    <script src="script.js"                    type="application/javascript" defer></script>
 
-    <script src="/lib/axios.min.js"            type="application/javascript"></script>
-    <script src="/lib/bootstrap.bundle.min.js" type="application/javascript"></script>
-    <script src="/lib/mustache.min.js"         type="application/javascript"></script>
-    <script src="/template/loader.js"          type="application/javascript"></script>
-    <script src="/admin/common.js"             type="application/javascript"></script>
-    <script src="script.js"                    type="application/javascript"></script>
+    <script template="info-modal" src="/template/infoModal.js" type="application/javascript" defer></script>
 </body>
 
 </html>

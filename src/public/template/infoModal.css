@@ -1,0 +1,8 @@
+.modal-backdrop {
+    opacity: 0.9 !important;
+}
+
+.modal-content {
+    background-color: #2A5E74;
+    padding:          2rem 2rem;
+}

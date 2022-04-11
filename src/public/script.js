@@ -118,13 +118,12 @@ function loadRows(count) {
 
         if(Object.keys(entityCardsHtml).length != 0) {
             // First load
-            document.getElementById('entity-card-container').innerHTML         = Mustache.render(tripleEntityCardTemplate, entityCardsHtml);
-            document.getElementById('infinite-entity-row-container').innerHTML = '';
+            document.querySelector('div[template-container="entity-card"]').innerHTML = Mustache.render(tripleEntityCardTemplate, entityCardsHtml);
         }
 
-        document.getElementById('mobile-infinite-entity-row-container').innerHTML += mobileEntityRowsHtml;
+        document.querySelector('div[template-container="mobile-entity-row"]').innerHTML += mobileEntityRowsHtml;
         document.getElementById('mobile-row-spinner').style.display               = 'none';
-        document.getElementById('infinite-entity-row-container').innerHTML        += entityRowsHtml;
+        document.querySelector('div[template-container="entity-row"]').innerHTML  += entityRowsHtml;
         document.getElementById('row-spinner').style.display                      = 'none';
 
         if(currentRow >= lastRow) {
@@ -154,22 +153,22 @@ document.addEventListener('TemplatesLoaded', (event) => {
 });
 
 window.addEventListener('scroll', () => {
-    const responsiveClasses = ['mobile', 'desktop'];
-    const rowContainers     = ['mobile-infinite-entity-row-container', 'infinite-entity-row-container'];
-    const spinners          = ['mobile-row-spinner', 'row-spinner'];
+    const responsiveClasses  = ['mobile', 'desktop'];
+    const templateContainers = ['mobile-entity-row', 'entity-row'];
+    const spinners           = ['mobile-row-spinner', 'row-spinner'];
 
-    for(let i = 0; i < rowContainers.length; i++) {
+    for(let i = 0; i < templateContainers.length; i++) {
         let responsiveClass = document.getElementsByClassName(responsiveClasses[i])[0];
 
         if(window.getComputedStyle(responsiveClass).display == 'none') continue;
         
-        const rowContainer = document.getElementById(rowContainers[i]);
-        const spinner      = document.getElementById(spinners[i]);
+        const templateContainer = document.querySelector(`div[template-container="${templateContainers[i]}"`);
+        const spinner           = document.getElementById(spinners[i]);
 
-        let offset = rowContainer.getBoundingClientRect().top - rowContainer.offsetParent.getBoundingClientRect().top;
+        let offset = templateContainer.getBoundingClientRect().top - templateContainer.offsetParent.getBoundingClientRect().top;
         const top  = window.pageYOffset + window.innerHeight - offset;
 
-        if(top >= rowContainer.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
+        if(top >= templateContainer.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
             spinner.style.display = 'block';
             loadRows(10);
         }
