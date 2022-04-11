@@ -16,7 +16,8 @@
 }
 
 .mobile-nft-project-banner .banner-image {
-    height: 200px;
+    object-fit: cover;
+    height:     200px;
 }
 
 .mobile-nft-project-banner .web-link {

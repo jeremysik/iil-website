@@ -47,5 +47,7 @@
 }
 
 .nft-project-banner .banner-image {
+    object-fit: cover;
     max-height: 350px;
+    min-height: 200px;
 }

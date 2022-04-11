@@ -1,0 +1,29 @@
+.about-content .why-container {
+    border-radius:    1rem;
+    background-color: white;
+    padding:          var(--card-padding);
+}
+
+.about-content .why-container img {
+    border-radius: 1rem;
+    width:         12.5rem;
+}
+
+.about-content .member-container {
+    border-radius:    1rem;
+    background-color: white;
+    padding:          var(--card-padding);
+}
+
+.about-content .profile-image {
+    border-radius: 1rem;
+    width:         12.5rem;
+}
+
+.about-content .info-container {
+    padding: var(--card-padding);
+}
+
+.about-content .social-icon {
+    width: 1.5rem;
+}
