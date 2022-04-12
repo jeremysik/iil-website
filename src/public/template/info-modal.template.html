@@ -1,10 +1,16 @@
 <div class="modal fade" id="info-modal" tabindex="-1">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content d-flex align-items-center">
-            <p class="text-white text-normal text-center fs-5" id="info-modal-info"></p>
-
-            <div class="py-3 w-100">
-                <button type="button" class="btn btn-primary text-normal w-100" data-bs-dismiss="modal">Close</button>
+            <div class="icon-container">
+                <img id="info-check-icon"       class="icon" src="/asset/check_icon.svg">
+                <img id="info-exclamation-icon" class="icon" src="/asset/exclamation_icon.svg">
+                <img id="info-cross-icon"       class="icon" src="/asset/cross_icon.svg">
+            </div>
+            <p class="text-bold text-center fs-2" id="info-modal-title"></p>
+            <p class="text-normal text-center fs-5" id="info-modal-info"></p>
+            <hr class="w-75">
+            <div class="py-3">
+                <button id="info-button" type="button" class="btn btn-primary text-bold success-button" data-bs-dismiss="modal"><small>OK, GOT IT</small></button>
             </div>
         </div>
     </div>

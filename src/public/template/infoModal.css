@@ -3,6 +3,27 @@
 }
 
 .modal-content {
-    background-color: #2A5E74;
-    padding:          2rem 2rem;
+    border-radius: 1rem;
+    padding:       var(--card-padding);
+}
+
+.modal-content .success-button {
+    background-color: var(--green-colour) !important;
+}
+
+.modal-content .warn-button {
+    background-color: var(--orange-light-colour) !important;
+}
+
+.modal-content .error-button {
+    background-color: var(--red-colour) !important;
+}
+
+.modal-content .icon-container {
+    height:        0;
+    margin-bottom: 4rem;
+}
+
+.modal-content .icon {
+    transform: translateY(calc(-1 * (var(--card-padding) + 50px)));
 }

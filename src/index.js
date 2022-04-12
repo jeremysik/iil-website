@@ -119,6 +119,24 @@ async function init() {
         app.use('/', express.static('./src/public'));
     }
 
+    // Set up 404 routes
+    let notFoundFunction = (req, res) => {
+        res.writeHead(404, {
+            'Connection':   'close',
+            'Content-Type': 'application/json'
+        });
+
+        res.end(JSON.stringify({
+            status: 404,
+            error:  `${req.method} ${req.path} not found!`,
+            data: null
+        }));
+    };
+    app.get('*',    notFoundFunction);
+    app.delete('*', notFoundFunction);
+    app.post('*',   notFoundFunction);
+    app.patch('*',  notFoundFunction);
+
     if(process.env.NODE_ENV == 'production') {
         // HTTPS listener
         const credentials = {

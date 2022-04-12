@@ -54,9 +54,9 @@ function editEntity(e) {
             description:      description
         }
     }).then((res) => {
-        info.success('Success!', 'NFT project successfully updated.');
+        InfoModal.success('Yay!', 'NFT project successfully updated.');
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 
@@ -95,7 +95,7 @@ function loadNftProjects() {
         document.getElementById('data-list-options').innerHTML = renderedOptions;
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 
@@ -129,7 +129,7 @@ function deleteNftProject(uid) {
     }).then((res) => {
         loadNftProjects();
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 

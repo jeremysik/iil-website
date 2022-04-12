@@ -12,6 +12,7 @@
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
 
+    <link template="info-modal" rel="stylesheet" href="/template/infoModal.css">
     <link template="mobile-header" rel="stylesheet" href="/template/mobileHeader.css">
     <link template="header" rel="stylesheet" href="/template/header.css">
     <link template="title" rel="stylesheet" href="/template/title.css">
@@ -20,6 +21,8 @@
 </head>
 
 <body class="d-flex flex-column">
+    <div template="info-modal"></div>
+
     <div class="mobile">
         <div template="mobile-header"></div>
         <div template="mobile-title"></div>
@@ -49,6 +52,8 @@
     <script src="/template/loader.js"          type="application/javascript" defer></script>
     <script src="/common.js"                   type="application/javascript" defer></script>
     <script src="script.js"                    type="application/javascript" defer></script>
+
+    <script template="info-modal" src="/template/infoModal.js" type="application/javascript" defer></script>
 </body>
 
 </html>

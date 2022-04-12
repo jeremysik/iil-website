@@ -39,8 +39,8 @@ function addEntity(e) {
         document.getElementById('add-nft-project-discord-url').value        = '';
         document.getElementById('add-nft-project-description').value        = '';
 
-        info.success('Success!', 'NFT project successfully added.');
+        InfoModal.success('Yay!', 'NFT project successfully added.');
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }

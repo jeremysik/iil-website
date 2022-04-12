@@ -12,9 +12,10 @@ function login(e) {
             password: password
         }
     }).then((res) => {
-        const decoded   = jwt_decode(res.data.data.accessToken);
+        const decoded = jwt_decode(res.data.data.accessToken);
         if(!decoded.admin) {
-            alert(`${username} is not an admin!`);
+            InfoModal.error('Oops!', `${username} is not an admin.`)
+
             document.getElementById('login-username').value = '';
             document.getElementById('login-password').value = '';
             return Promise.resolve();
@@ -25,6 +26,11 @@ function login(e) {
 
         window.location.replace('/admin');
     }).catch((err) => {
-        alert(err.response.data.error);
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 }

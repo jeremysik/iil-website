@@ -17,12 +17,16 @@ function loadRows(count) {
     }
 
     if(query == '') {
-        alert('You must enter a search query!');
         currentRow = 1;
         lastRow    = 0;
 
         document.getElementById('row-spinner').style.display  = 'none';
         document.getElementById('last-message').style.display = 'block';
+
+        // Need to wait a frame before showing the error.
+        setTimeout(() => {
+            InfoModal.error('Oops!', 'You must enter a search query.');
+        }, 0);
         
         return Promise.resolve();
     }
@@ -70,7 +74,15 @@ function loadRows(count) {
 
         if(currentRow >= lastRow) document.getElementById('last-message').style.display = 'block';
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        currentRow = 1;
+        lastRow    = 0;
+
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 }
 

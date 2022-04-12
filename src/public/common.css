@@ -32,6 +32,7 @@
     --light-green-colour:     #A2D5AB;
     --red-colour:             #C85C5C;
     --orange-colour:          #F9975D;
+    --orange-light-colour:    #F9B15D;
     --yellow-colour:          #FBD148;
     --hr-height:              0.3rem;
     --card-padding:           1.5rem;
@@ -88,7 +89,10 @@ body {
 }
 
 hr {
-    opacity: 1;
+    opacity:       1;
+    height:        var(--hr-height) !important;
+    border-radius: 1rem;
+    color:         var(--light-grey-colour);
 }
 
 /* ------ SVG Recolouring ------ */

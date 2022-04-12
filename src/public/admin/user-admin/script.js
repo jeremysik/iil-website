@@ -24,10 +24,10 @@ function resetPassword(e) {
             password: password
         }
     }).then((res) => {
-        info.success('Success!', `New password is: ${password}`);
+        InfoModal.success('Yay!', `New password is: ${password}`);
         loadUsers();
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 
@@ -65,7 +65,7 @@ function loadUsers() {
         document.getElementById('data-list-options').innerHTML = renderedOptions;
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 

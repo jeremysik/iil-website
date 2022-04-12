@@ -23,10 +23,10 @@ function addReview(e) {
             comment:             comment
         }
     }).then((res) => {
-        info.success('Success!', 'Review successfully added.');
+        InfoModal.success('Yay!', 'Review successfully added.');
         loadNftProjects();
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 
@@ -64,7 +64,7 @@ function loadNftProjects() {
         document.getElementById('data-list-options').innerHTML = renderedOptions;
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
 }
 

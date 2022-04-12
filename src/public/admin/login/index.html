@@ -12,9 +12,13 @@
     <link rel="stylesheet"    href="/lib/bootstrap.min.css">
     <link rel="stylesheet"    href="/common.css">
     <link rel="stylesheet"    href="/admin/common.css">
+
+    <link template="info-modal" rel="stylesheet" href="/template/infoModal.css">
 </head>
 
 <body class="d-flex flex-column h-100">
+    <div template="info-modal"></div>
+
     <div template="login-header"></div>
 
     <div class="container form-container text-normal text-white">
@@ -39,6 +43,8 @@
     <script src="/lib/jwt-decode.min.js"       type="application/javascript" defer></script>
     <script src="/template/loader.js"          type="application/javascript" defer></script>
     <script src="script.js"                    type="application/javascript" defer></script>
+
+    <script template="info-modal" src="/template/infoModal.js" type="application/javascript" defer></script>
 </body>
 
 </html>

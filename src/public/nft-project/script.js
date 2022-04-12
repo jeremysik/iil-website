@@ -56,7 +56,12 @@ document.addEventListener('TemplatesLoaded', (event) => {
         init();
 
     }).catch((err) => {
-        alert(err);
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 });
 
@@ -115,7 +120,15 @@ function loadRows(count) {
         if(currentRow >= lastRow) document.getElementById('last-message').style.display = 'block';
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        lastRow    = 0;
+        currentRow = 1;
+
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 }
 

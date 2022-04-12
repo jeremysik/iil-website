@@ -20,7 +20,12 @@ function approveReview(uid) {
         loadReviews();
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 }
 
@@ -38,7 +43,12 @@ function rejectReview(uid) {
         loadReviews();
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 }
 
@@ -63,7 +73,12 @@ function loadReviews() {
         document.getElementById('table-body').innerHTML = rowHtml;
 
     }).catch((err) => {
-        alert(JSON.stringify(err.response.data));
+        if(err.response) {
+            InfoModal.error('Oops!', JSON.stringify(err.response.data));
+            return Promise.resolve();
+        }
+        
+        InfoModal.error('Oops!', err);
     });
 }
 

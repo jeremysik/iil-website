@@ -45,11 +45,8 @@
 }
 
 .entity-card hr {
-    margin-left:   35%;
-    margin-right:  35%;
-    height:        var(--hr-height);
-    border-radius: 1rem;
-    color:         var(--light-grey-colour);
+    margin-left:  35%;
+    margin-right: 35%;
 }
 
 .entity-card .medal-image-container {
