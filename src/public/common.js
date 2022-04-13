@@ -1,4 +1,4 @@
-const etherScanApiKeyPublic = ''; 
+const etherScanApiKeyPublic = 'NU5F1GJ7UETV3RZKRDCIVPPPUSZ2CBQSPR'; 
 let provider                = null;
 
 function searchEntities(e) {
@@ -17,11 +17,8 @@ function connect() {
     return provider.send(
         'eth_requestAccounts', 
         []
-    ).then(() => {
-        const signer = provider.getSigner();
-        return signer.getAddress();
-    }).then((address) => {
-        return getHistory(address);
+    ).then((addresses) => {
+        return validateAddress(addresses[0]);
     }).catch((e) => {
         if(e.code == -32002) {
             InfoModal.warn('Hmm...', `Please check MetaMask and unlock your wallet if necessary.`);
@@ -32,7 +29,7 @@ function connect() {
     });   
 }
 
-function getHistory(address) {
+function validateAddress(address) {
     if(!provider) {
         InfoModal.warn('Hmm...', `MetaMask not detected. Please try again with a different browser.`);
         return Promise.resolve();
@@ -40,24 +37,32 @@ function getHistory(address) {
 
     return axios({
         method: 'get',
-        url:    `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&page=1&offset=1&sort=asc&apikey=${etherScanApiKeyPublic}`
+        url:    `https://api.etherscan.io/api?module=account&action=balance&address=${address}&tag=latest&apikey=${etherScanApiKeyPublic}`
     }).then((res) => {
         if(!res.data.result) {
-            InfoModal.warn('Hmm...', `Couldn't contact EtherScan to validate your wallet address. Some website features may not work as intended.`);
+            InfoModal.warn('Hmm...', `Couldn't contact EtherScan to validate your wallet balance. Some website features may not work as intended.`);
             return Promise.resolve();
         }
 
-        if(res.data.result.length < 1) {
-            InfoModal.warn('Hmm...', `Your wallet address must have at least 1 transaction that is more than 14 days old to use some website features (such as posting a review).`);
+        let balance = res.data.result * Math.pow(10, -18);
+        if(balance >= 0.01) {
             return Promise.resolve();
         }
 
-        const firstTransaction = res.data.result[0];
-        const ageSeconds       = ((new Date()).getTime() / 1000) - firstTransaction.timeStamp;
-        if((ageSeconds / 86400) < 14) {
-            InfoModal.warn('Hmm...', `Your wallet address must have at least 1 transaction that is more than 14 days old to use some website features (such as posting a review).`);
-            return Promise.resolve();
-        }
+        return axios({
+            method: 'get',
+            url:    `https://api.etherscan.io/api?module=account&action=txlist&address=${address}&page=1&offset=10&sort=asc&apikey=${etherScanApiKeyPublic}`
+        }).then((res) => {
+            if(!res.data.result) {
+                InfoModal.warn('Hmm...', `Couldn't contact EtherScan to validate your wallet transactions. Some website features may not work as intended.`);
+                return Promise.resolve();
+            }
+    
+            if(res.data.result.length < 10) {
+                InfoModal.warn('Hmm...', `Your wallet must have at least 0.01 ETH or made 10 transactions to use all features on this website (such as posting a review).`);
+                return Promise.resolve();
+            }           
+        });
     }).catch((err) => {
         InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });
@@ -71,7 +76,7 @@ function onConnect(address) {
         element.style.display = 'block';
     });
 
-    getHistory(address);
+    validateAddress(address);
 }
 
 function onDisconnect() {

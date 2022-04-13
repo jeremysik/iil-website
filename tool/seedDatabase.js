@@ -71,22 +71,24 @@ entityUids.forEach((entityUid) => {
             );
     
             const reviewUid        = faker.datatype.uuid();
-            const insertReviewStmt = db.prepare(`INSERT INTO review_v1(uid, entityUid, userUid, comment, approved) VALUES(?, ?, ?, ?, ?)`);
+            const insertReviewStmt = db.prepare(`INSERT INTO review_v1(uid, entityUid, userUid, rating, comment, approved) VALUES(?, ?, ?, ?, ?, ?)`);
             insertReviewStmt.run(
                 reviewUid,
                 entityUid,
                 userUid,
+                faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.boolean() ? faker.lorem.paragraph() : null,
                 faker.datatype.float({min: 0, max: 1}) > 0.8 ? 0 : 1
             );
 
-            const insertRatingStmt = db.prepare(`INSERT INTO nft_project_rating_v1(reviewUid, entityUid, communityRating, originalityRating, communicationRating) VALUES(?, ?, ?, ?, ?)`);
+            const insertRatingStmt = db.prepare(`INSERT INTO nft_project_rating_v1(reviewUid, entityUid, communityRating, originalityRating, communicationRating, consistencyRating) VALUES(?, ?, ?, ?, ?, ?)`);
             insertRatingStmt.run(
                 reviewUid,
                 entityUid,
-                faker.datatype.number({min: 1, max: 5}),
-                faker.datatype.number({min: 1, max: 5}),
-                faker.datatype.number({min: 1, max: 5})
+                faker.datatype.boolean() ? null : faker.datatype.number({min: 1, max: 5}),
+                faker.datatype.boolean() ? null : faker.datatype.number({min: 1, max: 5}),
+                faker.datatype.boolean() ? null : faker.datatype.number({min: 1, max: 5}),
+                faker.datatype.boolean() ? null : faker.datatype.number({min: 1, max: 5})
             );
         });
     
@@ -107,39 +109,54 @@ console.log(`Inserted ${totalReviewCount} reviews in total`);
 
 // Update ratings
 entityUids.forEach((entityUid) => {
-    let ratings = null;
+    let ratings = {};
     const transaction = db.transaction(() => {
-        const selectSumStmt = db.prepare(`
-            SELECT CAST(SUM(communityRating) AS REAL) / COUNT(*) AS communityRating,
-                CAST(SUM(originalityRating) AS REAL) / COUNT(*) AS originalityRating,
-                CAST(SUM(communicationRating) AS REAL) / COUNT(*) AS communicationRating
-            FROM nft_project_rating_v1 WHERE entityUid = ?
-        `);
-        ratings        = selectSumStmt.get(entityUid);
-        ratings.rating = (ratings.communityRating + ratings.originalityRating + ratings.communicationRating) / 3;
+        const ratingSumStmt = db.prepare(`SELECT CAST(SUM(rating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM review_v1 WHERE entityUid = ?`);
+        ratings.rating      = ratingSumStmt.get(entityUid);
+
+        const communitySumStmt = db.prepare(`SELECT CAST(SUM(communityRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE communityRating NOT NULL AND entityUid = ?`);
+        ratings.community      = communitySumStmt.get(entityUid);
+        
+        const originalitySumStmt = db.prepare(`SELECT CAST(SUM(originalityRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE originalityRating NOT NULL AND entityUid = ?`);
+        ratings.originality      = originalitySumStmt.get(entityUid);
+
+        const communicationSumStmt = db.prepare(`SELECT CAST(SUM(communicationRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE communicationRating NOT NULL AND entityUid = ?`);
+        ratings.communication      = communicationSumStmt.get(entityUid);
+
+        const consistencySumStmt = db.prepare(`SELECT CAST(SUM(consistencyRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE consistencyRating NOT NULL AND entityUid = ?`);
+        ratings.consistency      = consistencySumStmt.get(entityUid);
+
+        ratings.total = (ratings.rating.rating + ratings.community.rating + ratings.originality.rating + ratings.communication.rating + ratings.consistency.rating) / 5;
 
         const updateEntityStmt = db.prepare(`UPDATE entity_v1 SET rating = ?, reviewCount = (SELECT count(*) FROM review_v1 WHERE entityUid = ?) WHERE uid = ?`);
         updateEntityStmt.run(
-            ratings.rating,
+            ratings.total,
             entityUid,
             entityUid
         );
 
-        const updateNFTProjectStmt = db.prepare(`UPDATE nft_project_v1 SET communityRating = ?, originalityRating = ?, communicationRating = ? WHERE entityUid = ?`);
+        const updateNFTProjectStmt = db.prepare(`UPDATE nft_project_v1 SET communityRating = ?, originalityRating = ?, communicationRating = ?, consistencyRating = ? WHERE entityUid = ?`);
         updateNFTProjectStmt.run(
-            ratings.communityRating,
-            ratings.originalityRating,
-            ratings.communicationRating,
+            ratings.community.rating,
+            ratings.originality.rating,
+            ratings.communication.rating,
+            ratings.consistency.rating,
             entityUid
         );
     });
 
     try {
         transaction();
-        console.log(`Updated rating for entity ${entityUid}. Rating: ${ratings.rating}, community: ${ratings.communityRating}, originality: ${ratings.originalityRating}, communication: ${ratings.communicationRating}`);
+        console.log(
+            `Updated rating for entity ${entityUid}.
+    Rating: ${ratings.rating.rating} (${ratings.rating.count})
+    Community: ${ratings.community.rating} (${ratings.community.count})
+    Originality: ${ratings.originality.rating} (${ratings.originality.count})
+    Communication: ${ratings.communication.rating} (${ratings.communication.count})
+    Consistency: ${ratings.consistency.rating} (${ratings.consistency.count})`
+        );
     }
     catch(err) {
         console.error(`Failed to insert review: ${err}`);
     }
-
 });

@@ -231,4 +231,70 @@ router.get('/:entityUid', (req, res) => {
     res.locals.output.success(row).send();
 });
 
+router.post('/:entityUid/review', (req, res) => {
+
+    return res.locals.output.fail(
+        `Not implemented yet!`,
+        500
+    ).send();
+
+    let missingParams = [];
+    let fields        = ['rating'];
+
+    for(let field of fields) {
+        if(!req.body.hasOwnProperty(field)) missingParams.push(field);
+    }
+
+    if(missingParams.length > 0) {
+        return res.locals.output.fail(
+            `The following required parameters are missing: ${missingParams.join(', ')}`,
+            400
+        ).send();
+    }
+
+    let reviewFields         = fields;
+    let optionalReviewFields = ['comment'];
+    for(let field of optionalReviewFields) {
+        if(req.body.hasOwnProperty(field)) reviewFields.push(field);
+    }
+
+    let nftRatingFields         = [];
+    let optionalNftRatingFields = ['communityRating', 'originalityRating', 'communicationRating', 'consistencyRating'];
+    for(let field of optionalNftRatingFields) {
+        if(req.body.hasOwnProperty(field)) nftRatingFields.push(field);
+    }
+
+    let reviewValues    = reviewFields.map((field) => req.body[field] === '' ? null : req.body[field]);
+    let nftRatingValues = nftRatingFields.map((field) => req.body[field] === '' ? null : req.body[field]);
+
+    let uid = uuid();
+    reviewFields.push('uid');
+    reviewValues.push(uid);
+
+    const transaction = global.db.transaction(() => {
+        const insertReviewStmt = global.db.prepare(`INSERT INTO review_v1(${reviewFields.join(', ')}) VALUES(${"?, ".repeat(reviewValues.length - 1)}?)`);
+        insertReviewStmt.run(reviewValues);
+
+        const insertNftRatingStmt = global.db.prepare(`INSERT INTO nft_project_rating_v1(${nftRatingFields.join(', ')}) VALUES(${"?, ".repeat(nftRatingValues.length - 1)}?)`);
+        insertNftRatingStmt.run(nftRatingValues);
+    });
+
+    try {
+        transaction();
+    }
+    catch(err) {
+        global.log.error(`Failed to insert NFT review for ${null}`);
+
+        res.locals.output.fail(
+            `Failed to insert NFT review for ${null}`,
+            500
+        ).send();
+        return;
+    }
+
+    res.locals.output.success({
+        uid: uid
+    }).send();
+});
+
 module.exports = router;

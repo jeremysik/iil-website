@@ -94,6 +94,16 @@ async function init() {
         global.log.warn('Telegram bot token not found!')
     }
 
+    // Check for EtherScan API token
+    if(process.env.ETHERSCAN_API_TOKEN) {
+        global.config.etherscan = {
+            apiToken: process.env.ETHERSCAN_API_TOKEN
+        };
+    }
+    else {
+        global.log.error('Etherscan API token not found!')
+    }
+
     // Set up HTTP endpoints
     await Promise.all([
         require('./system')(app),
@@ -108,7 +118,7 @@ async function init() {
         // Redirect from HTTP to HTTPS
         app.use((req, res, next) => {
             req.secure ? next() : res.redirect('https://' + req.headers.host + req.url)
-        })
+        });
     }
 
     // Serve static files
