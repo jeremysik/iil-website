@@ -11,12 +11,24 @@
     background-color: var(--green-colour) !important;
 }
 
+.modal-content .success-button:hover {
+    background-color: var(--dark-green-colour) !important;
+}
+
 .modal-content .warn-button {
     background-color: var(--orange-light-colour) !important;
 }
 
+.modal-content .warn-button:hover {
+    background-color: var(--orange-colour) !important;
+}
+
 .modal-content .error-button {
     background-color: var(--red-colour) !important;
+}
+
+.modal-content .error-button:hover {
+    background-color: var(--dark-red-colour) !important;
 }
 
 .modal-content .icon-container {

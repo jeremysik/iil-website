@@ -45,9 +45,10 @@ document.addEventListener('TemplatesLoaded', (event) => {
                             if(rating >= 1) return 'very-low-rating';
                         }
                     },
-                    'originalityPercentage':   (nftProject.originalityRating   - 1) * 25,
                     'communityPercentage':     (nftProject.communityRating     - 1) * 25,
-                    'communicationPercentage': (nftProject.communicationRating - 1) * 25
+                    'originalityPercentage':   (nftProject.originalityRating   - 1) * 25,
+                    'communicationPercentage': (nftProject.communicationRating - 1) * 25,
+                    'consistencyPercentage':   (nftProject.consistencyRating - 1)   * 25
                 },
                 nftProject
             )
@@ -101,12 +102,32 @@ function loadRows(count) {
         lastRow            = res.data.data.total - 1;
 
         for(let i = 0; i < res.data.data.rows.length; i++) {
+            let totalRating         = res.data.data.rows[i].rating;
+            let optionalRatingCount = 0;
+            if(res.data.data.rows[i].communityRating != null) {
+                optionalRatingCount++;
+                totalRating += res.data.data.rows[i].communityRating;
+            }
+            if(res.data.data.rows[i].originalityRating != null) {
+                optionalRatingCount++;
+                totalRating += res.data.data.rows[i].originalityRating;
+            }
+            if(res.data.data.rows[i].communicationRating != null) {
+                optionalRatingCount++;
+                totalRating += res.data.data.rows[i].communicationRating;
+            }
+            if(res.data.data.rows[i].consistencyRating != null) {
+                optionalRatingCount++;
+                totalRating += res.data.data.rows[i].consistencyRating;
+            }
+            totalRating /= (optionalRatingCount + 1);
+            
             reviewRowsHtml += Mustache.render(
                 reviewRowTemplate,
                 Object.assign(
                     {
-                        'rating': ((res.data.data.rows[i].communityRating + res.data.data.rows[i].originalityRating + res.data.data.rows[i].communicationRating) / 3).toPrecision(3),
-                        'date':   moment(res.data.data.rows[i].created).format('D MMMM YYYY')
+                        'totalRating': totalRating.toPrecision(3),
+                        'date':        moment(res.data.data.rows[i].created).format('D MMMM YYYY')
                     },
                     res.data.data.rows[i]
                 )
@@ -139,6 +160,11 @@ function init() {
         // Keep loading until we have something to scroll (the screen could be really tall and not very wide)
         if(currentRow <= lastRow && document.body.scrollHeight <= window.innerHeight) return init();
     });
+}
+
+function addReview(e) {
+    e.preventDefault();
+    console.log(e);
 }
 
 window.addEventListener('scroll', () => {

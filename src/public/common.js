@@ -100,6 +100,11 @@ document.addEventListener('TemplatesLoaded', function() {
         } 
     });
 
+    // Enable tooltips
+    [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]')).map((element) => {
+        return new bootstrap.Tooltip(element);
+    })
+
     if(window.ethereum) {
         provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
         window.ethereum.on('accountsChanged', (accounts) => {

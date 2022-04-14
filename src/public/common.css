@@ -21,6 +21,7 @@
 
 :root {
     --purple-colour:          #8C72FF;
+    --dark-purple-colour:     #7151FF;
     --matte-black-colour:     #232323;
     --light-cyan-colour:      #90E0EF;
     --cyan-colour:            #6CD3FF;
@@ -29,7 +30,9 @@
     --light-grey-colour:      #E6E6E6;
     --very-light-grey-colour: #F8FAFC;
     --green-colour:           #39AEA9;
+    --dark-green-colour:      #319590;
     --light-green-colour:     #A2D5AB;
+    --dark-red-colour:        #B83E3E;
     --red-colour:             #C85C5C;
     --orange-colour:          #F9975D;
     --orange-light-colour:    #F9B15D;
@@ -40,19 +43,14 @@
 
 body {
     background-color: var(--matte-black-colour);
-}
-
-.text-normal {
-    font-family: 'proximanova';
+    font-family:      'proximanova';
 }
 
 .text-medium {
-    font-family: 'proximanova';
     font-weight: medium;
 }
 
 .text-bold {
-    font-family: 'proximanova';
     font-weight: bold;
 }
 
@@ -70,6 +68,10 @@ body {
 
 .text-grey {
     color: var(--grey-colour);
+}
+
+.text-dark-grey {
+    color: var(--dark-grey-colour);
 }
 
 .fs-6 {
@@ -108,6 +110,14 @@ hr {
 .svg-cyan {
     filter: invert(86%) sepia(16%) saturate(6073%) hue-rotate(170deg) brightness(101%) contrast(103%);
 }
+
+.svg-grey {
+    filter: invert(90%) sepia(2%) saturate(2%) hue-rotate(314deg) brightness(97%) contrast(108%);
+}
+
+.svg-yellow {
+    filter: invert(94%) sepia(17%) saturate(2516%) hue-rotate(323deg) brightness(110%) contrast(97%);
+}
 /* ------ SVG Recolouring ------ */
 
 /* ------ Stealth Links/Buttons ------ */
@@ -130,6 +140,12 @@ hr {
 	outline:    inherit;
 }
 /* ------ Stealth Links/Buttons ------ */
+
+/* ------ Tooltip ------ */
+.tooltip.show {
+    opacity: 1;
+}
+/* ------ Tooltip ------ */
 
 /* ------ Image Container (Horizontally Centered) ------ */
 .image-container {
@@ -157,7 +173,7 @@ hr {
 }
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active {
-    background-color: #458A99 !important;
+    background-color: var(--dark-purple-colour) !important;
     box-shadow:       none !important;
 }
 

@@ -9,12 +9,12 @@
         <div class="col">
             <div class="pseudo-row d-flex align-items-center w-100">
                 <div class="progress w-100">
-                    <div class="progress-bar {{ #ratingToColour }}{{ originalityRating }}{{ /ratingToColour }}" style="width: {{ originalityPercentage }}%" aria-valuenow="{{ originalityPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar {{ #ratingToColour }}{{ communityRating }}{{ /ratingToColour }}" style="width: {{ communityPercentage }}%" aria-valuenow="{{ communityPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
             <div class="pseudo-row d-flex align-items-center w-100">
                 <div class="progress w-100">
-                    <div class="progress-bar {{ #ratingToColour }}{{ communityRating }}{{ /ratingToColour }}" style="width: {{ communityPercentage }}%" aria-valuenow="{{ communityPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                    <div class="progress-bar {{ #ratingToColour }}{{ originalityRating }}{{ /ratingToColour }}" style="width: {{ originalityPercentage }}%" aria-valuenow="{{ originalityPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
             <div class="pseudo-row d-flex align-items-center w-100">
@@ -22,17 +22,24 @@
                     <div class="progress-bar {{ #ratingToColour }}{{ communicationRating }}{{ /ratingToColour }}" style="width: {{ communicationPercentage }}%" aria-valuenow="{{ communicationPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
                 </div>
             </div>
+            <div class="pseudo-row d-flex align-items-center w-100">
+                <div class="progress w-100">
+                    <div class="progress-bar {{ #ratingToColour }}{{ consistencyRating }}{{ /ratingToColour }}" style="width: {{ consistencyPercentage }}%" aria-valuenow="{{ consistencyPercentage }}" aria-valuemin="0" aria-valuemax="100"></div>
+                </div>
+            </div>
         </div>
         <div class="col breakdown-rating-column col-auto text-white text-bold fs-8 fs-md-n">
-            <div class="pseudo-row d-flex align-items-center">{{ #roundRating }}{{ originalityRating }}{{ /roundRating }}</div>
             <div class="pseudo-row d-flex align-items-center">{{ #roundRating }}{{ communityRating }}{{ /roundRating }}</div>
+            <div class="pseudo-row d-flex align-items-center">{{ #roundRating }}{{ originalityRating }}{{ /roundRating }}</div>
             <div class="pseudo-row d-flex align-items-center">{{ #roundRating }}{{ communicationRating }}{{ /roundRating }}</div>
+            <div class="pseudo-row d-flex align-items-center">{{ #roundRating }}{{ consistencyRating }}{{ /roundRating }}</div>
         </div>
         <div class="col col-auto text-purple text-bold">
             <div class="breakdown-rating-label-container fs-8 fs-md-n">
-                <div class="pseudo-row d-flex align-items-center">Originality</div>
                 <div class="pseudo-row d-flex align-items-center">Community</div>
+                <div class="pseudo-row d-flex align-items-center">Originality</div>
                 <div class="pseudo-row d-flex align-items-center">Communication</div>
+                <div class="pseudo-row d-flex align-items-center">Consistency</div>
             </div>
         </div>
     </div>

@@ -26,22 +26,45 @@
     padding: var(--card-padding);
 }
 
-.nft-project-review-form .col-label {
-    flex:  0 0 auto;
-    width: 8.5rem;
+.nft-project-review-form .label {
+    margin-top: 0.1rem;
+}
+
+.nft-project-review-form .col-radio {
+    max-width: 4rem;
+}
+
+.nft-project-review-form .form-check-input, .nft-project-review-form .form-check-input:checked {
+    background:          url("/asset/star_radio.svg");
+    background-repeat:   no-repeat;
+    background-size:     90% 90%;
+    background-position: 50% 0%;
+    border:              none;
+    box-shadow:          none;
+    width:               1.75rem;
+    height:              1.75rem;
+    margin-top:          0;
+}
+
+.nft-project-review-form .form-check-input:active {
+    /* Set to yellow while active to stop flashing */
+    filter: invert(94%) sepia(17%) saturate(2516%) hue-rotate(323deg) brightness(110%) contrast(97%);
+}
+
+.nft-project-review-form .form-check-input:hover, .nft-project-review-form .rating-tip:hover {
+    cursor: pointer;
 }
 
 @media(min-width: 767px) {
-    .nft-project-review-form .col-comment {
-        padding-left: 2rem;
-    }
-
     .nft-project-review-form .col-label {
-        width: 10rem;
+        width: 11rem;
     }
 }
 
 @media(min-width: 992px) {
+    .nft-project-review-form .col-comment {
+        padding-left: 2rem;
+    }
 }
 
 @media(min-width: 1200px) {

@@ -196,7 +196,7 @@ router.get('/:entityUid/review', (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
+            const limitStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.rating, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
             const limitRow  = limitStmt.all([req.params.entityUid].concat(approved).concat([limit, offset]));
 
             res.locals.output.success({
@@ -207,7 +207,7 @@ router.get('/:entityUid/review', (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
+    const allStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.rating, review_v1.comment, review_v1.approved${user ? ', user_v1.username ' : ' '}FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
     const allRow  = allStmt.all([req.params.entityUid].concat(approved));
 
     res.locals.output.success({

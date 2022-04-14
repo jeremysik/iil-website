@@ -29,7 +29,6 @@ CREATE TABLE IF NOT EXISTS nft_project_v1(
     twitterUrl TEXT,
     discordUrl TEXT,
     description TEXT,
-    rating REAL DEFAULT 0,
     communityRating REAL DEFAULT 0,
     originalityRating REAL DEFAULT 0,
     communicationRating REAL DEFAULT 0,
