@@ -22,21 +22,12 @@
     <div template="login-header"></div>
 
     <div class="container form-container text-white">
-        <form onsubmit="login(event)">
-            <div class="mb-3">
-                <label for="login-username" class="form-label">Username</label>
-                <input type="text" class="form-control" id="login-username">
-            </div>
-            <div class="mb-3">
-                <label for="login-password" class="form-label">Password</label>
-                <input type="password" class="form-control" id="login-password">
-            </div>
-            <div class="py-3">
-                <button type="submit" class="btn btn-primary w-100">Login</button>
-            </div>
-        </form>
+        <div class="pt-3">
+            <button type="submit" class="btn btn-primary w-100" onclick="login(event)">Login</button>
+        </div>
     </div>
 
+    <script src="/lib/ethers.umd.min.js"       type="application/javascript" defer></script>
     <script src="/lib/axios.min.js"            type="application/javascript" defer></script>
     <script src="/lib/bootstrap.bundle.min.js" type="application/javascript" defer></script>
     <script src="/lib/mustache.min.js"         type="application/javascript" defer></script>

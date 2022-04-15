@@ -6,11 +6,9 @@ const config = require(`${process.cwd()}/config.json`);
 const db     = new betterSqlite3(`${process.cwd()}${config.database.path}`);
 
 // Create admin user
-const insertAdminUserStmt = db.prepare(`INSERT INTO user_v1(uid, username, password, admin) VALUES(?, ?, ?, ?)`);
+const insertAdminUserStmt = db.prepare(`INSERT INTO user_v1(address, admin) VALUES(?, ?)`);
 insertAdminUserStmt.run(
-    faker.datatype.uuid(),
-    'johndoe',
-    '$2b$10$c9IeAfg4r3E/f6sH/eQ5/uZr6ZXmRt.VSVn7U.GukT4RunesCTAx2', // '111'
+    '0x1E3C24edcF3D775310413C2f18f9BA9ee092072C',
     1
 );
 
@@ -62,20 +60,16 @@ entityUids.forEach((entityUid) => {
     let reviewCount = faker.datatype.number({min: 10, max: 250});
     for(let i = 0; i < reviewCount; i++) {
         const transaction = db.transaction(() => {
-            const userUid        = faker.datatype.uuid();
-            const insertUserStmt = db.prepare(`INSERT INTO user_v1(uid, username, password) VALUES(?, ?, ?)`);
-            insertUserStmt.run(
-                userUid,
-                `${faker.name.firstName()}${faker.name.lastName()}${userUid}`,
-                '$2b$10$c9IeAfg4r3E/f6sH/eQ5/uZr6ZXmRt.VSVn7U.GukT4RunesCTAx2', // '111'
-            );
+            const userAddress    = faker.datatype.uuid();
+            const insertUserStmt = db.prepare(`INSERT INTO user_v1(address) VALUES(?)`);
+            insertUserStmt.run(userAddress);
     
             const reviewUid        = faker.datatype.uuid();
-            const insertReviewStmt = db.prepare(`INSERT INTO review_v1(uid, entityUid, userUid, rating, comment, approved) VALUES(?, ?, ?, ?, ?, ?)`);
+            const insertReviewStmt = db.prepare(`INSERT INTO review_v1(uid, entityUid, userAddress, rating, comment, approved) VALUES(?, ?, ?, ?, ?, ?)`);
             insertReviewStmt.run(
                 reviewUid,
                 entityUid,
-                userUid,
+                userAddress,
                 faker.datatype.number({min: 1, max: 5}),
                 faker.datatype.boolean() ? faker.lorem.paragraph() : null,
                 faker.datatype.float({min: 0, max: 1}) > 0.8 ? 0 : 1

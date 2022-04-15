@@ -93,7 +93,6 @@ function loadRows(count) {
             url:    `/v1/nft-project/${entityUid}/review`,
             headers: {
                 records:  `${currentRow}-${currentRow + count - 1}`,
-                user:     1,
                 approved: '0,1'
             }
         });
@@ -164,7 +163,81 @@ function init() {
 
 function addReview(e) {
     e.preventDefault();
-    console.log(e);
+
+    if(!provider) {
+        InfoModal.warn('Hmm...', `MetaMask not detected. Please try again with a different browser or make sure your wallet is connected.`);
+        return Promise.resolve();
+    }
+
+    let payload = {
+        signature: null,
+        data: {
+            address:             null,
+            rating:              null,
+            communityRating:     null,
+            originalityRating:   null,
+            communicationRating: null,
+            consistencyRating:   null,
+            comment:             null
+        }
+    };
+
+    let ratingElement = document.querySelector('input[name="nft-rating"]:checked');
+    if(!ratingElement) {
+        InfoModal.error('Oops!', 'Please select an "Overall" rating for this NFT project.');
+        return;
+    }
+
+    payload.data.rating = ratingElement.value;
+
+    let communityRatingElement = document.querySelector('input[name="nft-community-rating"]:checked');
+    if(communityRatingElement) payload.data.communityRating = communityRatingElement.value;
+
+    let originalityRatingElement = document.querySelector('input[name="nft-originality-rating"]:checked');
+    if(originalityRatingElement) payload.data.originalityRating = originalityRatingElement.value;
+
+    let communicationRatingElement = document.querySelector('input[name="nft-communication-rating"]:checked');
+    if(communicationRatingElement) payload.data.communicationRating = communicationRatingElement.value;
+
+    let consistencyRatingElement = document.querySelector('input[name="nft-consistency-rating"]:checked');
+    if(consistencyRatingElement) payload.data.consistencyRating = consistencyRatingElement.value;
+
+    let comment = document.getElementById('nft-comment').value;
+    if(comment != '') payload.data.comment = comment;
+
+    return provider.send(
+        'eth_requestAccounts',
+        []
+    ).then((addresses) => {
+        payload.data.address = ethers.utils.getAddress(addresses[0]);     
+
+        return provider.getSigner().signMessage(JSON.stringify(payload.data));
+    }).then((signature) => {
+        payload.signature = signature;
+
+        return axios({
+            method: 'post',
+            url:    `/v1/nft-project/${entityUid}/review`,
+            data:   payload
+        });
+    }).catch((e) => {
+        if(e.code == -32002) {
+            InfoModal.warn('Hmm...', `Please check MetaMask and unlock your wallet if necessary.`);
+            return Promise.resolve();
+        }
+
+        if(e.code == 4001) {
+            InfoModal.error('Oops!', `To submit your review please sign the message via MetaMask. Don't worry, it's free and doesn't cost any gas, we do this to verify that your review is legit.`);
+            return Promise.resolve();
+        }
+
+        if(e.response && e.response.data && e.response.data.error) {
+            InfoModal.error('Oops!', e.response.data.error);
+            return Promise.resolve();
+        }
+
+        return Promise.reject(e);
+    });
 }
 
 window.addEventListener('scroll', () => {

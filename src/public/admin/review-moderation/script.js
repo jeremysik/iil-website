@@ -62,8 +62,7 @@ function loadReviews() {
             Authorization: `Bearer ${getAccessToken()}`,
             records:       '0-19',
             approved:      0,
-            entity:        1,
-            user:          1
+            entity:        1
         }
     }).then((res) => {
         let rowHtml = '';

@@ -9,7 +9,6 @@ router.use('/', bodyParser.json());
 * "records  = A-B", where A & B are index numbers of the records required
 * "approved = X,X..", where X is -1 (rejected), 0 (waiting), 1 (approved)
 * "entity   = X", where X is 1, 0 indicating whether or not to include entity name and type
-* "user     = X", where X is 1, 0 indicating whether or not to include user name
 */
 router.get('/', authorise.admin, (req, res) => {
 
@@ -43,7 +42,7 @@ router.get('/', authorise.admin, (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}${user ? ', user_v1.username ' : ' '}FROM review_v1${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ' '}${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'} LIMIT ? OFFSET ?`);
+            const limitStmt = global.db.prepare(`SELECT review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}FROM review_v1${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ' '}WHERE ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'} LIMIT ? OFFSET ?`);
             const limitRow  = limitStmt.all(approved.concat([limit, offset]));
 
             res.locals.output.success({
@@ -54,7 +53,7 @@ router.get('/', authorise.admin, (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}${user ? ', user_v1.username ' : ' '}FROM review_v1${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ''}${user ? ' LEFT JOIN user_v1 ON review_v1.userUid = user_v1.uid ' : ' '}WHERE ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}`);
+    const allStmt = global.db.prepare(`SELECT review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}FROM review_v1${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ''}WHERE ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}`);
     const allRow  = allStmt.all(approved);
 
     res.locals.output.success({

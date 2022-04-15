@@ -15,10 +15,10 @@ function connect() {
     }
 
     return provider.send(
-        'eth_requestAccounts', 
+        'eth_requestAccounts',
         []
     ).then((addresses) => {
-        return validateAddress(addresses[0]);
+        return validateAddress(ethers.utils.getAddress(addresses[0]));
     }).catch((e) => {
         if(e.code == -32002) {
             InfoModal.warn('Hmm...', `Please check MetaMask and unlock your wallet if necessary.`);
@@ -68,15 +68,13 @@ function validateAddress(address) {
     });
 }
 
-function onConnect(address) {
+function onConnect() {
     [].forEach.call(document.getElementsByClassName('connected'), (element) => {
         element.style.display = 'none';
     });
     [].forEach.call(document.getElementsByClassName('disconnected'), (element) => {
         element.style.display = 'block';
     });
-
-    validateAddress(address);
 }
 
 function onDisconnect() {
@@ -106,10 +104,10 @@ document.addEventListener('TemplatesLoaded', function() {
     })
 
     if(window.ethereum) {
-        provider = new ethers.providers.Web3Provider(window.ethereum, 'any');
+        provider = new ethers.providers.Web3Provider(window.ethereum, 'mainnet');
         window.ethereum.on('accountsChanged', (accounts) => {
             if(accounts.length > 0) {
-                onConnect(accounts[0]);
+                onConnect();
                 return;
             }
 
@@ -118,7 +116,7 @@ document.addEventListener('TemplatesLoaded', function() {
 
         provider.listAccounts(
         ).then((accounts) => {
-            if(accounts.length > 0) onConnect(accounts[0]);
+            if(accounts.length > 0) onConnect();
         }).catch(() => {});
     }
 });
