@@ -3,8 +3,6 @@ CREATE TABLE IF NOT EXISTS entity_v1(
     name TEXT NOT NULL UNIQUE,
     type TEXT NOT NULL,
     logoImageUrl TEXT NOT NULL,
-    rating REAL DEFAULT 0,
-    reviewCount INT DEFAULT 0,
     created DATETIME DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -21,6 +19,12 @@ CREATE TABLE IF NOT EXISTS review_v1(
     UNIQUE(entityUid, userAddress) ON CONFLICT ABORT
 );
 
+CREATE TABLE IF NOT EXISTS user_v1(
+    address TEXT NOT NULL PRIMARY KEY,
+    admin INT DEFAULT 0,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP
+);
+
 CREATE TABLE IF NOT EXISTS nft_project_v1(
     entityUid TEXT NOT NULL PRIMARY KEY,
     featuredImageUrl TEXT NOT NULL,
@@ -30,15 +34,11 @@ CREATE TABLE IF NOT EXISTS nft_project_v1(
     twitterUrl TEXT,
     discordUrl TEXT,
     description TEXT,
-    communityRating REAL DEFAULT 0,
-    originalityRating REAL DEFAULT 0,
-    communicationRating REAL DEFAULT 0,
-    consistencyRating REAL DEFAULT 0,
     created DATETIME DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (entityUid) REFERENCES entity_v1(uid)
 );
 
-CREATE TABLE IF NOT EXISTS nft_project_rating_v1(
+CREATE TABLE IF NOT EXISTS nft_project_review_rating_v1(
     reviewUid TEXT NOT NULL PRIMARY KEY,
     entityUid TEXT NOT NULL,
     communityRating INT DEFAULT NULL, 
@@ -50,8 +50,20 @@ CREATE TABLE IF NOT EXISTS nft_project_rating_v1(
     FOREIGN KEY (reviewUid) REFERENCES review_v1(uid)
 );
 
-CREATE TABLE IF NOT EXISTS user_v1(
-    address TEXT NOT NULL UNIQUE,
-    admin INT DEFAULT 0,
-    created DATETIME DEFAULT CURRENT_TIMESTAMP
+CREATE TABLE IF NOT EXISTS nft_project_rating_history_v1(
+    uid TEXT NOT NULL PRIMARY KEY,
+    entityUid TEXT NOT NULL,
+    totalRating REAL DEFAULT 0,
+    rating REAL DEFAULT 0,
+    ratingCount INT DEFAULT 0,
+    communityRating REAL DEFAULT 0,
+    communityRatingCount INT DEFAULT 0,
+    originalityRating REAL DEFAULT 0,
+    originalityRatingCount INT DEFAULT 0,
+    communicationRating REAL DEFAULT 0,
+    communicationRatingCount INT DEFAULT 0,
+    consistencyRating REAL DEFAULT 0,
+    consistencyRatingCount INT DEFAULT 0,
+    created DATETIME DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (entityUid) REFERENCES entity_v1(uid)
 );

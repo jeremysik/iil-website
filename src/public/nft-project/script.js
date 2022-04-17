@@ -45,10 +45,11 @@ document.addEventListener('TemplatesLoaded', (event) => {
                             if(rating >= 1) return 'very-low-rating';
                         }
                     },
+                    'ratingPercentage':        (nftProject.rating              - 1) * 25,
                     'communityPercentage':     (nftProject.communityRating     - 1) * 25,
                     'originalityPercentage':   (nftProject.originalityRating   - 1) * 25,
                     'communicationPercentage': (nftProject.communicationRating - 1) * 25,
-                    'consistencyPercentage':   (nftProject.consistencyRating - 1)   * 25
+                    'consistencyPercentage':   (nftProject.consistencyRating   - 1)   * 25
                 },
                 nftProject
             )
@@ -125,7 +126,10 @@ function loadRows(count) {
                 reviewRowTemplate,
                 Object.assign(
                     {
-                        'totalRating': totalRating.toPrecision(3),
+                        'roundRating': function() {
+                            return round(3);
+                        },
+                        'totalRating': totalRating,
                         'date':        moment(res.data.data.rows[i].created).format('D MMMM YYYY')
                     },
                     res.data.data.rows[i]

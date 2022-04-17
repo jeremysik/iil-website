@@ -10,6 +10,7 @@ function truncate(charCount) {
 function round(precision) {
     return function(text, render) {
         let rating = Number.parseFloat(render(text));
+        if(Number.isNaN(rating)) return '-';
         return rating.toPrecision(precision);
     }
 }

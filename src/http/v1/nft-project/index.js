@@ -39,7 +39,24 @@ router.get('/', (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid ${order ? `ORDER BY rating ${order} ` : ''} LIMIT ? OFFSET ?`);
+            const limitStmt = global.db.prepare(`
+                SELECT 
+                    entity_v1.*, nft_project_v1.*, nft_project_rating_history_v1.uid AS ratingHistoryUid, nft_project_rating_history_v1.rating, nft_project_rating_history_v1.ratingCount, nft_project_rating_history_v1.totalRating,
+                    nft_project_rating_history_v1.communityRating, nft_project_rating_history_v1.originalityRating, nft_project_rating_history_v1.communicationRating, nft_project_rating_history_v1.consistencyRating
+                FROM entity_v1 
+                LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid
+                LEFT JOIN nft_project_rating_history_v1 ON entity_v1.uid = nft_project_rating_history_v1.entityUid
+                WHERE
+                    nft_project_rating_history_v1.uid = (
+                        SELECT uid
+                        FROM nft_project_rating_history_v1
+                        WHERE
+                            entityUid = entity_v1.uid
+                        ORDER BY ratingCount DESC
+                        LIMIT 1
+                    )
+                ${order ? `ORDER BY totalRating ${order} ` : ''} LIMIT ? OFFSET ?
+            `);
             const limitRow  = limitStmt.all(limit, offset);
 
             res.locals.output.success({
@@ -50,7 +67,24 @@ router.get('/', (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid ${order ? `ORDER BY rating ${order} ` : ''}`);
+    const allStmt = global.db.prepare(`
+        SELECT 
+            entity_v1.*, nft_project_v1.*, nft_project_rating_history_v1.uid AS ratingHistoryUid, nft_project_rating_history_v1.rating, nft_project_rating_history_v1.ratingCount, nft_project_rating_history_v1.totalRating,
+            nft_project_rating_history_v1.communityRating, nft_project_rating_history_v1.originalityRating, nft_project_rating_history_v1.communicationRating, nft_project_rating_history_v1.consistencyRating
+        FROM entity_v1 
+        LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid
+        LEFT JOIN nft_project_rating_history_v1 ON entity_v1.uid = nft_project_rating_history_v1.entityUid
+        WHERE
+            nft_project_rating_history_v1.uid = (
+                SELECT uid
+                FROM nft_project_rating_history_v1
+                WHERE
+                    entityUid = entity_v1.uid
+                ORDER BY ratingCount DESC
+                LIMIT 1
+            )
+        ${order ? `ORDER BY totalRating ${order} ` : ''}
+    `);
     const allRow  = allStmt.all();
 
     res.locals.output.success({
@@ -169,7 +203,7 @@ router.patch('/:entityUid', authorise.admin, (req, res) => {
 * "approved = X,X..", where X is -1 (rejected), 0 (waiting), 1 (approved)
 */
 router.get('/:entityUid/review', (req, res) => {
-    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid WHERE nft_project_v1.entityUid = ?`);
+    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM nft_project_review_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_review_rating_v1.entityUid = nft_project_v1.entityUid WHERE nft_project_v1.entityUid = ?`);
     const countRow  = countStmt.get(req.params.entityUid);
 
     if(!countRow) {
@@ -195,7 +229,7 @@ router.get('/:entityUid/review', (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.rating, review_v1.comment, review_v1.userAddress, review_v1.approved FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
+            const limitStmt = global.db.prepare(`SELECT nft_project_review_rating_v1.*, review_v1.rating, review_v1.comment, review_v1.userAddress, review_v1.approved FROM nft_project_review_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_review_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_review_rating_v1.reviewUid WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC LIMIT ? OFFSET ?`);            
             const limitRow  = limitStmt.all([req.params.entityUid].concat(approved).concat([limit, offset]));
 
             res.locals.output.success({
@@ -206,7 +240,7 @@ router.get('/:entityUid/review', (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT nft_project_rating_v1.*, review_v1.rating, review_v1.comment, review_v1.userAddress, review_v1.approved FROM nft_project_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_rating_v1.reviewUid WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
+    const allStmt = global.db.prepare(`SELECT nft_project_review_rating_v1.*, review_v1.rating, review_v1.comment, review_v1.userAddress, review_v1.approved FROM nft_project_review_rating_v1 LEFT JOIN nft_project_v1 ON nft_project_review_rating_v1.entityUid = nft_project_v1.entityUid LEFT JOIN review_v1 ON review_v1.uid = nft_project_review_rating_v1.reviewUid WHERE nft_project_v1.entityUid = ? AND (${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}) ORDER BY created DESC`);
     const allRow  = allStmt.all([req.params.entityUid].concat(approved));
 
     res.locals.output.success({
@@ -216,8 +250,32 @@ router.get('/:entityUid/review', (req, res) => {
 });
 
 router.get('/:entityUid', (req, res) => {
-    const stmt = global.db.prepare(`SELECT * FROM nft_project_v1 LEFT JOIN entity_v1 ON nft_project_v1.entityUid = entity_v1.uid WHERE nft_project_v1.entityUid = ?`);
-    const row  = stmt.get(req.params.entityUid);
+    const ratingHistoryStmt = global.db.prepare(`SELECT * FROM nft_project_rating_history_v1 WHERE entityUid = ?`);
+    const ratingHistoryRow  = ratingHistoryStmt.get(req.params.entityUid);
+
+    let stmt = global.db.prepare(`
+        SELECT 
+            entity_v1.*, nft_project_v1.*, nft_project_rating_history_v1.uid AS ratingHistoryUid, nft_project_rating_history_v1.rating, nft_project_rating_history_v1.ratingCount, nft_project_rating_history_v1.totalRating,
+            nft_project_rating_history_v1.communityRating, nft_project_rating_history_v1.originalityRating, nft_project_rating_history_v1.communicationRating, nft_project_rating_history_v1.consistencyRating
+        FROM entity_v1 
+        LEFT JOIN nft_project_v1 ON entity_v1.uid = nft_project_v1.entityUid
+        LEFT JOIN nft_project_rating_history_v1 ON entity_v1.uid = nft_project_rating_history_v1.entityUid
+        WHERE
+            nft_project_rating_history_v1.uid = (
+                SELECT uid
+                FROM nft_project_rating_history_v1
+                WHERE
+                    entityUid = entity_v1.uid
+                ORDER BY ratingCount DESC
+                LIMIT 1
+            )
+        AND
+            nft_project_v1.entityUid = ?
+    `);
+
+    if(!ratingHistoryRow) stmt = global.db.prepare(`SELECT *, 0 as ratingCount FROM nft_project_v1 LEFT JOIN entity_v1 ON nft_project_v1.entityUid = entity_v1.uid WHERE nft_project_v1.entityUid = ?`);
+
+    const row = stmt.get(req.params.entityUid);
 
     if(!row) {
         res.locals.output.fail(
@@ -273,92 +331,133 @@ router.post('/:entityUid/review', (req, res) => {
             }           
         });
     }).then(() => {
-        let missingParams = [];
-        let fields        = ['rating'];
-
-        for(let field of fields) {
-            if(!req.body.data.hasOwnProperty(field)) missingParams.push(field);
+        if(!req.body.data.hasOwnProperty('rating')) {
+            return Promise.reject({code: 400, message: `The following required parameters are missing: rating`});
         }
 
-        if(missingParams.length > 0) {
-            return Promise.reject({code: 400, message: `The following required parameters are missing: ${missingParams.join(', ')}`});
-        }
-
-        let reviewFields         = fields;
-        let optionalReviewFields = ['comment'];
-        for(let field of optionalReviewFields) {
-            if(req.body.data.hasOwnProperty(field)) reviewFields.push(field);
-        }
-
-        let nftRatingFields         = [];
-        let optionalNftRatingFields = ['communityRating', 'originalityRating', 'communicationRating', 'consistencyRating'];
-        for(let field of optionalNftRatingFields) {
-            if(req.body.data.hasOwnProperty(field)) nftRatingFields.push(field);
-        }
-
-        let reviewValues    = reviewFields.map((field) => req.body.data[field] === '' ? null : req.body.data[field]);
-        let nftRatingValues = nftRatingFields.map((field) => req.body.data[field] === '' ? null : req.body.data[field]);
-
-        let uid = uuid();
-        reviewFields.push('uid');
-        reviewValues.push(uid);
-        reviewFields.push('entityUid');
-        reviewValues.push(req.params.entityUid);
-        reviewFields.push('userAddress');
-        reviewValues.push(signer);
-
-        nftRatingFields.push('reviewUid');
-        nftRatingValues.push(uid);
-        nftRatingFields.push('entityUid');
-        nftRatingValues.push(req.params.entityUid);
-
+        const uid                 = uuid();
+        const ratingHistoryUid    = uuid();
+        const entityUid           = req.params.entityUid;
+        const rating              = req.body.data.rating;
+        const comment             = req.body.data.hasOwnProperty('comment')             ? req.body.data.comment             : null;
+        const communityRating     = req.body.data.hasOwnProperty('communityRating')     ? req.body.data.communityRating     : null;
+        const originalityRating   = req.body.data.hasOwnProperty('originalityRating')   ? req.body.data.originalityRating   : null;
+        const communicationRating = req.body.data.hasOwnProperty('communicationRating') ? req.body.data.communicationRating : null;
+        const consistencyRating   = req.body.data.hasOwnProperty('consistencyRating')   ? req.body.data.consistencyRating   : null;
 
         const transaction = global.db.transaction(() => {
             // Create user if required
             const insertUserStmt = global.db.prepare(`INSERT OR IGNORE INTO user_v1(address) VALUES(?)`);
             insertUserStmt.run(signer);
 
-            const insertReviewStmt = global.db.prepare(`INSERT INTO review_v1(${reviewFields.join(', ')}) VALUES(${"?, ".repeat(reviewValues.length - 1)}?)`);
-            insertReviewStmt.run(reviewValues);
+            const insertReviewStmt = global.db.prepare(`INSERT INTO review_v1(uid, entityUid, userAddress, rating, comment) VALUES(?, ?, ?, ?, ?)`);
+            insertReviewStmt.run([
+                uid,
+                entityUid,
+                signer,
+                rating,
+                comment
+            ]);
 
-            const insertNftRatingStmt = global.db.prepare(`INSERT INTO nft_project_rating_v1(${nftRatingFields.join(', ')}) VALUES(${"?, ".repeat(nftRatingValues.length - 1)}?)`);
-            insertNftRatingStmt.run(nftRatingValues);
+            const insertNftRatingStmt = global.db.prepare(`INSERT INTO nft_project_review_rating_v1(reviewUid, entityUid, communityRating, originalityRating, communicationRating, consistencyRating) VALUES(?, ?, ?, ?, ?, ?)`);
+            insertNftRatingStmt.run([
+                uid,
+                entityUid,
+                communityRating,
+                originalityRating,
+                communicationRating,
+                consistencyRating
+            ]);
 
             // Update ratings
-            let ratings = {};
+            const ratingHistoryStmt = db.prepare(`SELECT * FROM nft_project_rating_history_v1 WHERE entityUid = ? ORDER BY ratingCount DESC LIMIT 1`);
+            const ratingHistoryRow  = ratingHistoryStmt.get(req.params.entityUid);
 
-            const ratingSumStmt = db.prepare(`SELECT CAST(SUM(rating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM review_v1 WHERE entityUid = ?`);
-            ratings.rating      = ratingSumStmt.get(req.params.entityUid);
+            const insertRatingHistoryStmt = db.prepare(`INSERT INTO nft_project_rating_history_v1(uid, entityUid, rating, ratingCount, communityRating, communityRatingCount, originalityRating, originalityRatingCount, communicationRating, communicationRatingCount, consistencyRating, consistencyRatingCount, totalRating) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
 
-            const communitySumStmt = db.prepare(`SELECT CAST(SUM(communityRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE communityRating NOT NULL AND entityUid = ?`);
-            ratings.community      = communitySumStmt.get(req.params.entityUid);
-            
-            const originalitySumStmt = db.prepare(`SELECT CAST(SUM(originalityRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE originalityRating NOT NULL AND entityUid = ?`);
-            ratings.originality      = originalitySumStmt.get(req.params.entityUid);
+            if(!ratingHistoryRow) {
+                let totalRating        = Number.parseFloat(rating);
+                let totalRatingDivider = 1;
+                if(communityRating) {
+                    totalRatingDivider++;
+                    totalRating += Number.parseFloat(communityRating);
+                }     
+                if(originalityRating) {
+                    totalRatingDivider++;
+                    totalRating += Number.parseFloat(originalityRating);
+                }
+                if(communicationRating) {
+                    totalRatingDivider++;
+                    totalRating += Number.parseFloat(communicationRating);
+                } 
+                if(consistencyRating) {
+                    totalRatingDivider++;
+                    totalRating += Number.parseFloat(consistencyRating);
+                }
 
-            const communicationSumStmt = db.prepare(`SELECT CAST(SUM(communicationRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE communicationRating NOT NULL AND entityUid = ?`);
-            ratings.communication      = communicationSumStmt.get(req.params.entityUid);
+                insertRatingHistoryStmt.run(
+                    ratingHistoryUid,
+                    entityUid,
+                    rating,
+                    1,
+                    communityRating,
+                    communityRating     ? 1 : 0,
+                    originalityRating,
+                    originalityRating   ? 1 : 0,
+                    communicationRating,
+                    communicationRating ? 1 : 0,
+                    consistencyRating,
+                    consistencyRating   ? 1 : 0,
+                    totalRating / totalRatingDivider
+                );
+                return;
+            }
 
-            const consistencySumStmt = db.prepare(`SELECT CAST(SUM(consistencyRating) AS REAL) / COUNT(*) AS rating, COUNT(*) AS count FROM nft_project_rating_v1 WHERE consistencyRating NOT NULL AND entityUid = ?`);
-            ratings.consistency      = consistencySumStmt.get(req.params.entityUid);
+            let newAverage  = [ratingHistoryUid, entityUid];
+            let ratingTypes = [
+                {
+                    next:    rating,
+                    average: ratingHistoryRow.rating,
+                    count:   ratingHistoryRow.ratingCount
+                },
+                {
+                    next:    communityRating,
+                    average: ratingHistoryRow.communityRating,
+                    count:   ratingHistoryRow.communityRatingCount
+                },
+                {
+                    next:    originalityRating,
+                    average: ratingHistoryRow.originalityRating,
+                    count:   ratingHistoryRow.originalityRatingCount
+                },
+                {
+                    next:    communicationRating,
+                    average: ratingHistoryRow.communicationRating,
+                    count:   ratingHistoryRow.communicationRatingCount
+                },
+                {
+                    next:    consistencyRating,
+                    average: ratingHistoryRow.consistencyRating,
+                    count:   ratingHistoryRow.consistencyRatingCount
+                }
+            ];
 
-            ratings.total = (ratings.rating.rating + ratings.community.rating + ratings.originality.rating + ratings.communication.rating + ratings.consistency.rating) / 5;
+            let totalRatingDivider = 0;
+            let totalRating        = 0;
+            ratingTypes.forEach((ratingType) => {
+                let newCount  = ratingType.next ? ratingType.count + 1 : ratingType.count;
+                let newRating = ratingType.next ? ratingType.average + ((ratingType.next - ratingType.average) / newCount) : ratingType.average;
+                
+                if(newRating) totalRatingDivider++;
+                totalRating += newRating;
 
-            const updateEntityStmt = db.prepare(`UPDATE entity_v1 SET rating = ?, reviewCount = (SELECT count(*) FROM review_v1 WHERE entityUid = ?) WHERE uid = ?`);
-            updateEntityStmt.run(
-                ratings.total,
-                req.params.entityUid,
-                req.params.entityUid
-            );
+                newAverage.push(newRating);
+                newAverage.push(newCount);
+            });
 
-            const updateNFTProjectStmt = db.prepare(`UPDATE nft_project_v1 SET communityRating = ?, originalityRating = ?, communicationRating = ?, consistencyRating = ? WHERE entityUid = ?`);
-            updateNFTProjectStmt.run(
-                ratings.community.rating,
-                ratings.originality.rating,
-                ratings.communication.rating,
-                ratings.consistency.rating,
-                req.params.entityUid
-            );
+            newAverage.push(totalRating / totalRatingDivider);
+
+            insertRatingHistoryStmt.run(newAverage);
         });
 
         try {
