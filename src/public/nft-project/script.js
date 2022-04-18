@@ -27,9 +27,29 @@ document.addEventListener('TemplatesLoaded', (event) => {
         const nftProjectRatingTemplate       = res[2];
         const nftProject                     = res[3].data.data;
 
-        document.getElementById('mobile-nft-project-banner-container').innerHTML = Mustache.render(mobileNftProjectBannerTemplate, nftProject);
-        document.getElementById('nft-project-banner-container').innerHTML        = Mustache.render(nftProjectBannerTemplate, nftProject);
-        document.getElementById('nft-project-rating-container').innerHTML        = Mustache.render(
+        document.getElementById('mobile-nft-project-banner-container').innerHTML = Mustache.render(
+            mobileNftProjectBannerTemplate,
+            Object.assign(
+                {
+                    'preserveLineBreaks': function() {
+                        return preserveLineBreaks();
+                    },
+                },
+                nftProject
+            )
+        );
+        document.getElementById('nft-project-banner-container').innerHTML = Mustache.render(
+            nftProjectBannerTemplate,
+            Object.assign(
+                {
+                    'preserveLineBreaks': function() {
+                        return preserveLineBreaks();
+                    },
+                },
+                nftProject
+            )
+        );
+        document.getElementById('nft-project-rating-container').innerHTML = Mustache.render(
             nftProjectRatingTemplate, 
             Object.assign(
                 {

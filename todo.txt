@@ -1,2 +1,1 @@
 - Review moderation update ratings on review rejection
-- Line breaks in description should print correctly in project banner

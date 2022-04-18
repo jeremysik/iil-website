@@ -52,6 +52,7 @@ function editEntity(e) {
         }
     }).then((res) => {
         InfoModal.success('Yay!', 'NFT project successfully updated.');
+        loadNftProjects();
     }).catch((err) => {
         InfoModal.error('Oops!', JSON.stringify(err.response.data));
     });

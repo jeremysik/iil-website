@@ -14,6 +14,12 @@ function round(precision) {
         return rating.toPrecision(precision);
     }
 }
+
+function preserveLineBreaks() {
+    return function(text, render) {
+        return render(text).replaceAll('\n', '<br>');
+    }
+}
 // -------- Template Functions --------
 
 // Sorry, it was faster for me to build a templating system on Mustache.js than to learn React.js =P
