@@ -37,14 +37,14 @@ htmlFiles.forEach((htmlFile) => {
         collapseBooleanAttributes: true,
         collapseInlineTagWhitespace: true,
         collapseWhitespace: true,
-        minifyCSS: true,
+        minifyCSS: false,
         minifyJS: true,
         minifyURLs: true,
         removeAttributeQuotes: true,
         removeComments: true,
         removeEmptyAttributes: true,
         sortAttributes: true,
-        sortClassName: true,
+        sortClassName: false,
         trimCustomFragments: true
     }));
 });
