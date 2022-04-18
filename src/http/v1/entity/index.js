@@ -12,9 +12,9 @@ router.use('/', bodyParser.json());
 router.get('/search/:query', (req, res) => {
     let type = null;
     const validTypes = ['nft_project'];
-    if(validTypes.includes(req.headers.type)) type = type;
+    if(validTypes.includes(req.headers.type)) type = req.headers.type;
 
-    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = ${type}` : ''}`);
+    const countStmt = global.db.prepare(`SELECT count(*) AS total FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = '${type}'` : ''}`);
     const countRow  = countStmt.get(`%${req.params.query}%`);
 
     if(!countRow) {
@@ -27,6 +27,13 @@ router.get('/search/:query', (req, res) => {
     }
 
     const total = countRow.total;
+    if(total == 0) {
+        res.locals.output.success({
+            total: total,
+            rows:  []
+        }).send();
+        return;
+    }
 
     // Get the rows
     if(req.headers.records) {
@@ -37,7 +44,7 @@ router.get('/search/:query', (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = ${type}` : ''} LIMIT ? OFFSET ?`);
+            const limitStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = '${type}'` : ''} LIMIT ? OFFSET ?`);
             const limitRow  = limitStmt.all(`%${req.params.query}%`, limit, offset);
 
             res.locals.output.success({
@@ -48,7 +55,7 @@ router.get('/search/:query', (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = ${type}` : ''}`);
+    const allStmt = global.db.prepare(`SELECT * FROM entity_v1 WHERE name LIKE ? ${type ? `AND type = '${type}'` : ''}`);
     const allRow  = allStmt.all(`%${req.params.query}%`);
 
     res.locals.output.success({

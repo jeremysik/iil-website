@@ -55,6 +55,10 @@
     cursor: pointer;
 }
 
+.nft-project-review-form .form-check-input:disabled {
+    opacity: 0.75;
+}
+
 @media(min-width: 767px) {
     .nft-project-review-form .col-label {
         width: 11rem;

@@ -8,6 +8,15 @@
                 </div>
             </div>
         </div>
+        <div id="submit-spinner" style="display: none;"> <!-- Fucking d-flex adds 'display: flex !important;'-->
+            <div class="overlay d-flex justify-content-center align-items-center">
+                <div class="text-center">
+                    <div class="loading-spinner spinner-border text-cyan" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
         <div class="content">
             <form onsubmit="addReview(event)">
                 <div class="row">
@@ -24,27 +33,27 @@
                             </div>     
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-rating" id="nft-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="rating" id="rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-rating" id="nft-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="rating" id="rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-rating" id="nft-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="rating" id="rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-rating" id="nft-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="rating" id="rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-rating" id="nft-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="rating" id="rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                         </div>
@@ -60,27 +69,27 @@
                             </div> 
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-community-rating" id="nft-community-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="community-rating" id="community-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-community-rating" id="nft-community-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="community-rating" id="community-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-community-rating" id="nft-community-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="community-rating" id="community-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-community-rating" id="nft-community-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="community-rating" id="community-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-community-rating" id="nft-community-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="community-rating" id="community-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                         </div>
@@ -96,27 +105,27 @@
                             </div> 
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-originality-rating" id="nft-originality-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="originality-rating" id="originality-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-originality-rating" id="nft-originality-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="originality-rating" id="originality-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-originality-rating" id="nft-originality-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="originality-rating" id="originality-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-originality-rating" id="nft-originality-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="originality-rating" id="originality-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-originality-rating" id="nft-originality-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="originality-rating" id="originality-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                         </div>
@@ -131,27 +140,27 @@
                             </div> 
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-communication-rating" id="nft-communication-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="communication-rating" id="communication-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-communication-rating" id="nft-communication-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="communication-rating" id="communication-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-communication-rating" id="nft-communication-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="communication-rating" id="communication-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-communication-rating" id="nft-communication-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="communication-rating" id="communication-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-communication-rating" id="nft-communication-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="communication-rating" id="communication-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                         </div>
@@ -166,40 +175,40 @@
                             </div> 
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-consistency-rating" id="nft-consistency-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="consistency-rating" id="consistency-rating-1" value="1" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-consistency-rating" id="nft-consistency-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="consistency-rating" id="consistency-rating-2" value="2" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-consistency-rating" id="nft-consistency-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="consistency-rating" id="consistency-rating-3" value="3" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-consistency-rating" id="nft-consistency-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="consistency-rating" id="consistency-rating-4" value="4" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                             <div class="col col-radio">
                                 <div class="form-check">
-                                    <input class="form-check-input svg-grey" type="radio" name="nft-consistency-rating" id="nft-consistency-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
+                                    <input class="form-check-input svg-grey" type="radio" name="consistency-rating" id="consistency-rating-5" value="5" onclick="onRadioClick(event)" onmouseover="onRadioMouseOver(event)" onmouseleave="onRadioMouseLeave(event)">
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="col col-comment">
                         <div class="mb-3 mt-3 mt-lg-0">
-                            <label for="nft-comment" class="form-label text-bold fs-7">Comments</label>
-                            <textarea class="form-control" id="nft-comment" rows="4" placeholder="Leave your comment here"></textarea>
+                            <label for="comment" class="form-label text-bold fs-7">Comments</label>
+                            <textarea class="form-control" id="comment" rows="4" placeholder="Leave your comment here"></textarea>
                         </div>
                         <div class="row">
                             <div class="col"></div>
                             <div class="col col-auto">
-                                <button type="submit" class="btn btn-primary text-bold"><small>Leave a Review</small></button>
+                                <button id="review-form-submit-btn" type="submit" class="btn btn-primary text-bold"><small>Leave a Review</small></button>
                             </div>
                         </div>
                     </div>

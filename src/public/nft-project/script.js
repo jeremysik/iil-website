@@ -186,28 +186,31 @@ function addReview(e) {
         }
     };
 
-    let ratingElement = document.querySelector('input[name="nft-rating"]:checked');
+    let ratingElement = document.querySelector('input[name="rating"]:checked');
     if(!ratingElement) {
-        InfoModal.error('Oops!', 'Please select an "Overall" rating for this NFT project.');
+        InfoModal.error('Oops!', 'Please select a "Personal" rating for this NFT project.');
         return;
     }
 
     payload.data.rating = ratingElement.value;
 
-    let communityRatingElement = document.querySelector('input[name="nft-community-rating"]:checked');
+    let communityRatingElement = document.querySelector('input[name="community-rating"]:checked');
     if(communityRatingElement) payload.data.communityRating = communityRatingElement.value;
 
-    let originalityRatingElement = document.querySelector('input[name="nft-originality-rating"]:checked');
+    let originalityRatingElement = document.querySelector('input[name="originality-rating"]:checked');
     if(originalityRatingElement) payload.data.originalityRating = originalityRatingElement.value;
 
-    let communicationRatingElement = document.querySelector('input[name="nft-communication-rating"]:checked');
+    let communicationRatingElement = document.querySelector('input[name="communication-rating"]:checked');
     if(communicationRatingElement) payload.data.communicationRating = communicationRatingElement.value;
 
-    let consistencyRatingElement = document.querySelector('input[name="nft-consistency-rating"]:checked');
+    let consistencyRatingElement = document.querySelector('input[name="consistency-rating"]:checked');
     if(consistencyRatingElement) payload.data.consistencyRating = consistencyRatingElement.value;
 
-    let comment = document.getElementById('nft-comment').value;
+    let comment = document.getElementById('comment').value;
     if(comment != '') payload.data.comment = comment;
+
+    const submitSpinner         = document.getElementById('submit-spinner');
+    submitSpinner.style.display = 'block';
 
     return provider.send(
         'eth_requestAccounts',
@@ -215,7 +218,7 @@ function addReview(e) {
     ).then((addresses) => {
         payload.data.address = ethers.utils.getAddress(addresses[0]);     
 
-        return provider.getSigner().signMessage(JSON.stringify(payload.data));
+        return provider.getSigner().signMessage(`Please sign this message to post your review, it's free and doesn't cost any gas.\n\n${JSON.stringify(payload.data)}`);
     }).then((signature) => {
         payload.signature = signature;
 
@@ -224,7 +227,13 @@ function addReview(e) {
             url:    `/v1/nft-project/${entityUid}/review`,
             data:   payload
         });
+    }).then(() => {
+        submitSpinner.style.display = 'none';
+        window.location.reload();
+
     }).catch((e) => {
+        submitSpinner.style.display = 'none';
+
         if(e.code == -32002) {
             InfoModal.warn('Hmm...', `Please check MetaMask and unlock your wallet if necessary.`);
             return Promise.resolve();

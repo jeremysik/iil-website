@@ -55,4 +55,27 @@ document.addEventListener('TemplatesLoaded', function() {
     [].forEach.call(document.getElementsByClassName('form-check-input'), (element) => {
         values[snakeToCamel(element.name)] = 0;
     });
+
+    // Check to see if the user has already left a review
+    getReviews(
+        'nft_project'
+    ).then((reviews) => {
+        reviews.forEach((review) => {
+            // entityUid is declared in src/public/nft-project/script.js
+            if(review.entityUid != entityUid) return; // continue
+
+            [].forEach.call(document.getElementsByClassName('form-check-input'), (element) => {
+                const ratingType = snakeToCamel(element.name);
+
+                if(review[ratingType] == element.value) element.click();
+                element.disabled = true;
+            });
+
+            const comment       = document.getElementById('comment');
+            comment.placeholder = review.comment;
+            comment.disabled    = true;
+
+            document.getElementById('review-form-submit-btn').disabled = true;
+        });
+    });
 });

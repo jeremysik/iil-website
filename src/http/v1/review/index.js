@@ -42,7 +42,19 @@ router.get('/', authorise.admin, (req, res) => {
             let offset = limitOffset[0];
             let limit  = limitOffset[1] - offset + 1;
 
-            const limitStmt = global.db.prepare(`SELECT review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}FROM review_v1${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ' '}WHERE ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'} LIMIT ? OFFSET ?`);
+            const limitStmt = global.db.prepare(`
+                SELECT
+                    review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}
+                FROM
+                    review_v1
+                ${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ' '}
+                WHERE
+                    ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}
+                LIMIT 
+                    ?
+                OFFSET
+                    ?
+            `);
             const limitRow  = limitStmt.all(approved.concat([limit, offset]));
 
             res.locals.output.success({
@@ -53,7 +65,15 @@ router.get('/', authorise.admin, (req, res) => {
         }
     }
 
-    const allStmt = global.db.prepare(`SELECT review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}FROM review_v1${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ''}WHERE ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}`);
+    const allStmt = global.db.prepare(`
+        SELECT
+            review_v1.*${entity ? ', entity_v1.name, entity_v1.type ' : ' '}
+        FROM
+            review_v1
+        ${entity ? ' LEFT JOIN entity_v1 ON review_v1.entityUid = entity_v1.uid ' : ''}
+        WHERE
+            ${'approved = ? OR '.repeat(approved.length - 1) + ' approved = ?'}
+    `);
     const allRow  = allStmt.all(approved);
 
     res.locals.output.success({

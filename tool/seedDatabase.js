@@ -96,7 +96,16 @@ entityUids.forEach((entityUid) => {
             const ratingHistoryStmt = db.prepare(`SELECT * FROM nft_project_rating_history_v1 WHERE entityUid = ? ORDER BY ratingCount DESC LIMIT 1`);
             const ratingHistoryRow  = ratingHistoryStmt.get(entityUid);
 
-            const insertRatingHistoryStmt = db.prepare(`INSERT INTO nft_project_rating_history_v1(uid, entityUid, rating, ratingCount, communityRating, communityRatingCount, originalityRating, originalityRatingCount, communicationRating, communicationRatingCount, consistencyRating, consistencyRatingCount, totalRating) VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`);
+            const insertRatingHistoryStmt = db.prepare(`
+                INSERT INTO
+                    nft_project_rating_history_v1(
+                        uid, entityUid, rating, ratingCount, communityRating, communityRatingCount, originalityRating, originalityRatingCount, communicationRating,
+                        communicationRatingCount, consistencyRating, consistencyRatingCount, totalRating
+                    )
+                VALUES(
+                    ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?
+                )
+            `);
 
             if(!ratingHistoryRow) {
                 let totalRating        = Number.parseFloat(rating);

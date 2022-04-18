@@ -79,7 +79,8 @@ async function init() {
     global.log.info('Database file found');
 
     // Load database
-    const db = new betterSqlite3(global.config.database.path);
+    const dbOptions = process.env.NODE_ENV == 'production' ? {} : {verbose: (query) => global.log.debug(query)};
+    const db        = new betterSqlite3(global.config.database.path, dbOptions);
 
     // Attach database object global.db
     global.db = db;

@@ -15,7 +15,7 @@ function connect() {
     }
 
     return provider.send(
-        'eth_requestAccounts',
+        'eth_requestAccounts', // Metamask will pop up if it is not unlocked
         []
     ).then((addresses) => {
         return validateAddress(ethers.utils.getAddress(addresses[0]));
@@ -68,6 +68,29 @@ function validateAddress(address) {
     });
 }
 
+function getReviews(type = null) {
+    if(!provider) {
+        return Promise.resolve([]);
+    }
+
+    return provider.listAccounts( // Metamask will NOT pop up if it is not unlocked
+    ).then((addresses) => {
+        if(addresses.length == 0) {
+            return Promise.resolve([]);
+        }
+        
+        return axios({
+            method: 'get',
+            url:    `/v1/user/${addresses[0]}/review`,
+            headers: {
+                type: type
+            }
+        }).then((res) => {
+            return Promise.resolve(res.data.data.rows);       
+        });
+    });
+}
+
 function onConnect() {
     [].forEach.call(document.getElementsByClassName('connected'), (element) => {
         element.style.display = 'none';
@@ -105,8 +128,8 @@ document.addEventListener('TemplatesLoaded', function() {
 
     if(window.ethereum) {
         provider = new ethers.providers.Web3Provider(window.ethereum, 'mainnet');
-        window.ethereum.on('accountsChanged', (accounts) => {
-            if(accounts.length > 0) {
+        window.ethereum.on('accountsChanged', (addresses) => {
+            if(addresses.length > 0) {
                 onConnect();
                 return;
             }
@@ -114,9 +137,9 @@ document.addEventListener('TemplatesLoaded', function() {
             onDisconnect();
         });
 
-        provider.listAccounts(
-        ).then((accounts) => {
-            if(accounts.length > 0) onConnect();
+        provider.listAccounts( // Metamask will NOT pop up if it is not unlocked
+        ).then((addresses) => {
+            if(addresses.length > 0) onConnect();
         }).catch(() => {});
     }
 });

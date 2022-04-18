@@ -45,4 +45,93 @@ router.post('/login', (req, res) => {
     }).send();
 });
 
+/*
+* Get reviews for user
+* Headers:
+* "records = A-B", where A & B are index numbers of the records required
+* "type    = X", where X is entity type
+*/
+router.get('/:address/review', (req, res) => {
+    let type = null;
+    const validTypes = ['nft_project'];
+    if(validTypes.includes(req.headers.type)) type = req.headers.type;
+
+    const reviewRatingTableJoin = type ? `LEFT JOIN entity_v1 ON entity_v1.uid = review_v1.entityUId LEFT JOIN ${type}_review_rating_v1 AS r_r ON review_v1.uid = r_r.reviewUid` : '';
+
+    const countStmt = global.db.prepare(`
+        SELECT 
+            count(*) AS total
+        FROM review_v1
+        ${reviewRatingTableJoin}
+        WHERE
+            userAddress = ?
+            ${type ? `AND type = '${type}'` : ''}
+    `);
+
+    const countRow = countStmt.get(req.params.address);
+
+    if(!countRow) {
+        global.log.error(`Failed to get total review count for user with address: ${req.params.address}`, err);
+        res.locals.output.fail(
+            err,
+            500
+        ).send();
+        return;
+    }
+
+    const total = countRow.total;
+    if(total == 0) {
+        res.locals.output.success({
+            total: total,
+            rows:  []
+        }).send();
+        return;
+    }
+
+    // Get the rows
+    if(req.headers.records) {
+        let limitOffset = req.headers.records.split('-');
+
+        if(limitOffset.length == 2) {
+            // Specific records requested
+            let offset = limitOffset[0];
+            let limit  = limitOffset[1] - offset + 1;
+
+            const limitStmt = global.db.prepare(`
+                SELECT
+                    *
+                FROM review_v1
+                ${reviewRatingTableJoin}
+                WHERE
+                    userAddress = ?
+                ${type ? `AND type = '${type}'` : ''}
+                LIMIT ? OFFSET ?
+            `);
+            const limitRow  = limitStmt.all(req.params.address, limit, offset);
+
+            res.locals.output.success({
+                total: total,
+                rows:  limitRow
+            }).send();
+            return;
+        }
+    }
+
+    const allStmt = global.db.prepare(`
+        SELECT
+            *
+        FROM review_v1
+        ${reviewRatingTableJoin}
+        WHERE
+            userAddress = ?
+        ${type ? `AND type = '${type}'` : ''}
+    `);
+    const allRow  = allStmt.all(req.params.address);
+
+    res.locals.output.success({
+        total: total,
+        rows:  allRow
+    }).send();
+});
+
 module.exports = router;

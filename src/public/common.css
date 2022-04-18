@@ -100,23 +100,23 @@ hr {
 /* ------ SVG Recolouring ------ */
 /* https://codepen.io/sosuke/pen/Pjoqqp */
 .svg-white {
-    filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(163deg) brightness(103%) contrast(101%);
+    filter: invert(100%) sepia(100%) saturate(2%) hue-rotate(163deg) brightness(103%) contrast(101%) !important;
 }
 
 .svg-nearly-black {
-    filter: invert(8%) sepia(9%) saturate(537%) hue-rotate(201deg) brightness(94%) contrast(92%);
+    filter: invert(8%) sepia(9%) saturate(537%) hue-rotate(201deg) brightness(94%) contrast(92%) !important;
 }
 
 .svg-cyan {
-    filter: invert(86%) sepia(16%) saturate(6073%) hue-rotate(170deg) brightness(101%) contrast(103%);
+    filter: invert(86%) sepia(16%) saturate(6073%) hue-rotate(170deg) brightness(101%) contrast(103%) !important;
 }
 
 .svg-grey {
-    filter: invert(90%) sepia(2%) saturate(2%) hue-rotate(314deg) brightness(97%) contrast(108%);
+    filter: invert(90%) sepia(2%) saturate(2%) hue-rotate(314deg) brightness(97%) contrast(108%) !important;
 }
 
 .svg-yellow {
-    filter: invert(94%) sepia(17%) saturate(2516%) hue-rotate(323deg) brightness(110%) contrast(97%);
+    filter: invert(94%) sepia(17%) saturate(2516%) hue-rotate(323deg) brightness(110%) contrast(97%) !important;
 }
 /* ------ SVG Recolouring ------ */
 

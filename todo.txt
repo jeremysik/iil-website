@@ -1,3 +1,1 @@
 - Review moderation update ratings on review rejection
-- Posting review spinner and refresh page
-- Add prefix to sign review message "You are signing this message to post a review. Payload: {}"
