@@ -22,7 +22,6 @@ function editEntity(e) {
         return;
     }
 
-    let uid              = document.getElementById('edit-nft-project-uid').value;
     let entityUid        = document.getElementById('edit-nft-project-entity-uid').value;
     let name             = document.getElementById('edit-nft-project-name').value;
     let logoImageUrl     = document.getElementById('edit-nft-project-logo-image-url').value;
@@ -36,13 +35,11 @@ function editEntity(e) {
 
     axios({
         method: 'patch',
-        url:    `/v1/nft-project/${uid}`,
+        url:    `/v1/nft-project/${entityUid}`,
         headers: {
             Authorization: `Bearer ${getAccessToken()}`
         },
         data: {
-            uid:              uid,
-            entityUid:        entityUid,
             name:             name,
             logoImageUrl:     logoImageUrl,
             featuredImageUrl: featuredImageUrl,
@@ -64,7 +61,6 @@ let nftProjects = [];
 
 function loadNftProjects() {
     document.getElementById('edit-nft-project-nft-project').value        = '';
-    document.getElementById('edit-nft-project-uid').value                = '';
     document.getElementById('edit-nft-project-entity-uid').value         = '';
     document.getElementById('edit-nft-project-name').value               = '';
     document.getElementById('edit-nft-project-logo-image-url').value     = '';
@@ -103,7 +99,6 @@ function changeNftProject(e) {
     const name          = e.srcElement.value;
     const nftProject = nftProjects.find((row) => row.name == name);
 
-    document.getElementById('edit-nft-project-uid').value                = nftProject.uid;
     document.getElementById('edit-nft-project-entity-uid').value         = nftProject.entityUid;
     document.getElementById('edit-nft-project-name').value               = nftProject.name;
     document.getElementById('edit-nft-project-logo-image-url').value     = nftProject.logoImageUrl;
