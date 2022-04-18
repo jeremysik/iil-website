@@ -49,7 +49,9 @@ router.get('/', (req, res) => {
 
             const limitStmt = global.db.prepare(`
                 SELECT 
-                    *
+                    *,
+                    IFNULL(nft_project_rating_history_v1.entityUid, entity_v1.uid) AS entityUid,
+                    IFNULL(nft_project_rating_history_v1.ratingCount, 0) AS ratingCount
                 FROM
                     entity_v1 
                 LEFT JOIN
@@ -57,6 +59,8 @@ router.get('/', (req, res) => {
                 LEFT JOIN
                     nft_project_rating_history_v1 ON entity_v1.uid = nft_project_rating_history_v1.entityUid
                 WHERE
+                    IFNULL(nft_project_rating_history_v1.uid, true) = true
+                OR
                     nft_project_rating_history_v1.uid = (
                         SELECT
                             uid
@@ -69,7 +73,7 @@ router.get('/', (req, res) => {
                         LIMIT
                             1
                     )
-                ${order ? `ORDER BY totalRating ${order} ` : ''}
+                ${order ? `ORDER BY totalRating ${order}` : ''}
                 LIMIT
                     ?
                 OFFSET
@@ -87,7 +91,9 @@ router.get('/', (req, res) => {
 
     const allStmt = global.db.prepare(`
         SELECT 
-            *
+            *,
+            IFNULL(nft_project_rating_history_v1.entityUid, entity_v1.uid) AS entityUid,
+            IFNULL(nft_project_rating_history_v1.ratingCount, 0) AS ratingCount
         FROM
             entity_v1 
         LEFT JOIN
@@ -95,6 +101,8 @@ router.get('/', (req, res) => {
         LEFT JOIN
             nft_project_rating_history_v1 ON entity_v1.uid = nft_project_rating_history_v1.entityUid
         WHERE
+            IFNULL(nft_project_rating_history_v1.uid, true) = true
+        OR
             nft_project_rating_history_v1.uid = (
                 SELECT
                     uid
@@ -107,7 +115,7 @@ router.get('/', (req, res) => {
                 LIMIT
                     1
             )
-        ${order ? `ORDER BY totalRating ${order} ` : ''}
+        ${order ? `ORDER BY totalRating ${order}` : ''}
     `);
     const allRow  = allStmt.all();
 

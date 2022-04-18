@@ -2,3 +2,4 @@
 /database.sqlite3*
 /public
 /.env
+/log
