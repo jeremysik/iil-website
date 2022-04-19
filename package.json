@@ -9,7 +9,8 @@
     "seedDatabase": "rm -f database.sqlite3; sqlite3 database.sqlite3 < sql/v1/1-create.sql; node ./tool/seedDatabase.js",
     "templateAssets": "node ./tool/templateAssets.js",
     "build": "node ./tool/templateAssets.js; node ./tool/minify.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "scrapeOpenSea": "node ./tool/scrapeOpenSea.js"
   },
   "repository": {
     "type": "git",
