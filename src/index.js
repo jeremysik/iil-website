@@ -124,7 +124,9 @@ async function init() {
 
     // Serve static files
     if(process.env.NODE_ENV == 'production') {
-        app.use('/', express.static('./public'));
+        app.use('/', express.static('./public', {
+            maxAge: 14400000 // 4 Hours
+        }));
     }
     else {
         app.use('/', express.static('./src/public'));
