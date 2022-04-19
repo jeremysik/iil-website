@@ -1,6 +1,6 @@
 {
   "name": "iil-website",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "IsItLegit website.",
   "main": "./src/index.js",
   "scripts": {
