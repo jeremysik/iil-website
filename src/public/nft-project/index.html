@@ -7,13 +7,11 @@
     <meta name="viewport"           content="width=device-width, initial-scale=1">
     <meta name="Description"        content="Not sure if an NFT project is legitimate or a scam? Check out our community reviews and avoid getting rug pulled.">
 
-    <!-- Google Tag Manager -->
     <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
     new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
     j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
     })(window,document,'script','dataLayer','GTM-NRQ2P8B');</script>
-    <!-- End Google Tag Manager -->
 
     <title>IsItLegit?</title>
     
@@ -26,7 +24,6 @@
     <link template="header" rel="stylesheet" href="/template/header.css">
     <link template="nft-project-review-form" rel="stylesheet" href="/template/nftProjectReviewForm.css">
 
-    <link template-container="mobile-nft-project-banner" rel="stylesheet" href="/template/mobileNftProjectBanner.css">
     <link template-container="nft-project-banner" rel="stylesheet" href="/template/nftProjectBanner.css">
     <link template-container="nft-project-rating" rel="stylesheet" href="/template/nftProjectRating.css">
     <link template-container="nft-project-review-row" rel="stylesheet" href="/template/nftProjectReviewRow.css">
@@ -34,28 +31,17 @@
 
 <body class="d-flex flex-column">
     <div template="info-modal"></div>
-    <div class="mobile">
-        <div template="mobile-header"></div>
-        <div template-container="mobile-nft-project-banner" id="mobile-nft-project-banner-container">
-            <div class="text-center">
-                <div class="loading-spinner spinner-border text-cyan" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
+    <div class="mobile"  template="mobile-header"></div>
+    <div class="desktop" template="header"></div>
+
+    <div template-container="nft-project-banner">
+        <div class="text-center">
+            <div class="loading-spinner spinner-border text-cyan" role="status">
+                <span class="visually-hidden">Loading...</span>
             </div>
         </div>
     </div>
-    <div class="desktop">
-        <div template="header"></div>
-        <div template-container="nft-project-banner" id="nft-project-banner-container">
-            <div class="text-center">
-                <div class="loading-spinner spinner-border text-cyan" role="status">
-                    <span class="visually-hidden">Loading...</span>
-                </div>
-            </div>
-        </div>
-    </div>
-    
-    <div template-container="nft-project-rating" class="my-4 my-md-5" id="nft-project-rating-container"></div>
+    <div template-container="nft-project-rating" class="my-4 my-md-5"></div>
     <div template="nft-project-review-form"></div>
     <div class="container infinite-review-row">
         <div template-container="nft-project-review-row" id="infinite-review-row-container"></div>

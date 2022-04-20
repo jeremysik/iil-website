@@ -1,7 +1,9 @@
 <div class="entity-card">
     <a class="stealth-link" href="{{ entityUrl }}">
         <div class="card-container">
-            <img class="featured-image w-100" src="{{ featuredImageUrl }}=h250">
+            <div class="w-100 featured-image-container">
+                {{ #featuredImageUrl }}<img class="h-100 w-100" src="{{ featuredImageUrl }}=h250"> {{ /featuredImageUrl }}
+            </div>
             <div class="info-rating-container">
                 <div class="info">
                     <div class="name text-bold fs-6">{{ #truncateName }}{{ name }}{{ /truncateName }}</div>

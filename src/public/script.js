@@ -160,9 +160,9 @@ document.addEventListener('TemplatesLoaded', (event) => {
     init();
 });
 
-window.addEventListener('scroll', () => {
-    const responsiveClasses  = ['mobile', 'desktop'];
-    const templateContainers = ['mobile-entity-row', 'entity-row'];
+function onScroll() {
+    const responsiveClasses  = ['mobile',             'desktop'];
+    const templateContainers = ['mobile-entity-row',  'entity-row'];
     const spinners           = ['mobile-row-spinner', 'row-spinner'];
 
     for(let i = 0; i < templateContainers.length; i++) {
@@ -176,9 +176,12 @@ window.addEventListener('scroll', () => {
         let offset = templateContainer.getBoundingClientRect().top - templateContainer.offsetParent.getBoundingClientRect().top;
         const top  = window.pageYOffset + window.innerHeight - offset;
 
-        if(top >= templateContainer.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
+        if((top + 150) >= templateContainer.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
             spinner.style.display = 'block';
             loadRows(10);
         }
     }
-}, { passive: false });
+}
+
+window.addEventListener('touchmove', onScroll, { passive: false });
+window.addEventListener('scroll',    onScroll, { passive: false });

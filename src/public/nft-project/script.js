@@ -6,10 +6,6 @@ document.addEventListener('TemplatesLoaded', (event) => {
 
     Promise.all([
         fetch(
-            `/template/mobile-nft-project-banner.template.html`
-        ).then((response) => response.text()),
-
-        fetch(
             `/template/nft-project-banner.template.html`
         ).then((response) => response.text()),
 
@@ -22,23 +18,11 @@ document.addEventListener('TemplatesLoaded', (event) => {
             url:    `/v1/nft-project/${entityUid}`
         })
     ]).then((res) => {
-        const mobileNftProjectBannerTemplate = res[0];
-        const nftProjectBannerTemplate       = res[1];
-        const nftProjectRatingTemplate       = res[2];
-        const nftProject                     = res[3].data.data;
+        const nftProjectBannerTemplate = res[0];
+        const nftProjectRatingTemplate = res[1];
+        const nftProject               = res[2].data.data;
 
-        document.getElementById('mobile-nft-project-banner-container').innerHTML = Mustache.render(
-            mobileNftProjectBannerTemplate,
-            Object.assign(
-                {
-                    'preserveLineBreaks': function() {
-                        return preserveLineBreaks();
-                    },
-                },
-                nftProject
-            )
-        );
-        document.getElementById('nft-project-banner-container').innerHTML = Mustache.render(
+        document.querySelector('div[template-container="nft-project-banner"]').innerHTML = Mustache.render(
             nftProjectBannerTemplate,
             Object.assign(
                 {
@@ -49,7 +33,7 @@ document.addEventListener('TemplatesLoaded', (event) => {
                 nftProject
             )
         );
-        document.getElementById('nft-project-rating-container').innerHTML = Mustache.render(
+        document.querySelector('div[template-container="nft-project-rating"]').innerHTML = Mustache.render(
             nftProjectRatingTemplate, 
             Object.assign(
                 {
@@ -197,6 +181,7 @@ function addReview(e) {
         signature: null,
         data: {
             address:             null,
+            network:             null,
             rating:              null,
             communityRating:     null,
             originalityRating:   null,
@@ -232,10 +217,15 @@ function addReview(e) {
     const submitSpinner         = document.getElementById('submit-spinner');
     submitSpinner.style.display = 'block';
 
-    return provider.send(
-        'eth_requestAccounts',
-        []
-    ).then((addresses) => {
+    return provider.getNetwork(
+    ).then((network) => {
+        payload.data.network = network.name;
+
+        return provider.send(
+            'eth_requestAccounts',
+            []
+        );
+    }).then((addresses) => {
         payload.data.address = ethers.utils.getAddress(addresses[0]);     
 
         return provider.getSigner().signMessage(`Please sign this message to post your review, it's free and doesn't cost any gas.\n\n${JSON.stringify(payload.data)}`);
@@ -269,18 +259,28 @@ function addReview(e) {
             return Promise.resolve();
         }
 
+        if(e.code == 'NETWORK_ERROR' && e.event == 'changed') {
+            InfoModal.error('Oops!', `You must use the Ethereum Mainnet network, please change this in MetaMask.`);
+            return Promise.resolve();
+        }
+
+        InfoModal.error('Oops!', `An unexpected error occured, please contact our team if this issue persists.`);
+
         return Promise.reject(e);
     });
 }
 
-window.addEventListener('scroll', () => {
+function onScroll() {
     let element = document.getElementById('infinite-review-row-container');
     var offset  = element.getBoundingClientRect().top - element.offsetParent.getBoundingClientRect().top;
     const top   = window.pageYOffset + window.innerHeight - offset;
     let spinner = document.getElementById('row-spinner');
 
-    if(top >= element.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
+    if(top + 150 >= element.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
         spinner.style.display = 'block';
         loadRows(10);
     }
-}, { passive: false });
+}
+
+window.addEventListener('touchmove', onScroll, { passive: false });
+window.addEventListener('scroll',    onScroll, { passive: false });

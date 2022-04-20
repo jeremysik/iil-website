@@ -1,36 +1,69 @@
 <div class="container nft-project-banner">
     <div class="card-container">
-        <img class="banner-image w-100" src="{{ bannerImageUrl }}=h400">
+        <div class="w-100 banner-image-container">
+            {{ #bannerImageUrl }}<img class="h-100 w-100" src="{{ bannerImageUrl }}=h400">{{ /bannerImageUrl }}
+        </div>
         <div class="bottom-half container">
-            <div class="row">
-                <div class="col logo-column">
-                    <div class="image-container d-flex align-items-center">
+            <div class="desktop">
+                <div class="row">
+                    <div class="col logo-column">
+                        <div class="image-container d-flex align-items-center">
+                            <div class="inner">
+                                <img src="{{ logoImageUrl }}=h150">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col info-column">
+                        <div class="row info-row">
+                            <div class="col text-bold fs-6 d-flex align-items-center">
+                                {{ name }}
+                            </div>
+                            <div class="col web-link d-flex align-items-center" style="{{ ^websiteUrl }}display: none !important;{{ /websiteUrl }}">
+                                <a target="_blank" href="{{ websiteUrl }}"><img src="/asset/website_grey_logo.svg"></a>
+                            </div>
+                            <div class="col web-link d-flex align-items-center" style="{{ ^openSeaUrl }}display: none !important;{{ /openSeaUrl }}">
+                                <a target="_blank" href="{{ openSeaUrl }}"><img src="/asset/opensea_grey_logo.svg"></a>
+                            </div>
+                            <div class="col web-link d-flex align-items-center" style="{{ ^discordUrl }}display: none !important;{{ /discordUrl }}">
+                                <a target="_blank" href="{{ discordUrl }}"><img src="/asset/discord_grey_logo.svg"></a>
+                            </div>
+                            <div class="col web-link d-flex align-items-center" style="{{ ^twitterUrl }}display: none !important;{{ /twitterUrl }}">
+                                <a target="_blank" href="{{ twitterUrl }}"><img src="/asset/twitter_grey_logo.svg"></a>
+                            </div>
+                        </div>
+                        <div class="description">
+                            {{ #preserveLineBreaks }} {{ description }} {{ /preserveLineBreaks }}
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="mobile">
+                <div class="row d-flex justify-content-center">
+                    <div class="col col-auto image-container d-flex align-items-center">
                         <div class="inner">
                             <img src="{{ logoImageUrl }}=h150">
                         </div>
                     </div>
                 </div>
-                <div class="col info-column">
-                    <div class="row info-row">
-                        <div class="col text-bold fs-6 d-flex align-items-center">
-                            {{ name }}
-                        </div>
-                        <div class="col web-link d-flex align-items-center" style="{{ ^websiteUrl }}display: none !important;{{ /websiteUrl }}">
-                            <a target="_blank" href="{{ websiteUrl }}"><img src="/asset/website_grey_logo.svg"></a>
-                        </div>
-                        <div class="col web-link d-flex align-items-center" style="{{ ^openSeaUrl }}display: none !important;{{ /openSeaUrl }}">
-                            <a target="_blank" href="{{ openSeaUrl }}"><img src="/asset/opensea_grey_logo.svg"></a>
-                        </div>
-                        <div class="col web-link d-flex align-items-center" style="{{ ^discordUrl }}display: none !important;{{ /discordUrl }}">
-                            <a target="_blank" href="{{ discordUrl }}"><img src="/asset/discord_grey_logo.svg"></a>
-                        </div>
-                        <div class="col web-link d-flex align-items-center" style="{{ ^twitterUrl }}display: none !important;{{ /twitterUrl }}">
-                            <a target="_blank" href="{{ twitterUrl }}"><img src="/asset/twitter_grey_logo.svg"></a>
-                        </div>
+                <div class="row info-row my-4 d-flex justify-content-center">
+                    <div class="col col-auto web-link d-flex align-items-center" style="{{ ^websiteUrl }}display: none !important;{{ /websiteUrl }}">
+                        <a target="_blank" href="{{ websiteUrl }}"><img src="/asset/website_grey_logo.svg"></a>
                     </div>
-                    <div class="description">
-                        {{ #preserveLineBreaks }} {{ description }} {{ /preserveLineBreaks }}
+                    <div class="col col-auto web-link d-flex align-items-center" style="{{ ^openSeaUrl }}display: none !important;{{ /openSeaUrl }}">
+                        <a target="_blank" href="{{ openSeaUrl }}"><img src="/asset/opensea_grey_logo.svg"></a>
                     </div>
+                    <div class="col col-auto web-link d-flex align-items-center" style="{{ ^discordUrl }}display: none !important;{{ /discordUrl }}">
+                        <a target="_blank" href="{{ discordUrl }}"><img src="/asset/discord_grey_logo.svg"></a>
+                    </div>
+                    <div class="col col-auto web-link d-flex align-items-center" style="{{ ^twitterUrl }}display: none !important;{{ /twitterUrl }}">
+                        <a target="_blank" href="{{ twitterUrl }}"><img src="/asset/twitter_grey_logo.svg"></a>
+                    </div>
+                </div>
+                <div class="col text-bold fs-6 d-flex align-items-center my-3">
+                    {{ name }}
+                </div>
+                <div class="description">
+                    {{ #preserveLineBreaks }} {{ description }} {{ /preserveLineBreaks }}
                 </div>
             </div>
         </div>

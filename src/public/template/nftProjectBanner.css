@@ -2,6 +2,7 @@
     --logo-size:           125px;
     --column-padding:      calc(var(--card-padding) * 1.5);
     --web-link-icon-width: 28px;
+    --logo-offset:         calc((-0.45 * var(--logo-size)) - var(--card-padding));
 }
 
 .nft-project-banner .card-container {
@@ -35,7 +36,7 @@
     margin-top: 1em;
 }
 
-.nft-project-banner .info-column .web-link {
+.nft-project-banner .desktop .web-link {
     flex:        0 0 auto;
     padding:     0;
     margin-left: 1.5rem;
@@ -46,8 +47,38 @@
     width: var(--web-link-icon-width);
 }
 
-.nft-project-banner .banner-image {
+.nft-project-banner .banner-image-container {
+    max-height:       350px;
+    min-height:       200px;
+    background-color: var(--dark-grey-colour);
+}
+
+.nft-project-banner .banner-image-container img {
     object-fit: cover;
-    max-height: 350px;
-    min-height: 200px;
+}
+
+.nft-project-banner .mobile .web-link {
+    margin: 0 0.5em;
+}
+
+.nft-project-banner .bottom-half .mobile .image-container {
+    width:         var(--logo-size);
+    height:        var(--logo-size);
+    border-radius: 1rem;
+    transform:     translateY(var(--logo-offset));
+    margin-bottom: var(--logo-offset);
+}
+
+.nft-project-banner .bottom-half {
+    padding: var(--card-padding);
+}
+
+@media(min-width: 767px) {
+    .nft-project-banner .banner-image-container {
+        height: 200px;
+    }
+
+    .nft-project-banner .bottom-half {
+        padding: 0 var(--bs-gutter-x,.75rem);
+    }
 }

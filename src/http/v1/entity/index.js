@@ -77,8 +77,11 @@ router.delete('/:uid', authorise.admin, (req, res) => {
             });
         }
 
-        const deleteTypeRatingStmt = global.db.prepare(`DELETE FROM ${selectRow.type}_rating_v1 WHERE entityUid = ?`);
+        const deleteTypeRatingStmt = global.db.prepare(`DELETE FROM ${selectRow.type}_review_rating_v1 WHERE entityUid = ?`);
         deleteTypeRatingStmt.run(req.params.uid);
+
+        const deleteTypeRatingHistoryStmt = global.db.prepare(`DELETE FROM ${selectRow.type}_rating_history_v1 WHERE entityUid = ?`);
+        deleteTypeRatingHistoryStmt.run(req.params.uid);
 
         const deleteReviewStmt = global.db.prepare(`DELETE FROM review_v1 WHERE entityUid = ?`);
         deleteReviewStmt.run(req.params.uid);

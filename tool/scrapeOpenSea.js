@@ -51,6 +51,11 @@ console.log(`Running in ${update ? 'update' : 'insert'} mode!\n`);
 async function processName(position) {
     let slug = slugs[position];
 
+    if(!slug) {
+        console.log('\nDone!');
+        return;
+    }
+
     const stmt = db.prepare(`SELECT * FROM nft_project_v1 WHERE openSeaUrl = ?`);
     const row  = stmt.get(`https://opensea.io/collection/${slug}`);
 
@@ -96,17 +101,10 @@ async function processName(position) {
         return;
     }
 
+    const logoImageUrl     = response.data.collection.image_url.split('=')[0];
     const bannerImageUrl   = response.data.collection.banner_image_url   ? response.data.collection.banner_image_url.split('=')[0]   : null;
     const featuredImageUrl = response.data.collection.featured_image_url ? response.data.collection.featured_image_url.split('=')[0] : null;
     const largeImageUrl    = response.data.collection.large_image_url    ? response.data.collection.large_image_url.split('=')[0]    : null;
-
-    if(!bannerImageUrl && !featuredImageUrl && !largeImageUrl) {
-        console.warn(`${slug} no banner/featured/large image, skipping.`);
-        processName(position + 1);
-        return;
-    };
-
-    const logoImageUrl = response.data.collection.image_url.split('=')[0];
 
     if(row && update) {
         const transaction = db.transaction(() => {
@@ -118,8 +116,8 @@ async function processName(position) {
     
             const insertNftStmt = db.prepare(`UPDATE nft_project_v1 SET featuredImageUrl = ?, bannerImageUrl = ?, description = ?, websiteUrl = ?, twitterUrl = ?, discordUrl = ?, openSeaUrl = ? WHERE entityUid = ?`);
             insertNftStmt.run(
-                featuredImageUrl ? featuredImageUrl : largeImageUrl ? largeImageUrl : bannerImageUrl,
-                bannerImageUrl ? bannerImageUrl : featuredImageUrl ? featuredImageUrl : largeImageUrl,
+                featuredImageUrl ? featuredImageUrl : largeImageUrl ? largeImageUrl : bannerImageUrl ? bannerImageUrl          : null,
+                bannerImageUrl ? bannerImageUrl : featuredImageUrl ? featuredImageUrl : largeImageUrl ? largeImageUrl          : null,
                 response.data.collection.description      ? response.data.collection.description                               : null,
                 response.data.collection.external_url     ? response.data.collection.external_url                              : null,
                 response.data.collection.twitter_username ? `https://twitter.com/${response.data.collection.twitter_username}` : null,
@@ -156,8 +154,8 @@ async function processName(position) {
         const insertNftStmt = db.prepare(`INSERT INTO nft_project_v1(entityUid, featuredImageUrl, bannerImageUrl, description, websiteUrl, twitterUrl, discordUrl, openSeaUrl) VALUES(?, ?, ?, ?, ?, ?, ?, ?)`);
         insertNftStmt.run(
             entityUid,
-            featuredImageUrl ? featuredImageUrl : largeImageUrl ? largeImageUrl : bannerImageUrl,
-            bannerImageUrl ? bannerImageUrl : featuredImageUrl ? featuredImageUrl : largeImageUrl,
+            featuredImageUrl ? featuredImageUrl : largeImageUrl ? largeImageUrl : bannerImageUrl ? bannerImageUrl          : null,
+                bannerImageUrl ? bannerImageUrl : featuredImageUrl ? featuredImageUrl : largeImageUrl ? largeImageUrl      : null,
             response.data.collection.description      ? response.data.collection.description                               : null,
             response.data.collection.external_url     ? response.data.collection.external_url                              : null,
             response.data.collection.twitter_username ? `https://twitter.com/${response.data.collection.twitter_username}` : null,

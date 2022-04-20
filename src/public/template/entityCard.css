@@ -11,9 +11,13 @@
     overflow:         hidden;
 }
 
-.entity-card .featured-image {
+.entity-card .featured-image-container {
+    height:           var(--image-height);
+    background-color: var(--dark-grey-colour);
+}
+
+.entity-card .featured-image-container img {
     object-fit: cover;
-    height:     var(--image-height);
 }
 
 .entity-card .info {

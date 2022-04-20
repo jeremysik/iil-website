@@ -27,8 +27,8 @@ CREATE TABLE IF NOT EXISTS user_v1(
 
 CREATE TABLE IF NOT EXISTS nft_project_v1(
     entityUid TEXT NOT NULL PRIMARY KEY,
-    featuredImageUrl TEXT NOT NULL,
-    bannerImageUrl TEXT NOT NULL,
+    featuredImageUrl TEXT,
+    bannerImageUrl TEXT,
     websiteUrl TEXT,
     openSeaUrl TEXT,
     twitterUrl TEXT,

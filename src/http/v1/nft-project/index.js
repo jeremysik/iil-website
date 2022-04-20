@@ -128,7 +128,7 @@ router.get('/', (req, res) => {
 router.post('/', authorise.admin, (req, res) => {
 
     let missingParams = [];
-    let fields        = ['name', 'logoImageUrl', 'featuredImageUrl', 'bannerImageUrl'];
+    let fields        = ['name', 'logoImageUrl'];
 
     for(let field of fields) {
         if(!req.body.hasOwnProperty(field)) missingParams.push(field);
@@ -141,9 +141,8 @@ router.post('/', authorise.admin, (req, res) => {
         ).send();
     }
 
-    let fieldsToInsert = fields.filter((field) => field != 'name' && field != 'logoImageUrl');
-
-    let optionalFields = ['websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description'];
+    let fieldsToInsert = [];
+    let optionalFields = ['websiteUrl', 'openSeaUrl', 'twitterUrl', 'discordUrl', 'description', 'featuredImageUrl', 'bannerImageUrl'];
     for(let field of optionalFields) {
         if(req.body.hasOwnProperty(field)) fieldsToInsert.push(field);
     }
@@ -382,6 +381,13 @@ router.post('/:entityUid/review', (req, res) => {
     if(signer != req.body.data.address) {
         return res.locals.output.fail(
             `Couldn't verify message signature. Please try again or contact our team if this issue persists.`,
+            400
+        ).send();
+    }
+
+    if(req.body.data.network != 'homestead') {
+        return res.locals.output.fail(
+            `Incorrect network selected. Please use Ethereum Mainnet.`,
             400
         ).send();
     }
