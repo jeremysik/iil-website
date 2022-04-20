@@ -25,12 +25,14 @@ document.addEventListener('TemplatesLoaded', (event) => {
         document.querySelector('div[template-container="nft-project-banner"]').innerHTML = Mustache.render(
             nftProjectBannerTemplate,
             Object.assign(
+                Object.assign({}, nftProject),
                 {
                     'markdown': function() {
                         return markdown();
                     },
-                },
-                nftProject
+                    'bannerImageUrl': nftProject.bannerImageUrl && nftProject.bannerImageUrl.includes('google') ? `${nftProject.bannerImageUrl}=h250` : nftProject.bannerImageUrl,
+                    'logoImageUrl':   nftProject.logoImageUrl   && nftProject.logoImageUrl.includes('google')   ? `${nftProject.logoImageUrl}=h150`   : nftProject.logoImageUrl,
+                }
             )
         );
         document.querySelector('div[template-container="nft-project-rating"]').innerHTML = Mustache.render(
@@ -106,23 +108,25 @@ function loadRows(count) {
         lastRow            = res.data.data.total - 1;
 
         for(let i = 0; i < res.data.data.rows.length; i++) {
-            let totalRating         = res.data.data.rows[i].rating;
+            const row = res.data.data.rows[i];
+
+            let totalRating         = row.rating;
             let optionalRatingCount = 0;
-            if(res.data.data.rows[i].communityRating != null) {
+            if(row.communityRating != null) {
                 optionalRatingCount++;
-                totalRating += res.data.data.rows[i].communityRating;
+                totalRating += row.communityRating;
             }
-            if(res.data.data.rows[i].originalityRating != null) {
+            if(row.originalityRating != null) {
                 optionalRatingCount++;
-                totalRating += res.data.data.rows[i].originalityRating;
+                totalRating += row.originalityRating;
             }
-            if(res.data.data.rows[i].communicationRating != null) {
+            if(row.communicationRating != null) {
                 optionalRatingCount++;
-                totalRating += res.data.data.rows[i].communicationRating;
+                totalRating += row.communicationRating;
             }
-            if(res.data.data.rows[i].consistencyRating != null) {
+            if(row.consistencyRating != null) {
                 optionalRatingCount++;
-                totalRating += res.data.data.rows[i].consistencyRating;
+                totalRating += row.consistencyRating;
             }
             totalRating /= (optionalRatingCount + 1);
             
@@ -134,9 +138,9 @@ function loadRows(count) {
                             return round(3);
                         },
                         'totalRating': totalRating,
-                        'date':        moment(res.data.data.rows[i].created).format('D MMMM YYYY')
+                        'date':        moment(row.created).format('D MMMM YYYY')
                     },
-                    res.data.data.rows[i]
+                    row
                 )
             );
             currentRow++;

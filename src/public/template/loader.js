@@ -42,6 +42,7 @@ function markdown(remove = false) {
 
 // Sorry, it was faster for me to build a templating system on Mustache.js than to learn React.js =P
 const templatesLoadedEvent = new Event('TemplatesLoaded');
+let domLoaded              = false;
 let promises               = [];
 
 document.querySelectorAll('div[template]').forEach((node) => {
@@ -55,8 +56,18 @@ document.querySelectorAll('div[template]').forEach((node) => {
     );
 });
 
+document.addEventListener('DOMContentLoaded', (event) => {
+    domLoaded = true;
+});
+
+function dispatchTemplatesLoaded() {
+    if(!domLoaded) return setTimeout(dispatchTemplatesLoaded, 1);
+
+    document.dispatchEvent(templatesLoadedEvent);
+}
+
 Promise.all(
     promises
 ).then(() => {
-    document.dispatchEvent(templatesLoadedEvent);
+    dispatchTemplatesLoaded();
 });

@@ -51,9 +51,12 @@ function loadRows(count) {
         lastRow            = res.data.data.total - 1;
 
         for(let i = 0; i < res.data.data.rows.length; i++) {
+            const row = res.data.data.rows[i];
+
             searchRowsHtml += Mustache.render(
                 searchRowTemplate,
                 Object.assign(
+                    Object.assign({}, row),
                     {
                         'truncateName': function() {
                             return truncate(50);
@@ -61,9 +64,9 @@ function loadRows(count) {
                         'roundRating': function() {
                             return round(3);
                         },
-                        'entityUrl': `/${res.data.data.rows[i].type.replaceAll('_', '-')}/?entityUid=${res.data.data.rows[i].uid}` 
-                    },
-                    res.data.data.rows[i]
+                        'entityUrl':    `/${row.type.replaceAll('_', '-')}/?entityUid=${row.uid}`,
+                        'logoImageUrl': row.logoImageUrl && row.logoImageUrl.includes('google') ? `${row.logoImageUrl}=h70` : row.logoImageUrl
+                    }
                 )
             );
             currentRow++;
@@ -107,14 +110,17 @@ document.addEventListener('TemplatesLoaded', (event) => {
     init();
 });
 
-window.addEventListener('scroll', () => {
+function onScroll() {
     let element = document.querySelector('div[template-container="search-row"]');
     var offset  = element.getBoundingClientRect().top - element.offsetParent.getBoundingClientRect().top;
     const top   = window.pageYOffset + window.innerHeight - offset;
     let spinner = document.getElementById('row-spinner');
 
-    if(top >= element.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
+    if(top + 150 >= element.scrollHeight && currentRow <= lastRow && spinner.style.display == 'none') {
         spinner.style.display = 'block';
         loadRows(10);
     }
-}, { passive: false });
+}
+
+window.addEventListener('touchmove', onScroll, { passive: false });
+window.addEventListener('scroll',    onScroll, { passive: false });
