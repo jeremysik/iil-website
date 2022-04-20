@@ -83,6 +83,9 @@ function loadRows(count) {
                             'truncateName': function() {
                                 return truncate(50);
                             },
+                            'markdown': function() {
+                                return markdown(true);
+                            },
                             'truncateDescription': function() {
                                 return truncate(100);
                             },

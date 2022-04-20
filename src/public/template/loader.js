@@ -20,6 +20,24 @@ function preserveLineBreaks() {
         return render(text).replaceAll('\n', '<br>');
     }
 }
+
+function markdown(remove = false) {
+    return function(text, render) {
+        let renderedText = render(text);
+
+        const linkRegex = /\[([^\[]+)\]\(([^\)]+)\)/g;
+        [...renderedText.matchAll(linkRegex)].forEach((match) => {
+            renderedText = renderedText.replaceAll(match[0], remove ? '' : `<a target="_blank" href="${match[2]}">${match[1]}</a>`);
+        });
+
+        const strongRegex = /(\*\*|__)(.*?)(\*?)\1/g;
+        [...renderedText.matchAll(strongRegex)].forEach((match) => {
+            renderedText = renderedText.replaceAll(match[0], remove ? '' : `<b>${match[2]}</b>`);
+        });
+
+        return renderedText.replaceAll('\n', remove ? '' : '<br>');
+    }
+}
 // -------- Template Functions --------
 
 // Sorry, it was faster for me to build a templating system on Mustache.js than to learn React.js =P

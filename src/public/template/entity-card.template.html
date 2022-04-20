@@ -6,8 +6,8 @@
             </div>
             <div class="info-rating-container">
                 <div class="info">
-                    <div class="name text-bold fs-6">{{ #truncateName }}{{ name }}{{ /truncateName }}</div>
-                    <div class="description">{{ #truncateDescription }}{{ description }}{{ /truncateDescription }}</div>
+                    <div class="name text-bold fs-6">{{ #truncateName }} {{ name }} {{ /truncateName }}</div>
+                    <div class="description">{{ #truncateDescription }} {{ #markdown }} {{{ description }}} {{ /markdown }} {{ /truncateDescription }}</div>
                 </div>
                 <hr>
                 <div class="rating-container d-flex align-items-center">

@@ -26,8 +26,8 @@ document.addEventListener('TemplatesLoaded', (event) => {
             nftProjectBannerTemplate,
             Object.assign(
                 {
-                    'preserveLineBreaks': function() {
-                        return preserveLineBreaks();
+                    'markdown': function() {
+                        return markdown();
                     },
                 },
                 nftProject
