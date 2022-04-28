@@ -1,7 +1,7 @@
 <div class="container nft-project-banner">
     <div class="card-container">
         <div class="w-100 banner-image-container">
-            {{ #bannerImageUrl }}<img class="h-100 w-100" src="{{ bannerImageUrl }}=h400">{{ /bannerImageUrl }}
+            {{ #bannerImageUrl }}<img class="h-100 w-100" src="{{ bannerImageUrl }}">{{ /bannerImageUrl }}
         </div>
         <div class="bottom-half container">
             <div class="desktop">
@@ -9,7 +9,7 @@
                     <div class="col logo-column">
                         <div class="image-container d-flex align-items-center">
                             <div class="inner">
-                                <img src="{{ logoImageUrl }}=h150">
+                                <img src="{{ logoImageUrl }}">
                             </div>
                         </div>
                     </div>
@@ -32,7 +32,7 @@
                             </div>
                         </div>
                         <div class="description">
-                            {{ #preserveLineBreaks }} {{ description }} {{ /preserveLineBreaks }}
+                            {{ #markdown }} {{{ description }}} {{ /markdown }}
                         </div>
                     </div>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col col-auto image-container d-flex align-items-center">
                         <div class="inner">
-                            <img src="{{ logoImageUrl }}=h150">
+                            <img src="{{ logoImageUrl }}">
                         </div>
                     </div>
                 </div>
@@ -63,7 +63,7 @@
                     {{ name }}
                 </div>
                 <div class="description">
-                    {{ #preserveLineBreaks }} {{ description }} {{ /preserveLineBreaks }}
+                    {{ #markdown }} {{{ description }}} {{ /markdown }}
                 </div>
             </div>
         </div>

@@ -57,10 +57,12 @@ function loadRows(count) {
         lastRow                  = res.data.data.total - 1;
 
         for(let i = 0; i < res.data.data.rows.length; i++) {
+            const row = res.data.data.rows[i];
             
             mobileEntityRowsHtml += Mustache.render(
                 mobileEntityRowTemplate,
                 Object.assign(
+                    Object.assign({}, row),
                     {
                         'truncateName': function() {
                             return truncate(50);
@@ -68,10 +70,10 @@ function loadRows(count) {
                         'roundRating': function() {
                             return round(3);
                         },
-                        'rank':      currentRow + 1,
-                        'entityUrl': `/nft-project/?entityUid=${res.data.data.rows[i].entityUid}` 
-                    },
-                    res.data.data.rows[i]
+                        'rank':         currentRow + 1,
+                        'entityUrl':    `/nft-project/?entityUid=${row.entityUid}`,
+                        'logoImageUrl': row.logoImageUrl && row.logoImageUrl.includes('google') ? `${row.logoImageUrl}=h60` : row.logoImageUrl
+                    }
                 )
             );
 
@@ -79,9 +81,13 @@ function loadRows(count) {
                 entityCardsHtml[`card${i}`] = Mustache.render(
                     entityCardTemplate,
                     Object.assign(
+                        Object.assign({}, row),
                         {
                             'truncateName': function() {
                                 return truncate(50);
+                            },
+                            'markdown': function() {
+                                return markdown(true);
                             },
                             'truncateDescription': function() {
                                 return truncate(100);
@@ -89,10 +95,10 @@ function loadRows(count) {
                             'roundRating': function() {
                                 return round(3);
                             },
-                            'medalImageUrl': `/asset/medal-${currentRow}.svg`,
-                            'entityUrl':     `/nft-project/?entityUid=${res.data.data.rows[i].entityUid}` 
-                        },
-                        res.data.data.rows[i]
+                            'medalImageUrl':    `/asset/medal-${currentRow}.svg`,
+                            'entityUrl':        `/nft-project/?entityUid=${row.entityUid}`,
+                            'featuredImageUrl': row.featuredImageUrl && row.featuredImageUrl.includes('google') ? `${row.featuredImageUrl}=h250` : row.featuredImageUrl
+                        }
                     )
                 );
 
@@ -103,14 +109,15 @@ function loadRows(count) {
             entityRowsHtml += Mustache.render(
                 entityRowTemplate,
                 Object.assign(
+                    Object.assign({}, row),
                     {
                         'roundRating': function() {
                             return round(3);
                         },
-                        'rank':      currentRow + 1,
-                        'entityUrl': `/nft-project/?entityUid=${res.data.data.rows[i].entityUid}` 
-                    },
-                    res.data.data.rows[i]
+                        'rank':         currentRow + 1,
+                        'entityUrl':    `/nft-project/?entityUid=${row.entityUid}`,
+                        'logoImageUrl': row.logoImageUrl && row.logoImageUrl.includes('google') ? `${row.logoImageUrl}=h110` : row.logoImageUrl
+                    }
                 )
             );
             currentRow++;
