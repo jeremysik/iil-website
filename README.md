@@ -55,6 +55,7 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
 - Admin panel (add/edit NFT projects, moderate ratings), specific wallets can be given admin privileges
 - Uptime monitoring (production only)
 - Telegram warning and error alerts (production only)
+- Google Analytics
 
 ## Tech Stack
 ### Frontend
