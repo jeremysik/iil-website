@@ -1,14 +1,14 @@
-# Work Sample - isitlegit.xyz
+# isitlegit.xyz
 Sample of my recent work - View site at https://isitlegit.xyz
 
-Apart from getting help on the design of the website, everything was done from scratch and developed, deployed and set up by me.
+Apart from getting help on the design of the website, everything was done from scratch by me (development and deployment).
 
-Time from beginning of development to production deployment: 3.5 weeks~
+Contact: [@JeremySik](https://twitter.com/JeremySik) (DMs are open)
 
 ## Background
 isitlegit.xyz is an NFT project rating site.
 
-The home page is a list of NFT projects sorted by "overall rating". This is calculated from the following 5 sub-ratings: Personal, Community, Originality, Communication and Consistency. Optional sub-ratings which are empty are ignored.
+The home page is a list of NFT projects sorted by "overall rating". This is calculated from the following 5 sub-ratings: Personal, community, originality, communication and consistency. Optional sub-ratings which are empty are ignored.
 
 Anyone with a "genuine" MetaMask wallet is able to connect and rate an NFT project. A wallet is considered genuine if it has at least 0.01 ETH or it has made 10 transactions; this was done to make it more difficult for a single person to post multiple ratings on a single project.
 
@@ -16,7 +16,7 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
 
 2000 NFT projects were scraped from the OpenSea's [top collections](https://opensea.io/explore-collections?tab=top) category. This was done late April 2022.
 
-## My Personal Web2 Development Philosophy
+## My Personal Development Philosophy
 - Use minimal dependencies
   - Increases long term agility of your code base (i.e. unexpected customisations are easier)
   - Increases stability by reducing chance of bugs from other libraries
@@ -82,6 +82,3 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
 - Minifier for production
 - OpenSea scraper
 - Template asset loader (automatically detects and inserts relevant JS/CSS into HTML where a template is used)
-
-## Contact
-[@JeremySik](https://twitter.com/JeremySik) (DMs are open)
