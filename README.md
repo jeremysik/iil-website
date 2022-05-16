@@ -37,6 +37,7 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
   - Updating architecture is time consuming, only do it when you know you need to (i.e. test the product case for your new feature first, hacks/prototyping is acceptable here)
 - Readability is king
   - In most cases it is more important than execution speed
+  - E.g. Use guard statements instead of nested conditionals
   - *Extra credit: Vertically align your code, especially assignments*
 - Log your assumptions (e.g. if you expect a number to be greater than 0)
   - This helps you locate bugs much faster
