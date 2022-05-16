@@ -44,7 +44,8 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
 - Code as one
   - Match the style and architecture of the project
 - Be like water
-  - None of above is set in stone, use your best judgement given the context of the situation 
+  - None of above is set in stone, use your best judgement given the context of the situation
+  - E.g. When fast prototyping is needed: Use templates & libraries, hack where required, attempt to decouple as much as possible but don't re-architect anything
 
 ## Website Features
 ![PageSpeed Desktop](/github/pageSpeedDesktop.png "PageSpeed Desktop")
