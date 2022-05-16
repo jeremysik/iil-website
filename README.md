@@ -17,7 +17,7 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
 2000 NFT projects were scraped from the OpenSea's [top collections](https://opensea.io/explore-collections?tab=top) category. This was done late April 2022.
 
 ## My Personal Development Philosophy
-- Use minimal dependencies
+- Cut down on dependencies
   - Increases long term agility of your code base (i.e. unexpected customisations are easier)
   - Increases stability by reducing chance of bugs from other libraries
   - Reduces breakages when updating libraries
@@ -45,7 +45,7 @@ Submitting a rating requires the user to sign a transaction containing a JSON bl
   - Match the style and architecture of the project
 - Be like water
   - None of above is set in stone, use your best judgement given the context of the situation
-  - E.g. When fast prototyping is needed: Use templates & libraries, hack where required, attempt to decouple as much as possible but don't re-architect anything
+  - E.g. When quickly prototyping a product: Use templates & libraries, hack where required, attempt to decouple as much as possible but don't re-architect anything
 
 ## Website Features
 ![PageSpeed Desktop](/github/pageSpeedDesktop.png "PageSpeed Desktop")
